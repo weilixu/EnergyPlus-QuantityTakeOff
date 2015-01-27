@@ -48,40 +48,48 @@ public class Analyzer extends JPanel {
 	    public void actionPerformed(ActionEvent e) {
 		String directory = energyPlusDir.getText();
 		File eplusFile = new File(directory);
-		try {
-		    startCreateIDFInterface();
-		} catch (IOException e1) {
+		if (!eplusFile.isFile() && !eplusFile.isDirectory()) {
 		    loadEnergyPlusLabel.setText(ERROR_INVALID_FILE);
-		    e1.printStackTrace();
+		} else {
+		    try {
+			startCreateIDFInterface(eplusFile);
+		    } catch (IOException e1) {
+			e1.printStackTrace();
+		    }
 		}
 	    }
 	});
-	
+
 	analyzeResultButton = new JButton(ANALYZE_IDF);
-	analyzeResultButton.addActionListener(new ActionListener(){
+	analyzeResultButton.addActionListener(new ActionListener() {
 	    @Override
-	    public void actionPerformed(ActionEvent e){
+	    public void actionPerformed(ActionEvent e) {
 		String directory = energyPlusDir.getText();
-		try{
-		    startAnalyzeDataInterface();
-		}catch(IOException e2){
-		    loadEnergyPlusLabel.setText(ANALYZE_IDF);
-		    e2.printStackTrace();
+		File eplusFile = new File(directory);
+		if (!eplusFile.isFile() && !eplusFile.isDirectory()) {
+		    loadEnergyPlusLabel.setText(ERROR_INVALID_FILE);
+		} else {
+		    try {
+			startAnalyzeDataInterface(eplusFile);
+		    } catch (IOException e2) {
+			loadEnergyPlusLabel.setText(ANALYZE_IDF);
+			e2.printStackTrace();
+		    }
 		}
 	    }
 	});
-	
+
 	JPanel setupPanel = new JPanel();
 	setupPanel.setLayout(new BorderLayout());
 	setupPanel.add(energyPlusDir, BorderLayout.NORTH);
 	setupPanel.add(createIDFButton, BorderLayout.CENTER);
 	setupPanel.add(analyzeResultButton, BorderLayout.SOUTH);
-	
+
 	add(setupPanel);
 	setVisible(true);
 
     }
-    
+
     public static void main(String[] args) {
 	SwingUtilities.invokeLater(new Runnable() {
 	    @Override
@@ -95,22 +103,16 @@ public class Analyzer extends JPanel {
 	    }
 	});
     }
-    
-    private void startCreateIDFInterface() throws IOException {
+
+    private void startCreateIDFInterface(File file) throws IOException {
 	parentFrame.remove(this);
 	Model model = new Model();
-	parentFrame.add(new AnalyzerInterface(model));
-	parentFrame.setTitle("EnergyPlus Uncertainty IDF Editor");
-	parentFrame.setResizable(true);
-	parentFrame.pack();
+	AnalyzerInterface analysis = new AnalyzerInterface(model, parentFrame, file);
     }
-    
-    private void startAnalyzeDataInterface() throws IOException{
+
+    private void startAnalyzeDataInterface(File file) throws IOException {
 	parentFrame.remove(this);
 	Model model = new Model();
-	parentFrame.add(new AnalyzerInterface(model));
-	parentFrame.setTitle("EnergyPlus Uncertainty Data Analyzer");
-	parentFrame.setResizable(true);
-	parentFrame.pack();
+	AnalyzerInterface analysis = new AnalyzerInterface(model, parentFrame, file);
     }
 }

@@ -5,38 +5,27 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
 
 import analyzer.model.Model;
 
 public class AnalyzerInterface extends JPanel {
+    
     private final String DEFAULT_TITLE = "EnergyPlus Uncertainty Analyzer";
-    private final String DEFAULT_FILE_NAME = "EnergyPlus file name";
 
     // All Setting Menu Title
     private final String MENU_TITLE = "Setting";
-    private final String EPLUS_TITLE = "Load IDF file";
     private final String MENU_EXIT = "Exit";
-    private final String MENU_REFRESH = "refresh";
+    private final String MENU_REFRESH = "Load";
 
-    // All Menu-related inputs.
-    private final JMenuItem loadIDF;
-    private final JMenuItem refreshMenus;
-
-    // EnergyPlus Dialog Title and Message
-    private final String LOAD_TITLE = "Load your EnergyPlus file";
-    private final String EPLUS_FILE_DIR = "Enter the file directory";
+    private final JMenuItem loadMenus;
 
     private final Model core;
 
@@ -48,23 +37,24 @@ public class AnalyzerInterface extends JPanel {
     private final JPanel outerPanel;
     private final VariablePanel innerPanel;
 
-    //private final JLabel fileLabel;
+    private final File eplusFile;
 
-    public AnalyzerInterface(Model c) {
+    public AnalyzerInterface(Model c, JFrame f, File file) {
 	// assign the model to the interface
 	core = c;
+	eplusFile = file;
 
 	// build the frame
-	frame = new JFrame(DEFAULT_TITLE);
+	frame = f;
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setPreferredSize(new Dimension(700, 600));
 
 	// Add the frame's panels to the view.
 	outerPanel = new JPanel(new BorderLayout());
 
-	//fileLabel = new JLabel(DEFAULT_FILE_NAME);
-	//fileLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-	//outerPanel.add(fileLabel, BorderLayout.NORTH);
+	// fileLabel = new JLabel(DEFAULT_FILE_NAME);
+	// fileLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+	// outerPanel.add(fileLabel, BorderLayout.NORTH);
 
 	innerPanel = new VariablePanel(core);
 	outerPanel.add(innerPanel, BorderLayout.CENTER);
@@ -76,36 +66,23 @@ public class AnalyzerInterface extends JPanel {
 	JMenu setting = new JMenu(MENU_TITLE);
 	setting.setMnemonic(KeyEvent.VK_S);
 
-	// add load IDF option in the menu
-	loadIDF = new JMenuItem(EPLUS_TITLE);
-	loadIDF.setMnemonic(KeyEvent.VK_N);
-	loadIDF.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		String directory = (String) JOptionPane.showInputDialog(frame,
-			LOAD_TITLE, EPLUS_FILE_DIR, JOptionPane.PLAIN_MESSAGE,
-			null, null, "");
-		if (directory != null) {
-		    // do actions to load/error
-		    innerPanel.changeVariables(new ArrayList<String>());
-		    //outerPanel.add(innerPanel, BorderLayout.CENTER);
-		    outerPanel.revalidate();
-		    outerPanel.repaint();
-		}
-	    }
-	});
-	setting.add(loadIDF);
-
 	// add refresh button. reset all the settings
-	refreshMenus = new JMenuItem(MENU_REFRESH);
-	refreshMenus.setMnemonic(KeyEvent.VK_R);
-	refreshMenus.addActionListener(new ActionListener() {
+	loadMenus = new JMenuItem(MENU_REFRESH);
+	loadMenus.setMnemonic(KeyEvent.VK_R);
+	loadMenus.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent event) {
-		// do something
+		// also here should use the eplusFile variable to load the
+		// eplus, the inputs to the inner panel would be the searched
+		// values
+		// do actions to load/error
+		innerPanel.changeVariables(new ArrayList<String>());
+		// outerPanel.add(innerPanel, BorderLayout.CENTER);
+		outerPanel.revalidate();
+		outerPanel.repaint();
 	    }
 	});
-	setting.add(refreshMenus);
+	setting.add(loadMenus);
 
 	// add the separator to divide the data inputs and frame function
 	setting.addSeparator();
