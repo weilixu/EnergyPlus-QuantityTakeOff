@@ -125,5 +125,4 @@ public class VariablePanel extends JPanel implements ItemListener {
 	});
 	return tp;
     }
-
 }
