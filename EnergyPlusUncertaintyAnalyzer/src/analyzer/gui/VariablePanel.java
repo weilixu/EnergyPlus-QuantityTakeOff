@@ -9,10 +9,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 
 import analyzer.model.Model;
 
@@ -25,37 +28,28 @@ public class VariablePanel extends JPanel {
     private final String FIT_DIST_TITLE = "Fit Distribution";
     private final String MAKE_DIST_TITLE = "Make Distribution";
 
-    // Lable
-    private final JLabel variableLabel;
-
     // fitting panel
     private final JPanel fittingPanel;
     // variable selection panel
     private final JPanel selectPanel;
+    //contains the text field specify the number of simulations
+    private JPanel simulationPanel;
 
     private JPanel variableSelectPanel = new JPanel();
-
+    
+    private JTextField simulationText;
+    
     public VariablePanel(Model m) {
 	model = m;
-	variableLabel = new JLabel(VARIABLE_TITLE);
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
 	selectPanel = new JPanel();
 	selectPanel.setLayout(new BorderLayout());
+	simulationPanel = initSimulationPanel();
 	initPanel();
     }
 
     public void changeVariables(ArrayList<String> variableList) {
-	// dead code, DEMONSTRATION ONLY!!!
-	variableList = new ArrayList<String>();
-	variableList.add("abc");
-	variableList.add("def");
-	variableList.add("ghi");
-	variableList.add("jkl");
-	variableList.add("mno");
-	variableList.add("pqr");
-	variableList.add("stu");
-	variableList.add("vwx");
 
 	variableSelectPanel = new JPanel();
 	variableSelectPanel.setLayout(new GridLayout(variableList.size(), 0));
@@ -89,9 +83,9 @@ public class VariablePanel extends JPanel {
 
     private void initPanel() {
 	setLayout(new BorderLayout());
-	add(variableLabel, BorderLayout.NORTH);
 	add(selectPanel, BorderLayout.WEST);
 	add(fittingPanel, BorderLayout.CENTER);
+	add(simulationPanel,BorderLayout.PAGE_START);
     }
 
     // a JTabbedPane to represents two fitting method
@@ -102,8 +96,17 @@ public class VariablePanel extends JPanel {
 	JTabbedPane tp = new JTabbedPane();
 
 	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp));// index 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel());// index 1
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp));// index 1
 
 	return tp;
+    }
+    
+    private JPanel initSimulationPanel(){
+	JPanel tempPanel = new JPanel();
+	simulationText = new JTextField("Enter the Number of Simulations (>=1)");
+	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
+	tempPanel.add(simulationText);
+	tempPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+	return tempPanel;
     }
 }

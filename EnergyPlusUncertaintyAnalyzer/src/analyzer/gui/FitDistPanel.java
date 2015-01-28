@@ -28,28 +28,32 @@ public class FitDistPanel extends JPanel{
     private final JPanel settingPanel;
     //to capture the distribution display once the set-up is complete
     private final JPanel displayPanel;
+    private final JPanel loadPanel;
+    private final JPanel fitPanel;
     
     /*
      * All the texts relates to the setting components
      */
-    private final String SIMULATION_TEXT = "No. of Simulation";
     private final String SORT_CRITERIA_TEXT = "Sorting Criteria";
     private final String DIST_TYPE_TEXT = "Distribution Type";
     
     /*
      * Setting the comboboxes/text fields for distribution generation specification
      */
-    private final JTextField simulationNumberText;
     private final JLabel sortCriteriaLabel;
     private final JComboBox sortCriteriaCombo;
     private final JLabel distTypeLabel;
     private final JComboBox distTypeCombo;
+    private final JTextField csvText;
+    private final JButton loadButton;
     
     /*
      * Setting the finish button
      */
     private final JButton doneButton;
+    private final JButton refreshButton;
     private final String DONE_TEXT = "Done";
+    private final String REFRESH_TEXT = "Re-do";
     
     
     public FitDistPanel(JTabbedPane tp){
@@ -57,27 +61,37 @@ public class FitDistPanel extends JPanel{
 	parentPanel = tp;
 	this.setLayout(new BorderLayout());
 	
+	fitPanel = new JPanel(new BorderLayout());
+	loadPanel = new JPanel();
+	csvText = new JTextField("Enter Your Data File Directory Here:");
+	csvText.setBorder(BorderFactory.createLoweredBevelBorder());
+	loadButton = new JButton("Load");
+	loadButton.addActionListener(new ActionListener(){
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		//1. check the file validity
+		//2. load the csv file
+	    }
+	});
+	
+	loadPanel.add(csvText);
+	loadPanel.add(loadButton);
+	fitPanel.add(loadPanel,BorderLayout.NORTH);
+	
+	
 	/*
 	 * Setting panel set-up
 	 */
 	settingPanel = new JPanel();
-	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,"Setting");
-	settingPanel.setBorder(title);
 	
-	settingPanel.setLayout(new BoxLayout(settingPanel,BoxLayout.PAGE_AXIS));
+	//settingPanel.setLayout(new BoxLayout(settingPanel,BoxLayout.PAGE_AXIS));
 	
 	/*
 	 * initialize all the distribution inputs for the setting panel
 	 */
-	simulationNumberText = new JTextField(SIMULATION_TEXT);
-	simulationNumberText.setAlignmentX(Component.LEFT_ALIGNMENT);
-	simulationNumberText.setMaximumSize(new Dimension(200,200));
-	settingPanel.add(simulationNumberText);
-	settingPanel.add(Box.createVerticalGlue());
 	//label to indicate the sorting criteria combo box
 	sortCriteriaLabel = new JLabel(SORT_CRITERIA_TEXT);
-	sortCriteriaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+	sortCriteriaLabel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 	settingPanel.add(sortCriteriaLabel);
 	
 	// set sorting criteria combo box
@@ -91,14 +105,13 @@ public class FitDistPanel extends JPanel{
 		// do nothing first
 	    }	    
 	});
-	sortCriteriaCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
-	sortCriteriaCombo.setMaximumSize(new Dimension(150,100));
+	sortCriteriaCombo.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+	sortCriteriaCombo.setPreferredSize(new Dimension(125,25));
 	settingPanel.add(sortCriteriaCombo);
-	settingPanel.add(Box.createVerticalGlue());
 	
 	//label to indicate the distribution type combo box
 	distTypeLabel = new JLabel(DIST_TYPE_TEXT);
-	distTypeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+	distTypeLabel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 	settingPanel.add(distTypeLabel);
 	
 	//set the distribution type combo box
@@ -113,10 +126,9 @@ public class FitDistPanel extends JPanel{
 		
 	    }
 	});
-	distTypeCombo.setAlignmentX(Component.LEFT_ALIGNMENT);
-	distTypeCombo.setMaximumSize(new Dimension(150,100));
+	distTypeCombo.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+	distTypeCombo.setPreferredSize(new Dimension(125,25));
 	settingPanel.add(distTypeCombo);
-	settingPanel.add(Box.createVerticalGlue());
 	
 	//the the finish button
 	doneButton = new JButton(DONE_TEXT);
@@ -131,10 +143,28 @@ public class FitDistPanel extends JPanel{
 	    }
 	});
 	
-	doneButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+	doneButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 	settingPanel.add(doneButton);
 	
-	this.add(settingPanel, BorderLayout.EAST);
+	refreshButton = new JButton(REFRESH_TEXT);
+	refreshButton.addActionListener(new ActionListener(){
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// cancel the information sending
+		//fill in the code later !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// enable the other tab
+		parentPanel.setEnabledAt(1,true);
+	    }
+	});
+	
+	refreshButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+	settingPanel.add(refreshButton);
+	
+	fitPanel.add(settingPanel,BorderLayout.CENTER);
+	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,"Setting");
+	fitPanel.setBorder(title);
+	this.add(fitPanel, BorderLayout.NORTH);
 	
 	//set-up the display panel
 	displayPanel = new JPanel(new BorderLayout());

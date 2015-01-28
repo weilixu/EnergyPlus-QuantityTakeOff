@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 import analyzer.gui.AnalyzerInterface;
 import analyzer.model.Model;
 
-public class Analyzer extends JPanel {
+public class Analyzer extends JPanel{
 
     private static final String TOOL_NAME = "EnergyPlus Uncertainty Analyzer";
     // build the parent frame to determine which functionality you want to
