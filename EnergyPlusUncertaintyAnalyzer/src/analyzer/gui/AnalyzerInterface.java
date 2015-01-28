@@ -20,12 +20,15 @@ public class AnalyzerInterface extends JPanel {
     
     private final String DEFAULT_TITLE = "EnergyPlus Uncertainty Analyzer";
 
-    // All Setting Menu Title
+    // All text of menu bar
     private final String MENU_TITLE = "Setting";
     private final String MENU_EXIT = "Exit";
-    private final String MENU_REFRESH = "Load";
+    private final String MENU_LOAD = "Load";
+    private final String MENU_SWITCH = "Data Analysis";
 
+    // All Menu Items
     private final JMenuItem loadMenus;
+    private final JMenuItem dataAnalysisSwitcherMenus;
 
     private final Model core;
 
@@ -46,6 +49,7 @@ public class AnalyzerInterface extends JPanel {
 
 	// build the frame
 	frame = f;
+	f.setTitle(DEFAULT_TITLE);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setPreferredSize(new Dimension(700, 600));
 
@@ -67,8 +71,8 @@ public class AnalyzerInterface extends JPanel {
 	setting.setMnemonic(KeyEvent.VK_S);
 
 	// add refresh button. reset all the settings
-	loadMenus = new JMenuItem(MENU_REFRESH);
-	loadMenus.setMnemonic(KeyEvent.VK_R);
+	loadMenus = new JMenuItem(MENU_LOAD);
+	loadMenus.setMnemonic(KeyEvent.VK_L);
 	loadMenus.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent event) {
@@ -83,6 +87,16 @@ public class AnalyzerInterface extends JPanel {
 	    }
 	});
 	setting.add(loadMenus);
+	
+	dataAnalysisSwitcherMenus = new JMenuItem(MENU_SWITCH);
+	dataAnalysisSwitcherMenus.setMnemonic(KeyEvent.VK_D);
+	dataAnalysisSwitcherMenus.addActionListener(new ActionListener(){
+	    @Override
+	    public void actionPerformed(ActionEvent event){
+		//switch to data analysis interface;
+	    }
+	});
+	setting.add(dataAnalysisSwitcherMenus);
 
 	// add the separator to divide the data inputs and frame function
 	setting.addSeparator();

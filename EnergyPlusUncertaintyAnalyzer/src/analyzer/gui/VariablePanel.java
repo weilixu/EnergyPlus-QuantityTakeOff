@@ -16,12 +16,12 @@ import javax.swing.JTabbedPane;
 
 import analyzer.model.Model;
 
-public class VariablePanel extends JPanel implements ItemListener {
+public class VariablePanel extends JPanel {
 
     private final Model model;
 
     // MESSAGE or Titles
-    private final String VARIABLE_TITLE = "   Varibles";
+    private final String VARIABLE_TITLE = " Varibles";
     private final String FIT_DIST_TITLE = "Fit Distribution";
     private final String MAKE_DIST_TITLE = "Make Distribution";
 
@@ -57,40 +57,34 @@ public class VariablePanel extends JPanel implements ItemListener {
 	variableList.add("stu");
 	variableList.add("vwx");
 
-
 	variableSelectPanel = new JPanel();
 	variableSelectPanel.setLayout(new GridLayout(variableList.size(), 0));
-
+	
+	//adding tabbedpanes and buttons to the panel
 	for (String s : variableList) {
-	    JButton vbtn = new JButton(s);
 	    JTabbedPane vbtnTP = fitPanel();
-	    vbtn.addItemListener(this);
-	    variableSelectPanel.add(vbtn);
-
 	    fittingPanel.add(vbtnTP, s);
-	    // vbtn.addActionListener(new ActionListener() {
-	    // @Override
-	    // public void actionPerformed(ActionEvent e) {
-	    // fittingPanel.removeAll();
-	    // fittingPanel.add(vbtnTP);
-	    // revalidate();
-	    // repaint();
-	    // }
-	    // });
+
+	    JButton vbtn = new JButton(s);
+	    vbtn.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    CardLayout cardLayout = (CardLayout)(fittingPanel.getLayout());
+		    if(e.getSource()==vbtn){
+			cardLayout.show(fittingPanel, s);
+		    }
+		}
+	    });
+	    variableSelectPanel.add(vbtn);
 	}
 	// tabbedpanels
 	add(fittingPanel, BorderLayout.CENTER);
-	revalidate();
-	repaint();
+	// revalidate();
+	// repaint();
 
 	selectPanel.removeAll();
 	selectPanel.add(variableSelectPanel, BorderLayout.CENTER);
 
-    }
-
-    public void itemStateChanged(ItemEvent evt) {
-	CardLayout c1 = (CardLayout) (fittingPanel.getLayout());
-	c1.show(fittingPanel, (String) evt.getItem());
     }
 
     private void initPanel() {
@@ -110,19 +104,6 @@ public class VariablePanel extends JPanel implements ItemListener {
 	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp));// index 0
 	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel());// index 1
 
-	// add the done button
-	JButton fbtn = new JButton("Done");
-	fbtn.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		// add check inputs warnings in the future
-		if (tp.isEnabledAt(0)) {
-		    tp.setEnabledAt(1, false);
-		} else {
-		    tp.setEnabledAt(0, false);
-		}
-	    }
-	});
 	return tp;
     }
 }
