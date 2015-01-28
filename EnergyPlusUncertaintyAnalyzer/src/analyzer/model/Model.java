@@ -86,27 +86,32 @@ public class Model {
 	 *                be truncated tor
 	 * **list of valid distribution and their parameters
 	 * Distributions with 1 Parameter
-	 *  Exponential: 'mu' - Mean parameter 
-	 *  Poisson: 'lambda' - Mean
-	 *  Reyleigh: 'b' - Defining parameter
+	 *  "Exponential": 'mu' - Mean parameter 
+	 *  "Poisson": 'lambda' - Mean
+	 *  "Reyleigh": 'b' - Defining parameter
 	 * Distributions with 2 Parameters
-	 *  Beta: 'a' - First shape parameter; 'b' - Second shape parameter
-	 *  Binomial: 'N' - Number of trials; 'p' - Probability of success
-	 *  Birnbaum-Saunders: 'beta' - Scale parameter; 'gamma' - Shape parameter
-	 *  Extreme Value: 'mu' - Location parameter; 'sigma' - Scale parameter
-	 *  Gamma: 'a' - Shape parameter; 'b' - Scale parameter
-	 *  Inverse Gaussian: 'mu' - Scale parameter; 'lambda' - Shape parameter
-	 *  Logistic: 'mu' - Mean; 'lambda' - Shape parameter
-	 *  Loglogistic: 'mu' - Mean; 'sigma' - Scale parameter
-	 *  Lognormal: 'mu' - Log mean; 'sigma' - Log standard deviation
-	 *  Nakagami: 'mu' - Shape parameter 'omega' - Scale parameter
-	 *  Negative Binomial: 'R' - Number of successes; 'p' - probability of success
-	 *  Normal: 'mu' - Mean; 'sigma' - Standard deviation
-	 *  Piecewise Linear: 'x' - Data values; 'Fx' - cdf values
-	 *  Rician: 's' - Noncentrality parameter; 'sigma' - Scale parameter
-	 *  Uniform: 'lower' - Lower parameter; 'upper' - Upper parameter
-	 *  Weibull: 'a' - Scale parameter; 'b' - Shape parameter
-	 *   
+	 *  "Beta": 'a' - First shape parameter; 'b' - Second shape parameter
+	 *  "Binomial": 'N' - Number of trials; 'p' - Probability of success
+	 *  "BirnbaumSaunders": 'beta' - Scale parameter; 'gamma' - Shape parameter
+	 *  "ExtremeValue": 'mu' - Location parameter; 'sigma' - Scale parameter
+	 *  "Gamma": 'a' - Shape parameter; 'b' - Scale parameter
+	 *  "InverseGaussian": 'mu' - Scale parameter; 'lambda' - Shape parameter
+	 *  "Logistic": 'mu' - Mean; 'lambda' - Shape parameter
+	 *  "Loglogistic": 'mu' - Mean; 'sigma' - Scale parameter
+	 *  "Lognormal": 'mu' - Log mean; 'sigma' - Log standard deviation
+	 *  "Nakagami": 'mu' - Shape parameter 'omega' - Scale parameter
+	 *  "NegativeBinomial": 'R' - Number of successes; 'p' - probability of success
+	 *  "Normal": 'mu' - Mean; 'sigma' - Standard deviation
+	 *  "Rician": 's' - Noncentrality parameter; 'sigma' - Scale parameter
+	 *  "Uniform": 'lower' - Lower parameter; 'upper' - Upper parameter
+	 *  "Weibull": 'a' - Scale parameter; 'b' - Shape parameter
+	 *Distributions with 3 Parameters   
+	 *  "Burr": 'alpha' - Scale parameter; 'c' - First shape parameter; 'k' - Second shape parameter
+	 *  "GeneralizedExtremeValue": 'k' - Shape parameter; 'sigma' - Scale parameter; 'mu' - Location parameter
+	 *  "GeneralizedPareto": 'k' - Shape parameter; 'sigma' - Scale parameter; 'theta' - Location parameter
+	 *  "tLocationScale": 'mu' - Location parameter; 'sigma' - Scale parameter; 'nu' - Degrees of freedom
+	 *  "Triangular": 'a' - Lower limit; 'b' - Peak location; 'c' - Upper limit
+	 *  
 	 */
 	public double[] generateRV(String source, String imgName, int numRV,
 			String distrName, double[] distrParam, double lower,
