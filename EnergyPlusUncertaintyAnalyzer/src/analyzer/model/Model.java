@@ -145,7 +145,6 @@ public class Model {
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
-<<<<<<< HEAD
 	//makeDistInputs[5] = lower;
 	//makeDistInputs[6] = upper;
 	makeDistInputs[5] = Double.parseDouble(lower); // min
@@ -153,10 +152,8 @@ public class Model {
 	for (int i = 0; i<7; i++){
 		System.out.println(makeDistInputs[i]);
 	}
-=======
-	makeDistInputs[5] = Double.parseDouble(lower); // min
-	makeDistInputs[6] = Double.parseDouble(upper); // max
->>>>>>> b76db5112a8f07062528f1c7f1a1dbc01448ba71
+
+
 	Object[] makeDistResult = null;
 	try {
 	    makeDistr = new MakeDist();
