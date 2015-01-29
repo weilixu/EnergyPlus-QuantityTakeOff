@@ -2,15 +2,20 @@ package analyzer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -19,22 +24,38 @@ import javax.swing.border.TitledBorder;
 
 import analyzer.model.Model;
 
-public class MakeDistPanel extends JPanel{
-    
+public class MakeDistPanel extends JPanel {
+
     private final Model model;
-    //set the parent tabbed pane
+    private final File parentFile;
+    // set the parent tabbed pane
     private final JTabbedPane parentPane;
-    
-    //set-up two panels for this panel
+    private final String variable;
+
+    private final String IMAGE_NAME = "MAKEDIST_";
+
+    // set-up two panels for this panel
     private final JPanel selectDistPanel;
     private final JPanel distInputPanel;
     private final JPanel displayPanel;
     private final JPanel comboBoxPane;
-    
-    //combo-box for distribution selection
+
+    // combo-box for distribution selection
     private final JComboBox selectBox;
-    
-    //distributions
+    private final JLabel lowerLabel;
+    private final JTextField lowerText;
+    private final JLabel upperLabel;
+    private final JTextField upperText;
+
+    // text
+    private final String LOWER_TEXT = "0";
+    private final String LOWER_TIP = "lower bound where the generated random variables will be truncated to";
+    private final String UPPER_TEXT = "1";
+    private final String UPPER_TIP = "upper bound where the generated random variables will be truncated to";
+    private final String LOWER_LABEL_TEXT = "Lower";
+    private final String UPPER_LABEL_TEXT = "Upper";
+
+    // distributions
     private final String EXPONENTIAL = "Exponential";
     private final String POISSON = "poisson";
     private final String REYLEIGH = "Reyleigh";
@@ -53,8 +74,8 @@ public class MakeDistPanel extends JPanel{
     private final String RICIAN = "Rician";
     private final String UNIFORM = "Uniform";
     private final String WEIBULL = "Weibull";
-    
-    //elements
+
+    // elements
     private final String M = "mu";
     private final String L = "lambda";
     private final String B = "b";
@@ -69,26 +90,28 @@ public class MakeDistPanel extends JPanel{
     private final String S = "s";
     private final String LO = "lower";
     private final String UP = "upper";
-	    
-    
-    public MakeDistPanel(JTabbedPane tp, Model m){
+
+    public MakeDistPanel(JTabbedPane tp, Model m, File file, String v) {
 	model = m;
+	parentFile = file;
 	parentPane = tp;
+	variable = v;
 	setLayout(new BorderLayout());
-	
+
 	/*
 	 * setting-up the distribution selection panel
 	 */
 	selectDistPanel = new JPanel(new BorderLayout());
 	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,"Setting");
+	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,
+		"Setting");
 	selectDistPanel.setBorder(title);
-	
+
 	/*
 	 * set up the cards panel
 	 */
 	distInputPanel = new JPanel(new CardLayout());
-	distInputPanel.add(setExponential(),EXPONENTIAL);
+	distInputPanel.add(setExponential(), EXPONENTIAL);
 	distInputPanel.add(setPossion(), POISSON);
 	distInputPanel.add(setReyleigh(), REYLEIGH);
 	distInputPanel.add(setBeta(), BETA);
@@ -97,323 +120,650 @@ public class MakeDistPanel extends JPanel{
 	distInputPanel.add(setExtreme(), EV);
 	distInputPanel.add(setGamma(), GAMMA);
 	distInputPanel.add(setInverse(), IG);
-	distInputPanel.add(setLogistic(),LOG);
+	distInputPanel.add(setLogistic(), LOG);
 	distInputPanel.add(setLogLogistic(), LOGL);
 	distInputPanel.add(setLogNormal(), LOGN);
-	distInputPanel.add(setNaka(),NAKA);
+	distInputPanel.add(setNaka(), NAKA);
 	distInputPanel.add(setNegative(), NEG_BI);
 	distInputPanel.add(setNormal(), NORMAL);
-	distInputPanel.add(setRician(),RICIAN);
-	distInputPanel.add(setUniform(),UNIFORM);
-	distInputPanel.add(setWeibull(),WEIBULL);
-	
-	//set up the comboBox
+	distInputPanel.add(setRician(), RICIAN);
+	distInputPanel.add(setUniform(), UNIFORM);
+	distInputPanel.add(setWeibull(), WEIBULL);
+
+	// set up the comboBox
 	comboBoxPane = new JPanel();
-	String comboBoxItems[] = {EXPONENTIAL,POISSON,REYLEIGH,BETA,
-		BINOMIAL,BS,EV,GAMMA,IG,LOG,LOGL,LOGN,NAKA,NEG_BI,NORMAL,
-		RICIAN,UNIFORM,WEIBULL};
+	String comboBoxItems[] = { EXPONENTIAL, POISSON, REYLEIGH, BETA,
+		BINOMIAL, BS, EV, GAMMA, IG, LOG, LOGL, LOGN, NAKA, NEG_BI,
+		NORMAL, RICIAN, UNIFORM, WEIBULL };
 	selectBox = new JComboBox(comboBoxItems);
 	selectBox.setEditable(false);
-	selectBox.addItemListener(new ItemListener(){
+	selectBox.addItemListener(new ItemListener() {
 	    @Override
 	    public void itemStateChanged(ItemEvent evt) {
-		CardLayout cl = (CardLayout)(distInputPanel.getLayout());
-		cl.show(distInputPanel, (String)evt.getItem());
-	    } 
+		CardLayout cl = (CardLayout) (distInputPanel.getLayout());
+		cl.show(distInputPanel, (String) evt.getItem());
+	    }
 	});
 	comboBoxPane.add(selectBox);
 
-	//add all the inputs to the selection panel
+	// setting the lower boundary label and text field
+	lowerLabel = new JLabel(LOWER_LABEL_TEXT);
+	comboBoxPane.add(lowerLabel);
+
+	lowerText = new JTextField(LOWER_TEXT);
+	lowerText.setBorder(BorderFactory.createLoweredBevelBorder());
+	lowerText.setPreferredSize(new Dimension(50, 25));
+	lowerText.setToolTipText(LOWER_TIP);
+	comboBoxPane.add(lowerText);
+
+	// setting the upper boundary label and text field
+	upperLabel = new JLabel(UPPER_LABEL_TEXT);
+	comboBoxPane.add(upperLabel);
+
+	upperText = new JTextField(UPPER_TEXT);
+	upperText.setBorder(BorderFactory.createLoweredBevelBorder());
+	upperText.setPreferredSize(new Dimension(50, 25));
+	upperText.setToolTipText(UPPER_TIP);
+	comboBoxPane.add(upperText);
+
+	// add all the inputs to the selection panel
 	selectDistPanel.add(distInputPanel, BorderLayout.CENTER);
 	selectDistPanel.add(comboBoxPane, BorderLayout.PAGE_START);
-	
-	
-	//add the selection panel at north
-	add(selectDistPanel, BorderLayout.NORTH);
-	
 
-	//set-up the display panel
+	// add the selection panel at north
+	add(selectDistPanel, BorderLayout.NORTH);
+
+	// set-up the display panel
 	displayPanel = new JPanel(new BorderLayout());
 	add(displayPanel, BorderLayout.CENTER);
-	
+
     }
-    
-    private JPanel setExponential(){
+
+    private JPanel setExponential() {
 	JPanel expPanel = new JPanel();
 	JTextField text = new JTextField(M);
 	text.setToolTipText("mu - Mean Parameter");
-	text.setPreferredSize(new Dimension(150,25));
+	text.setPreferredSize(new Dimension(150, 25));
 	expPanel.add(text);
-	expPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = new double[1];
+		try{
+		    distrParm[0] = Double.parseDouble(text.getText());
+		}catch(NumberFormatException ne){
+		    showErrorDialog(new JFrame(),"Error Found in input","Enter Integer or Double value! e.g (100)");
+		}
+		
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	expPanel.add(done);
 	expPanel.add(setRefreshButton());
 	return expPanel;
     }
-    
-    private JPanel setPossion(){
+
+    private JPanel setPossion() {
 	JPanel posPanel = new JPanel();
 	JTextField text = new JTextField(L);
 	text.setToolTipText("lambda - Mean");
-	text.setPreferredSize(new Dimension(150,25));
+	text.setPreferredSize(new Dimension(150, 25));
 	posPanel.add(text);
-	posPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(text.getText())};
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	posPanel.add(done);
 	posPanel.add(setRefreshButton());
 	return posPanel;
     }
-    
-    private JPanel setReyleigh(){
+
+    private JPanel setReyleigh() {
 	JPanel reyPanel = new JPanel();
 	JTextField text = new JTextField(B);
 	text.setToolTipText("b - Defining parameter");
-	text.setPreferredSize(new Dimension(150,25));
+	text.setPreferredSize(new Dimension(150, 25));
 	reyPanel.add(text);
-	reyPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(text.getText())};
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	reyPanel.add(done);
 	reyPanel.add(setRefreshButton());
 	return reyPanel;
     }
-    
-    private JPanel setBeta(){
+
+    private JPanel setBeta() {
 	JPanel betaPanel = new JPanel();
 	JTextField aText = new JTextField(A);
 	aText.setToolTipText("a - First shape parameter");
 	JTextField bText = new JTextField(B);
 	bText.setToolTipText("b - Second shape parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	betaPanel.add(aText);
 	betaPanel.add(bText);
-	betaPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	betaPanel.add(done);
 	betaPanel.add(setRefreshButton());
 	return betaPanel;
     }
-    
-    private JPanel setBinomial(){
+
+    private JPanel setBinomial() {
 	JPanel binPanel = new JPanel();
 	JTextField aText = new JTextField(N);
 	aText.setToolTipText("N - Number of trials");
 	JTextField bText = new JTextField(P);
 	bText.setToolTipText("p - Probability of success");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	binPanel.add(aText);
 	binPanel.add(bText);
-	binPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	binPanel.add(done);
 	binPanel.add(setRefreshButton());
 	return binPanel;
     }
-    
-    private JPanel setBirSau(){
+
+    private JPanel setBirSau() {
 	JPanel bsPanel = new JPanel();
 	JTextField aText = new JTextField(BA);
 	aText.setToolTipText("beta - Scale parameter");
 	JTextField bText = new JTextField(G);
 	bText.setToolTipText("gamma - Shape parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	bsPanel.add(aText);
 	bsPanel.add(bText);
-	bsPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	bsPanel.add(done);
 	bsPanel.add(setRefreshButton());
 	return bsPanel;
     }
-    
-    private JPanel setExtreme(){
+
+    private JPanel setExtreme() {
 	JPanel exPanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Location parameter");
 	JTextField bText = new JTextField(SI);
 	bText.setToolTipText("sigma - Scale parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	exPanel.add(aText);
 	exPanel.add(bText);
-	exPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	exPanel.add(done);
 	exPanel.add(setRefreshButton());
 	return exPanel;
     }
-    
-    private JPanel setGamma(){
+
+    private JPanel setGamma() {
 	JPanel gammaPanel = new JPanel();
 	JTextField aText = new JTextField(A);
 	aText.setToolTipText("a - Shape parameter");
 	JTextField bText = new JTextField(B);
 	bText.setToolTipText("b - Scale parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	gammaPanel.add(aText);
 	gammaPanel.add(bText);
-	gammaPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	gammaPanel.add(done);
 	gammaPanel.add(setRefreshButton());
 	return gammaPanel;
     }
-    
-    private JPanel setInverse(){
+
+    private JPanel setInverse() {
 	JPanel invPanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Scale parameter");
 	JTextField bText = new JTextField(L);
 	bText.setToolTipText("lambda - Shape parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	invPanel.add(aText);
 	invPanel.add(bText);
-	invPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	invPanel.add(done);
 	invPanel.add(setRefreshButton());
 	return invPanel;
     }
-    
-    private JPanel setLogistic(){
+
+    private JPanel setLogistic() {
 	JPanel logicPanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Mean");
 	JTextField bText = new JTextField(L);
 	bText.setToolTipText("lambda - Shape parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	logicPanel.add(aText);
 	logicPanel.add(bText);
-	logicPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	logicPanel.add(done);
 	logicPanel.add(setRefreshButton());
 	return logicPanel;
     }
-    
-    private JPanel setLogLogistic(){
+
+    private JPanel setLogLogistic() {
 	JPanel logLogicPanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Mean");
 	JTextField bText = new JTextField(SI);
 	bText.setToolTipText("sigma - Scale parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	logLogicPanel.add(aText);
 	logLogicPanel.add(bText);
-	logLogicPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	logLogicPanel.add(done);
 	logLogicPanel.add(setRefreshButton());
 	return logLogicPanel;
     }
-    
-    private JPanel setLogNormal(){
+
+    private JPanel setLogNormal() {
 	JPanel logNormalPanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Log mean");
 	JTextField bText = new JTextField(SI);
 	bText.setToolTipText("sigma - Log standard deviation");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	logNormalPanel.add(aText);
 	logNormalPanel.add(bText);
-	logNormalPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	logNormalPanel.add(done);
 	logNormalPanel.add(setRefreshButton());
 	return logNormalPanel;
     }
-    
-    private JPanel setNaka(){
+
+    private JPanel setNaka() {
 	JPanel nakePanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Shape parameter");
 	JTextField bText = new JTextField(O);
 	bText.setToolTipText("omega - Scale parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	nakePanel.add(aText);
 	nakePanel.add(bText);
-	nakePanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	nakePanel.add(done);
 	nakePanel.add(setRefreshButton());
 	return nakePanel;
     }
-    
-    private JPanel setNegative(){
+
+    private JPanel setNegative() {
 	JPanel negativePanel = new JPanel();
 	JTextField aText = new JTextField(R);
 	aText.setToolTipText("R - Number of successes");
 	JTextField bText = new JTextField(P);
 	bText.setToolTipText("p - probability of success");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	negativePanel.add(aText);
 	negativePanel.add(bText);
-	negativePanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	negativePanel.add(done);
 	negativePanel.add(setRefreshButton());
 	return negativePanel;
     }
-    
-    private JPanel setNormal(){
+
+    private JPanel setNormal() {
 	JPanel normalPanel = new JPanel();
 	JTextField aText = new JTextField(M);
 	aText.setToolTipText("mu - Mean");
 	JTextField bText = new JTextField(SI);
 	bText.setToolTipText("sigma - Standard deviation");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	normalPanel.add(aText);
 	normalPanel.add(bText);
-	normalPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	normalPanel.add(done);
 	normalPanel.add(setRefreshButton());
 	return normalPanel;
     }
-    
-    private JPanel setRician(){
+
+    private JPanel setRician() {
 	JPanel ricianPanel = new JPanel();
 	JTextField aText = new JTextField(S);
 	aText.setToolTipText("s - Noncentrality parameter");
 	JTextField bText = new JTextField(SI);
 	bText.setToolTipText("sigma - Scale parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	ricianPanel.add(aText);
 	ricianPanel.add(bText);
-	ricianPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	ricianPanel.add(done);
 	ricianPanel.add(setRefreshButton());
 	return ricianPanel;
     }
-    
-    private JPanel setUniform(){
+
+    private JPanel setUniform() {
 	JPanel uniformPanel = new JPanel();
 	JTextField aText = new JTextField(LO);
 	aText.setToolTipText("lower - Lower parameter");
 	JTextField bText = new JTextField(UP);
 	bText.setToolTipText("upper - Upper parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	uniformPanel.add(aText);
 	uniformPanel.add(bText);
-	uniformPanel.add(setDoneButton());
+	
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
+		selectBox.setEnabled(false);
+		parentPane.setEnabledAt(0, false);
+	    }
+	});
+	
+	uniformPanel.add(done);
 	uniformPanel.add(setRefreshButton());
 	return uniformPanel;
     }
-    
-    private JPanel setWeibull(){
+
+    private JPanel setWeibull() {
 	JPanel weibullPanel = new JPanel();
 	JTextField aText = new JTextField(A);
 	aText.setToolTipText("a - Scale parameter");
 	JTextField bText = new JTextField(B);
 	bText.setToolTipText("b - Shape parameter");
-	aText.setPreferredSize(new Dimension(150,25));
-	bText.setPreferredSize(new Dimension(150,25));
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
 	weibullPanel.add(aText);
 	weibullPanel.add(bText);
-	weibullPanel.add(setDoneButton());
-	weibullPanel.add(setRefreshButton());
-	return weibullPanel;
-    }
-    
-    private JButton setDoneButton(){
+
 	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener(){
+	done.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		//disable the selection
-		//send the data to model
-		//disable the other tab
+		double[] distrParm = { Double.parseDouble(aText.getText()),
+			Double.parseDouble(bText.getText()) };
+		// disable the selection
+		model.setVariable(variable);
+		model.generateRV(
+			selectBox.getSelectedItem().toString(), distrParm,
+			lowerText.getText(), upperText.getText());
+		// disable the other tab
 		selectBox.setEnabled(false);
 		parentPane.setEnabledAt(0, false);
 	    }
 	});
-	return done;
+	weibullPanel.add(done);
+	weibullPanel.add(setRefreshButton());
+	return weibullPanel;
     }
-    
-    private JButton setRefreshButton(){
+
+    private JButton setRefreshButton() {
 	JButton refresh = new JButton("Re-do");
-	refresh.addActionListener(new ActionListener(){
+	refresh.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		// cancel the selection of the distribution first
@@ -426,5 +776,9 @@ public class MakeDistPanel extends JPanel{
 	return refresh;
     }
     
+    // for error info
+    private static void showErrorDialog(Component c, String title, String msg) {
+	JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);
+    }
 
 }

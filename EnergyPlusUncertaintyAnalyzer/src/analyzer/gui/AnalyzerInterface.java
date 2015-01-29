@@ -44,18 +44,18 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners {
     // The outer panel contains the IDF file name information etc...
     private final JPanel outerPanel;
     private final VariablePanel innerPanel;
-    
-    //record eplus file
+
+    // record eplus file
     private final File eplusFile;
-    
+
     private final IdfReader idfReader;
-    
+
     public AnalyzerInterface(Model c, JFrame f, File file) {
 	// assign the model to the interface
 	core = c;
 	eplusFile = file;
-	
-	//add the reader to the interface and load the listener
+
+	// add the reader to the interface and load the listener
 	idfReader = new IdfReader();
 	idfReader.addLoadIDFListeners(this);
 
@@ -88,13 +88,23 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners {
 	loadMenus.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent event) {
-		try{
-		    //reads the file
-		    idfReader.setFilePath(innerPanel.getIdfDir());
-		    idfReader.readEplusFile();
-		}catch(IOException e){
-		    showErrorDialog(frame,"Cannot Load Idf File","Please check your directory!");
+		try {
+		    core.setSimulationNumber(innerPanel.getSimulationNumber());
+		    try {
+			// reads the file
+			idfReader.setFilePath(innerPanel.getIdfDir());
+			idfReader.readEplusFile();
+			// after read set the simulaiton number of the model
+		    } catch (IOException e) {
+			showErrorDialog(frame, "Cannot Load Idf File",
+				"Please check your directory!");
+		    }
+		} catch (NumberFormatException ne) {
+		    showErrorDialog(frame,
+			    "Error found in Number of Simulations",
+			    "The number of simulaitons has to be integers (e.g. 100)");
 		}
+
 	    }
 	});
 	setting.add(loadMenus);
@@ -134,19 +144,22 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners {
     // after load the energyplus file, the IdfReader will collect the variables
     // found in each node and send it back to gui
     @Override
-    public void loadedEnergyPlusFile(ArrayList<String> variableList, ArrayList<String> variableInfo) {
+    public void loadedEnergyPlusFile(ArrayList<String> variableList,
+	    ArrayList<String> variableInfo) {
 	innerPanel.changeVariables(variableList, variableInfo);
 	// outerPanel.add(innerPanel, BorderLayout.CENTER);
 	outerPanel.revalidate();
 	outerPanel.repaint();
     }
-    
-    //for info showing
+
+    // for info showing
     private static void showInfoDialog(Component c, String title, String msg) {
-        JOptionPane.showMessageDialog(c, msg, title, JOptionPane.INFORMATION_MESSAGE);
+	JOptionPane.showMessageDialog(c, msg, title,
+		JOptionPane.INFORMATION_MESSAGE);
     }
-    //for error info
+
+    // for error info
     private static void showErrorDialog(Component c, String title, String msg) {
-        JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);
+	JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);
     }
 }

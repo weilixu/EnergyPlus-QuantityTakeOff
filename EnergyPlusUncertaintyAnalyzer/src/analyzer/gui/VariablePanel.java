@@ -2,6 +2,7 @@ package analyzer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class VariablePanel extends JPanel {
     //contains the text field specify the number of simulations
     private JPanel simulationPanel;
     private File eplusFile;
+    private File parentFile;
 
     private JPanel variableSelectPanel = new JPanel();
     
@@ -49,6 +51,7 @@ public class VariablePanel extends JPanel {
 	selectPanel = new JPanel();
 	selectPanel.setLayout(new BorderLayout());
 	eplusFile = file;
+	parentFile = eplusFile.getParentFile();
 	simulationPanel = initSimulationPanel();
 	initPanel();
     }
@@ -61,7 +64,7 @@ public class VariablePanel extends JPanel {
 	//adding tabbedpanes and buttons to the panel
 	for (int i = 0; i<variableList.size(); i++) {
 	    String s = variableList.get(i);
-	    JTabbedPane vbtnTP = fitPanel();
+	    JTabbedPane vbtnTP = fitPanel(s);
 	    fittingPanel.add(vbtnTP, s);
 
 	    JButton vbtn = new JButton(s);
@@ -90,6 +93,10 @@ public class VariablePanel extends JPanel {
     public String getIdfDir(){
 	return idfDirText.getText();
     }
+    
+    public Integer getSimulationNumber(){
+	return Integer.parseInt(simulationText.getText());
+    }
 
     private void initPanel() {
 	setLayout(new BorderLayout());
@@ -102,11 +109,11 @@ public class VariablePanel extends JPanel {
     // once one pane is selected and inputs is complete
     // user can hit the done button to process the data
     // a inputs checking mechanism is required to be complete in the future
-    private JTabbedPane fitPanel() {
+    private JTabbedPane fitPanel(String variableName) {
 	JTabbedPane tp = new JTabbedPane();
 
-	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp,model));// index 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp,model));// index 1
+	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp,model,parentFile,variableName));// index 0
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp,model,parentFile,variableName));// index 1
 
 	return tp;
     }
@@ -115,6 +122,7 @@ public class VariablePanel extends JPanel {
 	JPanel tempPanel = new JPanel();
 	idfDirLabel = new JLabel("File: ");
 	simulationText = new JTextField("Enter the Number of Simulations (>=1)");
+	simulationText.setMinimumSize(new Dimension(150,15));
 	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
 	idfDirText = new JTextField(eplusFile.getAbsolutePath());
 	idfDirText.setBorder(BorderFactory.createLoweredBevelBorder());
