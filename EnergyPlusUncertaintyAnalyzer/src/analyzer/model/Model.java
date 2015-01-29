@@ -1,5 +1,7 @@
 package analyzer.model;
 
+import java.util.Arrays;
+
 import allfitdist.FitDist;
 import allmakedist.MakeDist;
 
@@ -76,6 +78,7 @@ public class Model {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+	System.out.println(fitDistResult[0]);
 	MWNumericArray rndVars = (MWNumericArray) fitDistResult[0];
 	Object[] output = new Object[2];
 	// .getDoubleData returns double[] containing random variables
@@ -134,7 +137,7 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-    public double[] generateRV(String distrName, double[] distrParam, int lower, int upper) {
+    public double[] generateRV(String distrName, double[] distrParam, String lower, String upper) {
 	MakeDist makeDistr = null;
 	Object[] makeDistInputs = new Object[7];
 	makeDistInputs[0] = source;
@@ -142,13 +145,8 @@ public class Model {
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
-	makeDistInputs[5] = lower;
-	makeDistInputs[6] = upper;
-//	makeDistInputs[5] = Double.parseDouble(lower); // min
-//	makeDistInputs[6] = Double.parseDouble(upper); // max
-	for (int i = 0; i<7; i++){
-		System.out.println(makeDistInputs[i]);
-	}
+	makeDistInputs[5] = Double.parseDouble(lower); // min
+	makeDistInputs[6] = Double.parseDouble(upper); // max
 	Object[] makeDistResult = null;
 	try {
 	    makeDistr = new MakeDist();
@@ -158,7 +156,6 @@ public class Model {
 	    e.printStackTrace();
 	}
 	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
-//	System.out.println(rndVars.getDoubleData());
 	return rndVars.getDoubleData();
 
     }
