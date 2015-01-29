@@ -133,8 +133,8 @@ public class AnalyzerInterface extends JPanel implements loadIDFListener {
     // after load the energyplus file, the IdfReader will collect the variables
     // found in each node and send it back to gui
     @Override
-    public void loadedEnergyPlusFile(ArrayList<String> variableList) {
-	innerPanel.changeVariables(variableList);
+    public void loadedEnergyPlusFile(ArrayList<String> variableList, ArrayList<String> variableInfo) {
+	innerPanel.changeVariables(variableList, variableInfo);
 	// outerPanel.add(innerPanel, BorderLayout.CENTER);
 	outerPanel.revalidate();
 	outerPanel.repaint();

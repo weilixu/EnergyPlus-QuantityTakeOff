@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 public interface loadIDFListener {
     
-    public void loadedEnergyPlusFile(ArrayList<String> variableList);
+    public void loadedEnergyPlusFile(ArrayList<String> variableList, ArrayList<String> variableInfo);
 
 }

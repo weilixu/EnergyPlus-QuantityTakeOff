@@ -40,7 +40,6 @@ import analyzer.listeners.loadIDFListener;
  * edit an object.
  * 
  * @author Weili
- *
  */
 public class IdfReader {
 
@@ -62,6 +61,11 @@ public class IdfReader {
 
     // GUI listener for this module
     private List<loadIDFListener> loadIDFListeners;
+    
+    //indexes for variableKeySets
+    private final int ObjectNameIndex = 0;
+    private final int ObjectElementCountIndex = 1;
+    private final int ObjectInputDescriptionIndex = 2;
 
     public IdfReader(String filePath) {
 	this.path = filePath;
@@ -93,6 +97,7 @@ public class IdfReader {
 	eplusMap = new HashMap<String, HashMap<String, ArrayList<ValueNode>>>();
 	variableList = new ArrayList<String>();
 	variableKeySets = new ArrayList<String[]>();
+	dataFilled = false;
 	// set the necessary elements
 	FileInputStream inputStream = null;
 	Scanner sc = null;
@@ -147,7 +152,7 @@ public class IdfReader {
 		    if (element.indexOf("$") > -1) {
 			variableList.add(element.substring(0,
 				element.length() - 1));
-			String[] keyPair = { startToken, elementCount };
+			String[] keyPair = { startToken, elementCount,description };
 			variableKeySets.add(keyPair);
 		    }
 
@@ -212,8 +217,8 @@ public class IdfReader {
      */
     public void modifySpecialCharactor(String specialCharactor, String value) {
 	int index = variableList.indexOf(specialCharactor);
-	ArrayList<ValueNode> temp = eplusMap.get(variableKeySets.get(index)[0])
-		.get(variableKeySets.get(index)[1]);
+	ArrayList<ValueNode> temp = eplusMap.get(variableKeySets.get(index)[ObjectNameIndex])
+		.get(variableKeySets.get(index)[ObjectElementCountIndex]);
 	for (ValueNode v : temp) {
 	    if (v.isCritical() && v.getAttribute().equals(specialCharactor)) {
 		v.setAttribute(value);
@@ -284,7 +289,7 @@ public class IdfReader {
     public void editExistObjectAtSameTime(String objectName, String onKey, String toValue){
 	//retrieve the elements from the map and convert it to set
 	Set<String> subSet = eplusMap.get(objectName).keySet();
-	Iterator iterator = subSet.iterator();
+	Iterator<String> iterator = subSet.iterator();
 	//go through all the element in the set
 	while(iterator.hasNext()){
 	    ArrayList<ValueNode> vnList = eplusMap.get(objectName).get(iterator.next());
@@ -296,13 +301,58 @@ public class IdfReader {
 	    }
 	}
     }
+    
+    /**
+     * change one element in the data base with a specific element Name, such as "boiler1"
+     * If there are multiple objects whose name is "boiler1" only the first will be changed.
+     * 
+     * @param objectName
+     * @param elementName
+     * @param onKey
+     * @param toValue
+     */
+    public void editExistObjectsOnOneElement(String objectName, String elementName,String onKey, String toValue){
+	//retrieve the elements from the map and convert it to set
+	Set<String> subSet = eplusMap.get(objectName).keySet();
+	Iterator<String> iterator = subSet.iterator();
+	//go through all the element in the set to find the correct element
+	ArrayList<ValueNode> vnList = new ArrayList<ValueNode>();
+	//flag to indicate whether the element is found or not
+	boolean found = false;
+	while(iterator.hasNext()&&!found){
+	    ArrayList<ValueNode> temp = eplusMap.get(objectName).get(iterator.next());
+	    //go through all the ValueNode, find the key and change the value
+	    for(ValueNode vn:temp){
+		if(elementName.equals(vn.getAttribute())){
+		    vnList = temp;
+		    found = true;
+		    break;
+		}
+	    }
+	}
+	for(ValueNode node: vnList){
+	    if(onKey.equals(node.getDescription())){
+		node.setAttribute(toValue);
+	    }
+	}
+    }
 
     /*
      * notify GUI for the updates of variableList
+     * and the variableInfo
      */
     private void onReadEplusFile() {
+	ArrayList<String> variableInfo = new ArrayList<String>();
+	for(String[] sList: variableKeySets){
+	    StringBuffer sb = new StringBuffer("From: ");
+	    sb.append(sList[ObjectNameIndex]);
+	    sb.append(", Input: ");
+	    sb.append(sList[ObjectInputDescriptionIndex]);
+	    variableInfo.add(sb.toString());
+	}
+	
 	for (loadIDFListener l : loadIDFListeners) {
-	    l.loadedEnergyPlusFile(variableList);
+	    l.loadedEnergyPlusFile(variableList, variableInfo);
 	}
     }
     

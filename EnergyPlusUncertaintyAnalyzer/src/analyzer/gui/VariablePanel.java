@@ -49,17 +49,19 @@ public class VariablePanel extends JPanel {
 	initPanel();
     }
 
-    public void changeVariables(ArrayList<String> variableList) {
+    public void changeVariables(ArrayList<String> variableList, ArrayList<String> variableInfo) {
 
 	variableSelectPanel = new JPanel();
 	variableSelectPanel.setLayout(new GridLayout(variableList.size(), 0));
 	
 	//adding tabbedpanes and buttons to the panel
-	for (String s : variableList) {
+	for (int i = 0; i<variableList.size(); i++) {
+	    String s = variableList.get(i);
 	    JTabbedPane vbtnTP = fitPanel();
 	    fittingPanel.add(vbtnTP, s);
 
 	    JButton vbtn = new JButton(s);
+	    vbtn.setToolTipText(variableInfo.get(i));
 	    vbtn.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
