@@ -2,12 +2,12 @@ package analyzer.listeners;
 
 import java.util.ArrayList;
 /**
- * listeners
+ * GUI listeners that interacts with IdfReader for reading and creating IDF data structure
  * 
  * @author Weili
  *
  */
-public interface loadIDFListener {
+public interface LoadIdfListeners {
     
     public void loadedEnergyPlusFile(ArrayList<String> variableList, ArrayList<String> variableInfo);
 

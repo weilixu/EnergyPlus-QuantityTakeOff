@@ -17,7 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import analyzer.model.Model;
+
 public class MakeDistPanel extends JPanel{
+    
+    private final Model model;
     //set the parent tabbed pane
     private final JTabbedPane parentPane;
     
@@ -67,7 +71,8 @@ public class MakeDistPanel extends JPanel{
     private final String UP = "upper";
 	    
     
-    public MakeDistPanel(JTabbedPane tp){
+    public MakeDistPanel(JTabbedPane tp, Model m){
+	model = m;
 	parentPane = tp;
 	setLayout(new BorderLayout());
 	

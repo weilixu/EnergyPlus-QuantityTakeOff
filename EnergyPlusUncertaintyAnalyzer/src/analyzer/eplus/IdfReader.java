@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import analyzer.listeners.loadIDFListener;
+import analyzer.listeners.LoadIdfListeners;
 
 /**
  * This object represents an data structure of a typical sorted idf file. The
@@ -60,22 +60,26 @@ public class IdfReader {
     private boolean dataFilled = false;
 
     // GUI listener for this module
-    private List<loadIDFListener> loadIDFListeners;
+    private List<LoadIdfListeners> loadIDFListeners;
     
     //indexes for variableKeySets
     private final int ObjectNameIndex = 0;
     private final int ObjectElementCountIndex = 1;
     private final int ObjectInputDescriptionIndex = 2;
 
-    public IdfReader(String filePath) {
-	this.path = filePath;
+    public IdfReader() {
+	path = null;
 	eplusMap = new HashMap<String, HashMap<String, ArrayList<ValueNode>>>();
 	variableList = new ArrayList<String>();
 	variableKeySets = new ArrayList<String[]>();
-	loadIDFListeners = new ArrayList<loadIDFListener>();
+	loadIDFListeners = new ArrayList<LoadIdfListeners>();
+    }
+    
+    public void setFilePath(String filePath){
+	path = filePath;
     }
 
-    public void addLoadIDFListeners(loadIDFListener l) {
+    public void addLoadIDFListeners(LoadIdfListeners l) {
 	loadIDFListeners.add(l);
     }
 
@@ -351,7 +355,7 @@ public class IdfReader {
 	    variableInfo.add(sb.toString());
 	}
 	
-	for (loadIDFListener l : loadIDFListeners) {
+	for (LoadIdfListeners l : loadIDFListeners) {
 	    l.loadedEnergyPlusFile(variableList, variableInfo);
 	}
     }

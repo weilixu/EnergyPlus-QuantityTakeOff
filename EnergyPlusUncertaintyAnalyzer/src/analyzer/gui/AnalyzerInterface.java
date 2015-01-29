@@ -18,10 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import analyzer.eplus.IdfReader;
-import analyzer.listeners.loadIDFListener;
+import analyzer.listeners.LoadIdfListeners;
 import analyzer.model.Model;
 
-public class AnalyzerInterface extends JPanel implements loadIDFListener {
+public class AnalyzerInterface extends JPanel implements LoadIdfListeners {
 
     private final String DEFAULT_TITLE = "EnergyPlus Uncertainty Analyzer";
 
@@ -56,7 +56,7 @@ public class AnalyzerInterface extends JPanel implements loadIDFListener {
 	eplusFile = file;
 	
 	//add the reader to the interface and load the listener
-	idfReader = new IdfReader(file.getAbsolutePath());
+	idfReader = new IdfReader();
 	idfReader.addLoadIDFListeners(this);
 
 	// build the frame
@@ -72,7 +72,7 @@ public class AnalyzerInterface extends JPanel implements loadIDFListener {
 	// fileLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	// outerPanel.add(fileLabel, BorderLayout.NORTH);
 
-	innerPanel = new VariablePanel(core);
+	innerPanel = new VariablePanel(core, eplusFile);
 	outerPanel.add(innerPanel, BorderLayout.CENTER);
 
 	frame.add(outerPanel);
@@ -90,6 +90,7 @@ public class AnalyzerInterface extends JPanel implements loadIDFListener {
 	    public void actionPerformed(ActionEvent event) {
 		try{
 		    //reads the file
+		    idfReader.setFilePath(innerPanel.getIdfDir());
 		    idfReader.readEplusFile();
 		}catch(IOException e){
 		    showErrorDialog(frame,"Cannot Load Idf File","Please check your directory!");
