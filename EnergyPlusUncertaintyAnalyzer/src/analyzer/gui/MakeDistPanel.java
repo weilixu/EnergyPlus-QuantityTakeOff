@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,7 +28,6 @@ import analyzer.model.Model;
 public class MakeDistPanel extends JPanel {
 
     private final Model model;
-    private final File parentFile;
     // set the parent tabbed pane
     private final JTabbedPane parentPane;
     private final String variable;
@@ -91,9 +91,8 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, Model m, File file, String v) {
+    public MakeDistPanel(JTabbedPane tp, Model m, String v) {
 	model = m;
-	parentFile = file;
 	parentPane = tp;
 	variable = v;
 	setLayout(new BorderLayout());
@@ -227,9 +226,10 @@ public class MakeDistPanel extends JPanel {
 		double[] distrParm = { Double.parseDouble(text.getText())};
 		// disable the selection
 		model.setVariable(variable);
-		model.generateRV(
+		double[] temp = model.generateRV(
 			selectBox.getSelectedItem().toString(), distrParm,
 			lowerText.getText(), upperText.getText());
+		System.out.println(Arrays.toString(temp));
 		// disable the other tab
 		selectBox.setEnabled(false);
 		parentPane.setEnabledAt(0, false);

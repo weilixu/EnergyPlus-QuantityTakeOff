@@ -24,7 +24,6 @@ import analyzer.model.Model;
 public class FitDistPanel extends JPanel {
     
     private final Model model;
-    private final File parentFile;
     private final String variable;
     private final String IMAGE_NAME = "FITIMAGE_";
 
@@ -78,9 +77,8 @@ public class FitDistPanel extends JPanel {
     private final String DONE_TEXT = "Done";
     private final String REFRESH_TEXT = "Re-do";
 
-    public FitDistPanel(JTabbedPane tp, Model m, File file,  String v) {
+    public FitDistPanel(JTabbedPane tp, Model m,  String v) {
 	model = m;
-	parentFile =file;
 	parentPanel = tp;
 	variable = v;
 	this.setLayout(new BorderLayout());

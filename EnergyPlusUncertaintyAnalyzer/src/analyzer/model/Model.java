@@ -10,6 +10,7 @@ public class Model {
     // Strings for the file names
     private final String FIT_NAME = "FITDIST_";
     private final String MAKE_NAME = "MAKEDIST_";
+    private final String IMAGE_POST = ".jpg";
     // string for parent name
     private String source;
     // String for the variable name
@@ -60,7 +61,7 @@ public class Model {
 	FitDist fitDistr = null;
 	Object[] fitDistInputs = new Object[8];
 	fitDistInputs[0] = source;
-	fitDistInputs[1] = FIT_NAME+variableName;
+	fitDistInputs[1] = FIT_NAME+variableName+IMAGE_POST;
 	fitDistInputs[2] = data;
 	fitDistInputs[3] = simulationNumber;
 	fitDistInputs[4] = sortby;
@@ -133,16 +134,21 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-    public double[] generateRV(String distrName, double[] distrParam, String lower, String upper) {
+    public double[] generateRV(String distrName, double[] distrParam, int lower, int upper) {
 	MakeDist makeDistr = null;
 	Object[] makeDistInputs = new Object[7];
 	makeDistInputs[0] = source;
-	makeDistInputs[1] = MAKE_NAME+variableName;
+	makeDistInputs[1] = MAKE_NAME+variableName+IMAGE_POST;
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
-	makeDistInputs[5] = Double.parseDouble(lower); // min
-	makeDistInputs[6] = Double.parseDouble(upper); // max
+	makeDistInputs[5] = lower;
+	makeDistInputs[6] = upper;
+//	makeDistInputs[5] = Double.parseDouble(lower); // min
+//	makeDistInputs[6] = Double.parseDouble(upper); // max
+	for (int i = 0; i<7; i++){
+		System.out.println(makeDistInputs[i]);
+	}
 	Object[] makeDistResult = null;
 	try {
 	    makeDistr = new MakeDist();
@@ -152,7 +158,7 @@ public class Model {
 	    e.printStackTrace();
 	}
 	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
-	System.out.println(rndVars.getDoubleData());
+//	System.out.println(rndVars.getDoubleData());
 	return rndVars.getDoubleData();
 
     }

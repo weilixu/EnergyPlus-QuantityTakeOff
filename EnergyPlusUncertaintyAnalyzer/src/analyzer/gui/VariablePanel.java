@@ -111,9 +111,9 @@ public class VariablePanel extends JPanel {
     // a inputs checking mechanism is required to be complete in the future
     private JTabbedPane fitPanel(String variableName) {
 	JTabbedPane tp = new JTabbedPane();
-
-	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp,model,parentFile,variableName));// index 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp,model,parentFile,variableName));// index 1
+	model.setSource(parentFile.getAbsolutePath());
+	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp,model,variableName));// index 0
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp,model,variableName));// index 1
 
 	return tp;
     }
@@ -125,6 +125,7 @@ public class VariablePanel extends JPanel {
 	simulationText.setMinimumSize(new Dimension(150,15));
 	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
 	idfDirText = new JTextField(eplusFile.getAbsolutePath());
+	idfDirText.setPreferredSize(new Dimension(150,15));
 	idfDirText.setBorder(BorderFactory.createLoweredBevelBorder());
 	tempPanel.add(idfDirLabel);
 	tempPanel.add(idfDirText);
