@@ -3,12 +3,19 @@ package analyzer.model;
 import java.util.Arrays;
 import java.util.Random;
 
+import allfitdist.FitDist;
+
+import com.mathworks.toolbox.javabuilder.MWException;
+import com.mathworks.toolbox.javabuilder.MWNumericArray;
+
 public class testModel {
 
 	public static void main(String[] args) {
 
 		Model model = new Model();
-
+		model.setSource("/Users/Adrian/Dropbox/testIDFJfreeChart");
+		model.setVariable("$dsfdsf");
+		model.setSimulationNumber(100);
 		// example usage of fitData which calls fitDist
 //		Random randomNormal = new Random();
 //		int n = 1000;
@@ -16,24 +23,22 @@ public class testModel {
 //		for (int i = 0; i < n; i++) {
 //			data[i] = randomNormal.nextGaussian();
 //		}
-//		String source = "/Users/Adrian/Dropbox";
-//		String imgName = "fitDistTestImg.jpg";
+//
 //		Arrays.sort(data);
-//		double min = data[0];
-//		double max = data[n - 1];
-//		Object[] fitDistOutput = model.fitData(source, imgName, data,
-//				1000, "BIC", "CONTINUOUS", min, max);
+//
+//		Object[] fitDistOutput = model.fitData(data,
+//				"BIC", "CONTINUOUS", "-3", "3");
 //		double[] rndVars = (double[]) fitDistOutput[0];
 //		System.out.println(Arrays.toString(rndVars));
 //		System.out.println(fitDistOutput[1]);
 
 		// example usage of generateRV to generate 1 parameter Distribution
-		double[] distrParam = new double[1];
-		distrParam[0] = 1; // mean
-		model.setSource("/Users/Adrian/Dropbox/testIDFJfreeChart");
-		model.setVariable("$dsfdsf");
-		double[] makeDistOutput = model.generateRV("exponential",
-				distrParam, 0, 100);
+		double[] distrParam = new double[2];
+		distrParam[0] = 0; // mean
+		distrParam[1] = 1;
+
+		double[] makeDistOutput = model.generateRV("NORMAL",
+				distrParam, "-3", "3");
 		System.out.println("RV for 1 parameter dist:");
 		System.out.println(Arrays.toString(makeDistOutput));
 		
@@ -59,7 +64,7 @@ public class testModel {
 //				distrParam3, 0, 100);
 //		System.out.println("RV for 3 parameter dist:");
 //		System.out.println(Arrays.toString(makeDistOutput3));
-		
+
 
 	}
 }

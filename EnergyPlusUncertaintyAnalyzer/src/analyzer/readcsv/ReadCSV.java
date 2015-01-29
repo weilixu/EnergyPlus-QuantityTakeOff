@@ -1,45 +1,57 @@
 package analyzer.readcsv;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
 
 public class ReadCSV {
-	public ArrayList<String> readData(String filename){
-		File file = new File(filename);
-		ArrayList<String> dataString = new ArrayList<String>();
+	public double[] readData(String filename){
+		double[] data = null;
 		try {
-			Scanner scanner = new Scanner(file);			
-			scanner.useDelimiter(",|\n");
-
-			while (scanner.hasNext()){
-//				scanner.useDelimiter(",|\n");
-				String tempData = scanner.next().trim();
-				boolean flag = (tempData.isEmpty() | tempData.equalsIgnoreCase("NaN")); 
-				if (!flag){
-					dataString.add(tempData);
-				}	
+			FileReader file = new FileReader(filename);
+			BufferedReader br = new BufferedReader(file);
+			ArrayList<String[]> list = new ArrayList<String[]>();
+			String line = "";
+			String csvSplitBy = ",";
+			int size = 0;
+			while((line = br.readLine()) != null) {
+				String[] tempLine = line.split(csvSplitBy);
+				size = size + tempLine.length;
+				list.add(tempLine);
 			}
-			scanner.close();
+			br.close();
+			data = convertListToDouble(list, size);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-//		double[] data = convertListToDouble(dataString);
-		return dataString;
+
+		return data;
 		
 	}
 	
-	private double[] convertListToDouble(ArrayList<String> data){
-		int len = data.size();
-		double[] output = new double[len];
-		for (int i=0; i<len; i++){
-			output[i] = Double.parseDouble(data.get(i));
+	private double[] convertListToDouble(ArrayList<String[]> list, int length){
+		double[] output = new double[length];
+		int idx = 0;
+		for (int i=0; i<list.size(); i++){
+			String[] temp = list.get(i);
+			for (int j=0; j<temp.length; j++){
+				output[idx] = Double.parseDouble(temp[j]);
+				idx = idx + 1;
+			}
 		}
-		return null;
+		return output;
 	}
+	
+
 
 }
