@@ -134,7 +134,7 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-    public double[] generateRV(String distrName, double[] distrParam, int lower, int upper) {
+    public double[] generateRV(String distrName, double[] distrParam, String lower, String upper) {
 	MakeDist makeDistr = null;
 	Object[] makeDistInputs = new Object[7];
 	makeDistInputs[0] = source;
@@ -142,10 +142,10 @@ public class Model {
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
-	makeDistInputs[5] = lower;
-	makeDistInputs[6] = upper;
-//	makeDistInputs[5] = Double.parseDouble(lower); // min
-//	makeDistInputs[6] = Double.parseDouble(upper); // max
+	//makeDistInputs[5] = lower;
+	//makeDistInputs[6] = upper;
+	makeDistInputs[5] = Double.parseDouble(lower); // min
+	makeDistInputs[6] = Double.parseDouble(upper); // max
 	for (int i = 0; i<7; i++){
 		System.out.println(makeDistInputs[i]);
 	}

@@ -87,7 +87,6 @@ public class Analyzer extends JPanel{
 
 	add(setupPanel);
 	setVisible(true);
-
     }
 
     public static void main(String[] args) {
@@ -98,7 +97,7 @@ public class Analyzer extends JPanel{
 		frame.add(new Analyzer(frame));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setVisible(true);
 	    }
 	});

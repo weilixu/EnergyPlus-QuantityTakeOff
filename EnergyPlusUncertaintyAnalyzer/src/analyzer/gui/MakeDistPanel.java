@@ -184,30 +184,7 @@ public class MakeDistPanel extends JPanel {
 	text.setToolTipText("mu - Mean Parameter");
 	text.setPreferredSize(new Dimension(150, 25));
 	expPanel.add(text);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = new double[1];
-		try{
-		    distrParm[0] = Double.parseDouble(text.getText());
-		}catch(NumberFormatException ne){
-		    showErrorDialog(new JFrame(),"Error Found in input","Enter Integer or Double value! e.g (100)");
-		}
-		
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	expPanel.add(done);
+	expPanel.add(setDoneButton(text));
 	expPanel.add(setRefreshButton());
 	return expPanel;
     }
@@ -218,25 +195,7 @@ public class MakeDistPanel extends JPanel {
 	text.setToolTipText("lambda - Mean");
 	text.setPreferredSize(new Dimension(150, 25));
 	posPanel.add(text);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(text.getText())};
-		// disable the selection
-		model.setVariable(variable);
-		double[] temp = model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		System.out.println(Arrays.toString(temp));
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	posPanel.add(done);
+	posPanel.add(setDoneButton(text));
 	posPanel.add(setRefreshButton());
 	return posPanel;
     }
@@ -247,24 +206,7 @@ public class MakeDistPanel extends JPanel {
 	text.setToolTipText("b - Defining parameter");
 	text.setPreferredSize(new Dimension(150, 25));
 	reyPanel.add(text);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(text.getText())};
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	reyPanel.add(done);
+	reyPanel.add(setDoneButton(text));
 	reyPanel.add(setRefreshButton());
 	return reyPanel;
     }
@@ -279,25 +221,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	betaPanel.add(aText);
 	betaPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	betaPanel.add(done);
+	betaPanel.add(setDoneButton(aText, bText));
 	betaPanel.add(setRefreshButton());
 	return betaPanel;
     }
@@ -312,25 +236,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	binPanel.add(aText);
 	binPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	binPanel.add(done);
+	binPanel.add(setDoneButton(aText, bText));
 	binPanel.add(setRefreshButton());
 	return binPanel;
     }
@@ -345,25 +251,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	bsPanel.add(aText);
 	bsPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	bsPanel.add(done);
+	bsPanel.add(setDoneButton(aText, bText));
 	bsPanel.add(setRefreshButton());
 	return bsPanel;
     }
@@ -378,25 +266,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	exPanel.add(aText);
 	exPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	exPanel.add(done);
+	exPanel.add(setDoneButton(aText, bText));
 	exPanel.add(setRefreshButton());
 	return exPanel;
     }
@@ -411,25 +281,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	gammaPanel.add(aText);
 	gammaPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	gammaPanel.add(done);
+	gammaPanel.add(setDoneButton(aText, bText));
 	gammaPanel.add(setRefreshButton());
 	return gammaPanel;
     }
@@ -444,25 +296,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	invPanel.add(aText);
 	invPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	invPanel.add(done);
+	invPanel.add(setDoneButton(aText, bText));
 	invPanel.add(setRefreshButton());
 	return invPanel;
     }
@@ -477,25 +311,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	logicPanel.add(aText);
 	logicPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	logicPanel.add(done);
+	logicPanel.add(setDoneButton(aText, bText));
 	logicPanel.add(setRefreshButton());
 	return logicPanel;
     }
@@ -510,25 +326,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	logLogicPanel.add(aText);
 	logLogicPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	logLogicPanel.add(done);
+	logLogicPanel.add(setDoneButton(aText, bText));
 	logLogicPanel.add(setRefreshButton());
 	return logLogicPanel;
     }
@@ -543,25 +341,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	logNormalPanel.add(aText);
 	logNormalPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	logNormalPanel.add(done);
+	logNormalPanel.add(setDoneButton(aText, bText));
 	logNormalPanel.add(setRefreshButton());
 	return logNormalPanel;
     }
@@ -576,24 +356,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	nakePanel.add(aText);
 	nakePanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	nakePanel.add(done);
+	nakePanel.add(setDoneButton(aText, bText));
 	nakePanel.add(setRefreshButton());
 	return nakePanel;
     }
@@ -608,24 +371,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	negativePanel.add(aText);
 	negativePanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	negativePanel.add(done);
+	negativePanel.add(setDoneButton(aText, bText));
 	negativePanel.add(setRefreshButton());
 	return negativePanel;
     }
@@ -640,25 +386,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	normalPanel.add(aText);
 	normalPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	normalPanel.add(done);
+	normalPanel.add(setDoneButton(aText, bText));
 	normalPanel.add(setRefreshButton());
 	return normalPanel;
     }
@@ -673,25 +401,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	ricianPanel.add(aText);
 	ricianPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	ricianPanel.add(done);
+	ricianPanel.add(setDoneButton(aText, bText));
 	ricianPanel.add(setRefreshButton());
 	return ricianPanel;
     }
@@ -706,25 +416,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	uniformPanel.add(aText);
 	uniformPanel.add(bText);
-	
-	JButton done = new JButton("Done");
-	done.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
-	    }
-	});
-	
-	uniformPanel.add(done);
+	uniformPanel.add(setDoneButton(aText, bText));
 	uniformPanel.add(setRefreshButton());
 	return uniformPanel;
     }
@@ -739,26 +431,73 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	weibullPanel.add(aText);
 	weibullPanel.add(bText);
+	weibullPanel.add(setDoneButton(aText, bText));
+	weibullPanel.add(setRefreshButton());
+	return weibullPanel;
+    }
 
+    /**
+     * JButton method used for single input distribution
+     * 
+     * @param field
+     * @return
+     */
+    private JButton setDoneButton(JTextField field) {
 	JButton done = new JButton("Done");
 	done.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = { Double.parseDouble(aText.getText()),
-			Double.parseDouble(bText.getText()) };
-		// disable the selection
-		model.setVariable(variable);
-		model.generateRV(
-			selectBox.getSelectedItem().toString(), distrParm,
-			lowerText.getText(), upperText.getText());
-		// disable the other tab
-		selectBox.setEnabled(false);
-		parentPane.setEnabledAt(0, false);
+		double[] distrParm = new double[1];
+		try {
+		    distrParm[0] = Double.parseDouble(field.getText());
+		    // disable the selection
+		    model.setVariable(variable);
+		    model.generateRV(selectBox.getSelectedItem().toString(),
+			    distrParm, lowerText.getText(), upperText.getText());
+		    // disable the other tab
+		    selectBox.setEnabled(false);
+		    parentPane.setEnabledAt(0, false);
+		} catch (NumberFormatException ne) {
+		    showErrorDialog(new JFrame(), "Error Found in input",
+			    "Enter Integer or Double values! e.g (100)");
+		}
+
 	    }
 	});
-	weibullPanel.add(done);
-	weibullPanel.add(setRefreshButton());
-	return weibullPanel;
+	return done;
+    }
+
+    /**
+     * JButton method used for two inputs methods
+     * 
+     * @param field1
+     * @param field2
+     * @return
+     */
+    private JButton setDoneButton(JTextField field1, JTextField field2) {
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		double[] distrParm = new double[2];
+		try {
+		    distrParm[0] = Double.parseDouble(field1.getText());
+		    distrParm[1] = Double.parseDouble(field2.getText());
+		    // disable the selection
+		    model.setVariable(variable);
+		    model.generateRV(selectBox.getSelectedItem().toString(),
+			    distrParm, lowerText.getText(), upperText.getText());
+		    // disable the other tab
+		    selectBox.setEnabled(false);
+		    parentPane.setEnabledAt(0, false);
+		} catch (NumberFormatException ne) {
+		    showErrorDialog(new JFrame(), "Error Found in input",
+			    "Enter Integer or Double values! e.g (100)");
+		}
+
+	    }
+	});
+	return done;
     }
 
     private JButton setRefreshButton() {
@@ -775,7 +514,7 @@ public class MakeDistPanel extends JPanel {
 	});
 	return refresh;
     }
-    
+
     // for error info
     private static void showErrorDialog(Component c, String title, String msg) {
 	JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);

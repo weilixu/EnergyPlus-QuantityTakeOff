@@ -1,7 +1,11 @@
 package analyzer.eplus;
 
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -61,12 +65,15 @@ public class IdfReader {
 
     // GUI listener for this module
     private List<LoadIdfListeners> loadIDFListeners;
-    
-    //indexes for variableKeySets
+
+    // indexes for variableKeySets
     private final int ObjectNameIndex = 0;
     private final int ObjectElementCountIndex = 1;
     private final int ObjectInputDescriptionIndex = 2;
 
+    /**
+     * constructor
+     */
     public IdfReader() {
 	path = null;
 	eplusMap = new HashMap<String, HashMap<String, ArrayList<ValueNode>>>();
@@ -74,8 +81,27 @@ public class IdfReader {
 	variableKeySets = new ArrayList<String[]>();
 	loadIDFListeners = new ArrayList<LoadIdfListeners>();
     }
-    
-    public void setFilePath(String filePath){
+
+    /**
+     * meanly used for clone this object
+     * 
+     * @param map
+     * @param vl
+     * @param vks
+     */
+    public IdfReader(String p,
+	    HashMap<String, HashMap<String, ArrayList<ValueNode>>> map,
+	    ArrayList<String> vl, ArrayList<String[]> vks,
+	    List<LoadIdfListeners> l) {
+	dataFilled = true;
+	path = p;
+	eplusMap = map;
+	variableList = vl;
+	variableKeySets = vks;
+	loadIDFListeners = l;
+    }
+
+    public void setFilePath(String filePath) {
 	path = filePath;
     }
 
@@ -156,7 +182,8 @@ public class IdfReader {
 		    if (element.indexOf("$") > -1) {
 			variableList.add(element.substring(0,
 				element.length() - 1));
-			String[] keyPair = { startToken, elementCount,description };
+			String[] keyPair = { startToken, elementCount,
+				description };
 			variableKeySets.add(keyPair);
 		    }
 
@@ -195,7 +222,9 @@ public class IdfReader {
      * @param objectName
      */
     public void removeEnergyPlusObject(String objectName) {
-	eplusMap.remove(objectName);
+	if (dataFilled) {
+	    eplusMap.remove(objectName);
+	}
     }
 
     /**
@@ -208,7 +237,9 @@ public class IdfReader {
      * @param elementCount
      */
     public void removeEnergyPlusObject(String objectName, String elementCount) {
-	eplusMap.get(objectName).remove(elementCount);
+	if (dataFilled) {
+	    eplusMap.get(objectName).remove(elementCount);
+	}
     }
 
     /**
@@ -220,19 +251,24 @@ public class IdfReader {
      * @param value
      */
     public void modifySpecialCharactor(String specialCharactor, String value) {
-	int index = variableList.indexOf(specialCharactor);
-	ArrayList<ValueNode> temp = eplusMap.get(variableKeySets.get(index)[ObjectNameIndex])
-		.get(variableKeySets.get(index)[ObjectElementCountIndex]);
-	for (ValueNode v : temp) {
-	    if (v.isCritical() && v.getAttribute().equals(specialCharactor)) {
-		v.setAttribute(value);
+	if (dataFilled) {
+	    int index = variableList.indexOf(specialCharactor);
+	    ArrayList<ValueNode> temp = eplusMap.get(
+		    variableKeySets.get(index)[ObjectNameIndex]).get(
+		    variableKeySets.get(index)[ObjectElementCountIndex]);
+	    for (ValueNode v : temp) {
+		if (v.isCritical() && v.getAttribute().equals(specialCharactor)) {
+		    v.setAttribute(value);
+		}
 	    }
 	}
     }
-    
+
     /**
-     * insert an new object without specify the values and descriptions. This algorithm will
-     * copy the existing same object data and create the new element.
+     * insert an new object without specify the values and descriptions. This
+     * algorithm will copy the existing same object data and create the new
+     * element.
+     * 
      * @param objectName
      */
     public void addNewEnergyPlusObject(String objectName) {
@@ -249,8 +285,8 @@ public class IdfReader {
 		objectDes[i] = temp.get(i).getDescription();
 	    }
 	    addNewEnergyPlusObject(objectName, objectValues, objectDes);
-	}else{
-	    //throw exception or warnings something, determine later
+	} else {
+	    // throw exception or warnings something, determine later
 	}
     }
 
@@ -258,9 +294,12 @@ public class IdfReader {
      * insert an new object into the database with known object name, object
      * values and object descriptions
      * 
-     * @param objectName the name of the object
-     * @param objectValues the object values
-     * @param objectDes the object description (also means the key to the value node)
+     * @param objectName
+     *            the name of the object
+     * @param objectValues
+     *            the object values
+     * @param objectDes
+     *            the object description (also means the key to the value node)
      */
     public void addNewEnergyPlusObject(String objectName,
 	    String[] objectValues, String[] objectDes) {
@@ -269,7 +308,7 @@ public class IdfReader {
 	for (int i = 0; i < objectValues.length; i++) {
 	    newObject.add(new ValueNode(objectValues[i], objectDes[i]));
 	}
-	//create a new map
+	// create a new map
 	HashMap<String, ArrayList<ValueNode>> temp = new HashMap<String, ArrayList<ValueNode>>();
 	String elementCount = null;
 	if (eplusMap.containsKey(objectName)) {
@@ -283,178 +322,275 @@ public class IdfReader {
 	    eplusMap.put(objectName, temp);
 	}
     }
-    
+
     /**
      * Replace one specific inputs through all the same object
-     * @param objectName the object
-     * @param onKey the input description
-     * @param toValue the value
+     * 
+     * @param objectName
+     *            the object
+     * @param onKey
+     *            the input description
+     * @param toValue
+     *            the value
      */
-    public void editExistObjectAtSameTime(String objectName, String onKey, String toValue){
-	//retrieve the elements from the map and convert it to set
+    public void editExistObjectAtSameTime(String objectName, String onKey,
+	    String toValue) {
+	// retrieve the elements from the map and convert it to set
 	Set<String> subSet = eplusMap.get(objectName).keySet();
 	Iterator<String> iterator = subSet.iterator();
-	//go through all the element in the set
-	while(iterator.hasNext()){
-	    ArrayList<ValueNode> vnList = eplusMap.get(objectName).get(iterator.next());
-	    //go through all the ValueNode, find the key and change the value
-	    for(ValueNode vn:vnList){
-		if(onKey.equals(vn.getDescription())){
+	// go through all the element in the set
+	while (iterator.hasNext()) {
+	    ArrayList<ValueNode> vnList = eplusMap.get(objectName).get(
+		    iterator.next());
+	    // go through all the ValueNode, find the key and change the value
+	    for (ValueNode vn : vnList) {
+		if (onKey.equals(vn.getDescription())) {
 		    vn.setAttribute(toValue);
 		}
 	    }
 	}
     }
-    
+
     /**
-     * change one element in the data base with a specific element Name, such as "boiler1"
-     * If there are multiple objects whose name is "boiler1" only the first will be changed.
+     * change one element in the data base with a specific element Name, such as
+     * "boiler1" If there are multiple objects whose name is "boiler1" only the
+     * first will be changed.
      * 
      * @param objectName
      * @param elementName
      * @param onKey
      * @param toValue
      */
-    public void editExistObjectsOnOneElement(String objectName, String elementName,String onKey, String toValue){
-	//retrieve the elements from the map and convert it to set
+    public void editExistObjectsOnOneElement(String objectName,
+	    String elementName, String onKey, String toValue) {
+	// retrieve the elements from the map and convert it to set
 	Set<String> subSet = eplusMap.get(objectName).keySet();
 	Iterator<String> iterator = subSet.iterator();
-	//go through all the element in the set to find the correct element
+	// go through all the element in the set to find the correct element
 	ArrayList<ValueNode> vnList = new ArrayList<ValueNode>();
-	//flag to indicate whether the element is found or not
+	// flag to indicate whether the element is found or not
 	boolean found = false;
-	while(iterator.hasNext()&&!found){
-	    ArrayList<ValueNode> temp = eplusMap.get(objectName).get(iterator.next());
-	    //go through all the ValueNode, find the key and change the value
-	    for(ValueNode vn:temp){
-		if(elementName.equals(vn.getAttribute())){
+	while (iterator.hasNext() && !found) {
+	    ArrayList<ValueNode> temp = eplusMap.get(objectName).get(
+		    iterator.next());
+	    // go through all the ValueNode, find the key and change the value
+	    for (ValueNode vn : temp) {
+		if (elementName.equals(vn.getAttribute())) {
 		    vnList = temp;
 		    found = true;
 		    break;
 		}
 	    }
 	}
-	for(ValueNode node: vnList){
-	    if(onKey.equals(node.getDescription())){
+	for (ValueNode node : vnList) {
+	    if (onKey.equals(node.getDescription())) {
 		node.setAttribute(toValue);
 	    }
 	}
     }
+    
+    /**
+     * writing the database to a single EnergyPlus idf file
+     * @param fileID
+     */
+    public void writeIdf(String fileID) {
+	IdfWriter writer = new IdfWriter(eplusMap, path, fileID);
+	try {
+	    writer.writeIdf();
+	} catch (IOException e) {
+	    // do something!
+	}
+    }
+
+    /**
+     * clone the current idf data
+     * @return
+     */
+    public IdfReader cloneIdfData() {
+	return new IdfReader(path, eplusMap, variableList, variableKeySets,
+		loadIDFListeners);
+    }
 
     /*
-     * notify GUI for the updates of variableList
-     * and the variableInfo
+     * notify GUI for the updates of variableList and the variableInfo
      */
     private void onReadEplusFile() {
 	ArrayList<String> variableInfo = new ArrayList<String>();
-	for(String[] sList: variableKeySets){
+	for (String[] sList : variableKeySets) {
 	    StringBuffer sb = new StringBuffer("From: ");
 	    sb.append(sList[ObjectNameIndex]);
 	    sb.append(", Input: ");
 	    sb.append(sList[ObjectInputDescriptionIndex]);
 	    variableInfo.add(sb.toString());
 	}
-	
+
 	for (LoadIdfListeners l : loadIDFListeners) {
 	    l.loadedEnergyPlusFile(variableList, variableInfo);
 	}
     }
-    
+
     /**
-     * This private class stores every line in IDF file as a node. Each node contains two
-     * information, two indicators and one parametric signal.
+     * IDF Writer class. This class writes the IDF out based on the reader's
+     * data
+     * 
+     * @author Weili
+     *
+     */
+    private class IdfWriter {
+
+	private HashMap<String, HashMap<String, ArrayList<ValueNode>>> eplusMap;
+	private String path;
+	private String fileID;
+
+	private IdfWriter(
+		HashMap<String, HashMap<String, ArrayList<ValueNode>>> map,
+		String p, String ID) {
+	    eplusMap = map;
+	    path = p;
+	    fileID = ID;
+	}
+
+	private void writeIdf() throws IOException {
+	    Writer writer = null;
+	    try {
+		writer = new BufferedWriter(new OutputStreamWriter(
+			new FileOutputStream(path + fileID + ".idf"), "UTF-8"));
+
+		Set<String> eplusObjects = eplusMap.keySet();
+		Iterator<String> objectIterator = eplusObjects.iterator();
+
+		while (objectIterator.hasNext()) {
+		    String objectKey = objectIterator.next();
+		    Set<String> objectElements = eplusMap.get(objectKey)
+			    .keySet();
+		    Iterator<String> elementIterator = objectElements
+			    .iterator();
+
+		    while (elementIterator.hasNext()) {
+			String elementKey = elementIterator.next();
+			writer.write(objectKey + "," + "\n");
+			ArrayList<ValueNode> nodeList = eplusMap.get(objectKey)
+				.get(elementKey);
+			// loop the nodes through the list
+			for (int i = 0; i < nodeList.size(); i++) {
+			    ValueNode n = nodeList.get(i);
+			    // end statement needs to be end by ;
+			    if (n.isEndStatement()) {
+				writer.write(n.getAttribute() + "; \n");
+			    } else {
+				writer.write(n.getAttribute() + ", \n");
+			    }
+			}
+		    }
+		}
+	    } catch (IOException e) {
+		// do nothing
+	    } finally {
+		try {
+		    writer.close();
+		} catch (Exception e) {
+		    // we are about to close anyway
+		}
+	    }
+	}
+    }
+
+    /**
+     * This private class stores every line in IDF file as a node. Each node
+     * contains two information, two indicators and one parametric signal.
      * 
      * Information: {@value attribute} shows the input for this node {@value
      * description} shows the explanation for the correspondent input
      * 
      * Indicators: {@value isEnd} indicates whether this line is the end of the
      * object inputs or not. {@value isCriticalLine} indicates whether this line
-     * contains parametric value, which will later be replaced by parametric studies
+     * contains parametric value, which will later be replaced by parametric
+     * studies
      * 
-     * Parametric Signal: the {@value index} indicates the index of the parametric
-     * value, -1 shows there is no parametric value in this line, if the value is
-     * greater than 1, that means this node contains parametric input.
+     * Parametric Signal: the {@value index} indicates the index of the
+     * parametric value, -1 shows there is no parametric value in this line, if
+     * the value is greater than 1, that means this node contains parametric
+     * input.
      * 
      * @author Weili
      *
      */
     private class ValueNode {
-        /**
-         * Invariance: Each node should contains information includes an original
-         * attribute and the input description
-         */
+	/**
+	 * Invariance: Each node should contains information includes an
+	 * original attribute and the input description
+	 */
 
-        // used for copy itself
-        private String originalAttribute;
-        // real value which will then pass to the energyplus engine
-        private String attribute;
-        // comments after the (!)
-        private String description;
+	// used for copy itself
+	private String originalAttribute;
+	// real value which will then pass to the energyplus engine
+	private String attribute;
+	// comments after the (!)
+	private String description;
 
-        private boolean isEnd = false;
-        private boolean isCriticalLine = false;
+	private boolean isEnd = false;
+	private boolean isCriticalLine = false;
 
-        private int index = -1;
+	private int index = -1;
 
-        
-        public ValueNode(String att, String des) {
-    	description = des;
-    	originalAttribute = att;
-    	
-    	//test whether this line contains parametric value
-    	if (originalAttribute.indexOf("$") > -1) {
-    	    isCriticalLine = true;
-    	    index = originalAttribute.indexOf("$");
-    	}
-    	
-    	//test whether this line is the end input
-    	if (originalAttribute.indexOf(";") > -1) {
-    	    attribute = originalAttribute.substring(0,
-    		    originalAttribute.indexOf(";"));
-    	    isEnd = true;
-    	} else if (originalAttribute.indexOf(",") > -1) {
-    	    attribute = originalAttribute.substring(0,
-    		    originalAttribute.indexOf(","));
-    	} else {
-    	    // hopefully we will never get to this point
-    	    attribute = att;
-    	}
-        }
+	public ValueNode(String att, String des) {
+	    description = des;
+	    originalAttribute = att;
 
-        // gets the attribute of the this line
-        private String getAttribute() {
-    	return attribute;
-        }
-        
-        // reset the attribute for this object
-        // can be used to replace the parametric values in the EnergyPlus
-        private void setAttribute(String attr){
-    	attribute = attr;
-        }
+	    // test whether this line contains parametric value
+	    if (originalAttribute.indexOf("$") > -1) {
+		isCriticalLine = true;
+		index = originalAttribute.indexOf("$");
+	    }
 
-        // check whether this line is the end statment
-        private boolean isEndStatement() {
-    	return isEnd;
-        }
+	    // test whether this line is the end input
+	    if (originalAttribute.indexOf(";") > -1) {
+		attribute = originalAttribute.substring(0,
+			originalAttribute.indexOf(";"));
+		isEnd = true;
+	    } else if (originalAttribute.indexOf(",") > -1) {
+		attribute = originalAttribute.substring(0,
+			originalAttribute.indexOf(","));
+	    } else {
+		// hopefully we will never get to this point
+		attribute = att;
+	    }
+	}
 
-        // get the description of this line
-        private String getDescription() {
-    	return description;
-        }
+	// gets the attribute of the this line
+	private String getAttribute() {
+	    return attribute;
+	}
 
-        // check whether there is a parametric value defined in this line
-        private boolean isCritical() {
-    	return isCriticalLine;
-        }
-        
-        //get the parametric value input index
-        private int getIndex() {
-    	return index;
-        }
-        
-        //clone a new value node
-        public ValueNode clone() {
-    	return new ValueNode(originalAttribute, description);
-        }
+	// reset the attribute for this object
+	// can be used to replace the parametric values in the EnergyPlus
+	private void setAttribute(String attr) {
+	    attribute = attr;
+	}
+
+	// check whether this line is the end statment
+	private boolean isEndStatement() {
+	    return isEnd;
+	}
+
+	// get the description of this line
+	private String getDescription() {
+	    return description;
+	}
+
+	// check whether there is a parametric value defined in this line
+	private boolean isCritical() {
+	    return isCriticalLine;
+	}
+
+	// get the parametric value input index
+	private int getIndex() {
+	    return index;
+	}
+
+	// clone a new value node
+	public ValueNode clone() {
+	    return new ValueNode(originalAttribute, description);
+	}
     }
 }

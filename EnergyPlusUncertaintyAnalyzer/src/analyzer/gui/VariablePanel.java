@@ -2,6 +2,7 @@ package analyzer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -122,10 +123,10 @@ public class VariablePanel extends JPanel {
 	JPanel tempPanel = new JPanel();
 	idfDirLabel = new JLabel("File: ");
 	simulationText = new JTextField("Enter the Number of Simulations (>=1)");
-	simulationText.setMinimumSize(new Dimension(150,15));
+	simulationText.setPreferredSize(new Dimension(150,20));
 	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
 	idfDirText = new JTextField(eplusFile.getAbsolutePath());
-	idfDirText.setPreferredSize(new Dimension(150,15));
+	idfDirText.setPreferredSize(new Dimension(250,20));
 	idfDirText.setBorder(BorderFactory.createLoweredBevelBorder());
 	tempPanel.add(idfDirLabel);
 	tempPanel.add(idfDirText);
