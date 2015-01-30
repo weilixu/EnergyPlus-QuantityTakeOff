@@ -38,13 +38,11 @@ public class PlotGraph extends ApplicationFrame {
 		
 		Calendar cal = Calendar.getInstance();
 		Month current = null;
-		System.out.println("Current month:");
-		System.out.println(month);
+
 		try {
 			cal.setTime(new SimpleDateFormat("MMM").parse(month));
 			int monthInt = cal.get(Calendar.MONTH)+1;
 			current = new Month(monthInt, year);
-//			System.out.println(current);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -70,7 +68,4 @@ public class PlotGraph extends ApplicationFrame {
 				false, false);
 	}
 	
-	
-
-
 }

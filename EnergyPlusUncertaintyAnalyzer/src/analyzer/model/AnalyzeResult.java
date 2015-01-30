@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class AnalyzeResult {
@@ -14,6 +15,7 @@ public class AnalyzeResult {
 	private String[] header;
 	private final String source;
 	private final String idfName;
+	private int startYear;
 
 	public AnalyzeResult(String source, String idfName) {
 		this.keys = new ArrayList<String>();
@@ -21,7 +23,13 @@ public class AnalyzeResult {
 		this.header = null;
 		this.source = source;
 		this.idfName = idfName;
+		this.startYear = Calendar.getInstance().get(Calendar.YEAR);
 
+
+	}
+	
+	public void setStartYear(int idfYear){
+		startYear = idfYear;
 	}
 
 	public String getKey(int index) {
@@ -30,6 +38,10 @@ public class AnalyzeResult {
 	
 	public int getKeysLength() {
 		return keys.size();
+	}
+	
+	public int getStartYear() {
+		return startYear;
 	}
 
 	public double[] getData(String key, int colNumber) {
