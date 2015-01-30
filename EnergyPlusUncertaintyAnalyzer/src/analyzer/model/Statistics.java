@@ -8,6 +8,4 @@ public class Statistics {
 		}
 		return sum/args.length;
 	}
-	
-
 }
