@@ -1,6 +1,7 @@
 package analyzer.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -126,6 +127,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 
 	// Add the simulation Panel to the outer panel
 	simulationPanel = initSimulationPanel();
+	simulationPanel.setBackground(Color.WHITE);
 	outerPanel.add(simulationPanel, BorderLayout.PAGE_END);
 
 	frame.add(outerPanel);

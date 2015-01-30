@@ -100,6 +100,7 @@ public class FitDistPanel extends JPanel {
 
 	// the the finish button
 	doneButton = new JButton(DONE_TEXT);
+	doneButton.setEnabled(false);
 	doneButton.addActionListener(new ActionListener() {
 
 	    @Override

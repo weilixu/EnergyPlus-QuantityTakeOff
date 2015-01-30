@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 
 public class ReadCSV {
+    
+    
 	public double[] readData(String filename){
 		double[] data = null;
 		try {
@@ -35,8 +37,7 @@ public class ReadCSV {
 			e.printStackTrace();
 		}
 
-		return data;
-		
+		return data;	
 	}
 	
 	private double[] convertListToDouble(ArrayList<String[]> list, int length){

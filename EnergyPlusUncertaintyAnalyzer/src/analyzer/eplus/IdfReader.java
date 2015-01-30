@@ -46,7 +46,7 @@ import analyzer.listeners.LoadIdfListeners;
  * 
  * @author Weili
  */
-public class IdfReader implements EnergyPlusFilesGenerator{
+public class IdfReader implements EnergyPlusFilesGenerator {
 
     // reading specification
     private static final String endToken = ";";
@@ -193,7 +193,7 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 			    .add(new ValueNode(element, description));
 
 		    if (line.indexOf(endToken) > -1) {
-			// find the end lineof the statement, swithc the flag!
+			// find the end line of the statement, swithc the flag!
 			// switch flag
 			output = false;
 		    }
@@ -226,6 +226,80 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	if (dataFilled) {
 	    eplusMap.remove(objectName);
 	}
+    }
+
+    /**
+     * get value from the database. This method will extract the value according
+     * to client inputs. Client needs to provide the name of the object and the
+     * input description for a successful extraction. In EnergyPlus, most of
+     * objects will have multiple items (e.g. BuildingSurface:Detailed),
+     * therefore, this method can only extract one item's input value
+     * 
+     * If the database does not contain the input description, then this method
+     * will return null.
+     * 
+     * @param objectName
+     * @param description
+     * @return
+     */
+    public String getValue(String objectName, String description) {
+	HashMap<String, ArrayList<ValueNode>> temp = eplusMap.get(objectName);
+	Set<String> elementSet = temp.keySet();
+	Iterator<String> iterator = elementSet.iterator();
+	String element = iterator.next();
+	// search the first element's inputs
+	for (ValueNode vn : temp.get(element)) {
+	    if (vn.getDescription().equals(description)) {
+		return vn.getAttribute();
+	    }
+	}
+	// if we cannot find it.
+	return null;
+    }
+
+    /**
+     * get value from the database. This method will extract the value according
+     * to client inputs. Client needs to provide the name of the object, object
+     * identification ("Name" inputs in the idf File) and the input description
+     * to generate a successful extraction. This method should be used for
+     * multiple same objects with different inputs.
+     * 
+     * If the database doesn't contain the information. This method will yield
+     * null
+     * 
+     * @param objectName
+     * @param name
+     * @param description
+     * @return
+     */
+    public String getValue(String objectName, String name, String description) {
+	HashMap<String, ArrayList<ValueNode>> temp = eplusMap.get(objectName);
+	Set<String> elementSet = temp.keySet();
+	Iterator<String> iterator = elementSet.iterator();
+	ArrayList<ValueNode> targetList = null;
+	// search for the object that has specific name
+	while (iterator.hasNext() && targetList == null) {
+	    String elementCount = iterator.next();
+	    ArrayList<ValueNode> vnList = temp.get(elementCount);
+	    for (ValueNode vn : vnList) {
+		if (vn.getDescription().equals("Name")
+			&& vn.getAttribute().equals(name)) {
+		    targetList = vnList;
+		    break;
+		}
+	    }
+	}
+	//if found the correct inputs group
+	if (targetList != null) {
+	    for (ValueNode target : targetList) {
+		//search for the specific value
+		if (target.getDescription().equals(description)) {
+		    return target.getAttribute();
+		}
+	    }
+	}
+	// cannot find it
+	return null;
     }
 
     /**
@@ -367,7 +441,7 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	    }
 	}
     }
-    
+
     @Override
     public void modifySpecialCharactor(String specialCharactor, String value) {
 	if (dataFilled) {
@@ -382,10 +456,10 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	    }
 	}
     }
-    
+
     @Override
     public void WriteIdf(String path, String fileID) {
-	IdfWriter writer = new IdfWriter(eplusMap, path+"\\", fileID);
+	IdfWriter writer = new IdfWriter(eplusMap, path + "\\", fileID);
 	try {
 	    writer.writeIdf();
 	} catch (IOException e) {
@@ -429,7 +503,13 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	private HashMap<String, HashMap<String, ArrayList<ValueNode>>> eplusMap;
 	private String path;
 	private String fileID;
-
+	
+	/**
+	 * 
+	 * @param map datastructure that contains energyplus idf file
+	 * @param p path that the newly generated file can be saved at
+	 * @param ID the identification for the file name
+	 */
 	private IdfWriter(
 		HashMap<String, HashMap<String, ArrayList<ValueNode>>> map,
 		String p, String ID) {
@@ -519,8 +599,6 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	private boolean isEnd = false;
 	private boolean isCriticalLine = false;
 
-	private int index = -1;
-
 	public ValueNode(String att, String des) {
 	    description = des;
 	    originalAttribute = att;
@@ -528,7 +606,6 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	    // test whether this line contains parametric value
 	    if (originalAttribute.indexOf("$") > -1) {
 		isCriticalLine = true;
-		index = originalAttribute.indexOf("$");
 	    }
 
 	    // test whether this line is the end input
@@ -569,11 +646,6 @@ public class IdfReader implements EnergyPlusFilesGenerator{
 	// check whether there is a parametric value defined in this line
 	private boolean isCritical() {
 	    return isCriticalLine;
-	}
-
-	// get the parametric value input index
-	private int getIndex() {
-	    return index;
 	}
 
 	// clone a new value node
