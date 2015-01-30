@@ -267,8 +267,11 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	return tempPanel;
     }
     
+    /**
+     * Create a file under parent folder that contains all the simulation results
+     * @return folder
+     */
     private File createResultsFolder(){
-	
 	File dir = new File(parentFile.getAbsoluteFile()+"\\"+RESULT);
 	if(dir.exists()){
 	    return dir;

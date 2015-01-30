@@ -256,5 +256,4 @@ public class Model {
 	    m.modelDataUpdate(randomVariableList.size());
 	}
     }
-
 }
