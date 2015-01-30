@@ -261,7 +261,7 @@ public class Model {
     
     private void onFitResultsUpdates(){
 	for(FitDistListeners fdl: fitDistListeners){
-	    if(fdl.getVaraible().equals(variableName)){
+	    if(fdl.getVariable().equals(variableName)){
 		StringBuffer sb = new StringBuffer();
 		sb.append("this is just a sample");
 		sb.append("\n");
