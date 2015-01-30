@@ -1,6 +1,7 @@
 package analyzer.eplus;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +46,7 @@ import analyzer.listeners.LoadIdfListeners;
  * 
  * @author Weili
  */
-public class IdfReader {
+public class IdfReader implements EnergyPlusFilesGenerator{
 
     // reading specification
     private static final String endToken = ";";
@@ -243,28 +244,6 @@ public class IdfReader {
     }
 
     /**
-     * @require specialCharactor is exist in the data structure, value is valid
-     *          for the simulation
-     * @ensure replace the special character with the value
-     * 
-     * @param specialCharactor
-     * @param value
-     */
-    public void modifySpecialCharactor(String specialCharactor, String value) {
-	if (dataFilled) {
-	    int index = variableList.indexOf(specialCharactor);
-	    ArrayList<ValueNode> temp = eplusMap.get(
-		    variableKeySets.get(index)[ObjectNameIndex]).get(
-		    variableKeySets.get(index)[ObjectElementCountIndex]);
-	    for (ValueNode v : temp) {
-		if (v.isCritical() && v.getAttribute().equals(specialCharactor)) {
-		    v.setAttribute(value);
-		}
-	    }
-	}
-    }
-
-    /**
      * insert an new object without specify the values and descriptions. This
      * algorithm will copy the existing same object data and create the new
      * element.
@@ -389,12 +368,24 @@ public class IdfReader {
 	}
     }
     
-    /**
-     * writing the database to a single EnergyPlus idf file
-     * @param fileID
-     */
-    public void writeIdf(String fileID) {
-	IdfWriter writer = new IdfWriter(eplusMap, path, fileID);
+    @Override
+    public void modifySpecialCharactor(String specialCharactor, String value) {
+	if (dataFilled) {
+	    int index = variableList.indexOf(specialCharactor);
+	    ArrayList<ValueNode> temp = eplusMap.get(
+		    variableKeySets.get(index)[ObjectNameIndex]).get(
+		    variableKeySets.get(index)[ObjectElementCountIndex]);
+	    for (ValueNode v : temp) {
+		if (v.isCritical() && v.getAttribute().equals(specialCharactor)) {
+		    v.setAttribute(value);
+		}
+	    }
+	}
+    }
+    
+    @Override
+    public void WriteIdf(String path, String fileID) {
+	IdfWriter writer = new IdfWriter(eplusMap, path+"\\", fileID);
 	try {
 	    writer.writeIdf();
 	} catch (IOException e) {
@@ -402,11 +393,8 @@ public class IdfReader {
 	}
     }
 
-    /**
-     * clone the current idf data
-     * @return
-     */
-    public IdfReader cloneIdfData() {
+    @Override
+    public EnergyPlusFilesGenerator cloneIdfData() {
 	return new IdfReader(path, eplusMap, variableList, variableKeySets,
 		loadIDFListeners);
     }

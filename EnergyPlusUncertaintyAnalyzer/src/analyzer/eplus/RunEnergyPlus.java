@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import analyzer.lang.AnalyzerException;
+
 public class RunEnergyPlus {
 
     private final String EPLUSBAT = "RunDirMulti.bat";
@@ -15,15 +17,41 @@ public class RunEnergyPlus {
     private String energyplus_dir;
     private String weather_file;
     private String number_proc;
+    
+    private boolean directoryEntered = false;
 
-    public RunEnergyPlus(File f, String ed, String wf, String np) {
+    public RunEnergyPlus(File f) {
 	folder = f;
+    }
+
+    // setter method to set the energyplus directory. This input must be
+    // specified before the simulation
+    public void setEnergyPlusDirectory(String ed) {
 	energyplus_dir = ed;
+	directoryEntered = true;
+    }
+
+    // setter method to set the weather file. If not specified, default weather
+    // file will be used
+    public void setWeatherFile(String wf) {
 	weather_file = wf;
+    }
+
+    // setter method to set the number of processors, if not specified, default
+    // number (4) will be used
+    public void setNumberOfProcessor(String np) {
 	number_proc = np;
     }
 
-    public void startSimulation() throws IOException {
+    public void startSimulation() throws IOException, InterruptedException, AnalyzerException  {
+	if(!directoryEntered){
+	    throw new AnalyzerException("Can not find EnergyPlus File");
+	}else{
+	    runSimulation();
+	}
+    }
+    
+    private void runSimulation()throws IOException, InterruptedException{
 	File batchFile = createBatchFile();
 	String[] commandline = { batchFile.getAbsolutePath(), weather_file,
 		number_proc };

@@ -41,10 +41,6 @@ public class VariablePanel extends JPanel {
 
     private JPanel variableSelectPanel = new JPanel();
     
-    private JTextField simulationText;
-    private JLabel idfDirLabel;
-    private JTextField idfDirText;
-    
     public VariablePanel(Model m, File file) {
 	model = m;
 	fittingPanel = new JPanel();
@@ -53,7 +49,6 @@ public class VariablePanel extends JPanel {
 	selectPanel.setLayout(new BorderLayout());
 	eplusFile = file;
 	parentFile = eplusFile.getParentFile();
-	simulationPanel = initSimulationPanel();
 	initPanel();
     }
 
@@ -90,20 +85,11 @@ public class VariablePanel extends JPanel {
 	selectPanel.add(variableSelectPanel, BorderLayout.CENTER);
 
     }
-    
-    public String getIdfDir(){
-	return idfDirText.getText();
-    }
-    
-    public Integer getSimulationNumber(){
-	return Integer.parseInt(simulationText.getText());
-    }
 
     private void initPanel() {
 	setLayout(new BorderLayout());
 	add(selectPanel, BorderLayout.WEST);
 	add(fittingPanel, BorderLayout.CENTER);
-	add(simulationPanel,BorderLayout.PAGE_START);
     }
 
     // a JTabbedPane to represents two fitting method
@@ -117,21 +103,5 @@ public class VariablePanel extends JPanel {
 	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp,model,variableName));// index 1
 
 	return tp;
-    }
-    
-    private JPanel initSimulationPanel(){
-	JPanel tempPanel = new JPanel();
-	idfDirLabel = new JLabel("File: ");
-	simulationText = new JTextField("Enter the Number of Simulations (>=1)");
-	simulationText.setPreferredSize(new Dimension(150,20));
-	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
-	idfDirText = new JTextField(eplusFile.getAbsolutePath());
-	idfDirText.setPreferredSize(new Dimension(250,20));
-	idfDirText.setBorder(BorderFactory.createLoweredBevelBorder());
-	tempPanel.add(idfDirLabel);
-	tempPanel.add(idfDirText);
-	tempPanel.add(simulationText);
-	tempPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-	return tempPanel;
     }
 }

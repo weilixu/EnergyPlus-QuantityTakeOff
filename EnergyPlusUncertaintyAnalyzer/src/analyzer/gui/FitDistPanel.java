@@ -25,7 +25,6 @@ public class FitDistPanel extends JPanel {
     
     private final Model model;
     private final String variable;
-    private final String IMAGE_NAME = "FITIMAGE_";
 
     /*
      * Setting all the panels
@@ -216,7 +215,7 @@ public class FitDistPanel extends JPanel {
 	this.add(fitPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new JPanel(new BorderLayout());
+	displayPanel = new ImageDisplayPanel(model,variable);
 	add(displayPanel, BorderLayout.CENTER);
     }
 

@@ -32,8 +32,6 @@ public class MakeDistPanel extends JPanel {
     private final JTabbedPane parentPane;
     private final String variable;
 
-    private final String IMAGE_NAME = "MAKEDIST_";
-
     // set-up two panels for this panel
     private final JPanel selectDistPanel;
     private final JPanel distInputPanel;
@@ -173,7 +171,7 @@ public class MakeDistPanel extends JPanel {
 	add(selectDistPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new JPanel(new BorderLayout());
+	displayPanel = new ImageDisplayPanel(model,variable);
 	add(displayPanel, BorderLayout.CENTER);
 
     }

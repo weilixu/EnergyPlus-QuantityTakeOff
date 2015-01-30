@@ -1,36 +1,103 @@
 package analyzer.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import allfitdist.FitDist;
 import allmakedist.MakeDist;
+import analyzer.listeners.DistGenerationListeners;
+import analyzer.listeners.ModelDataListener;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 
+/**
+ * Distribution model
+ * 
+ * @author Adrian Weili
+ *
+ */
 public class Model {
     // Strings for the file names
-    private final String FIT_NAME = "FITDIST_";
-    private final String MAKE_NAME = "MAKEDIST_";
+    private final String DIST_NAME = "DIST_";
     private final String IMAGE_POST = ".jpg";
     // string for parent name
     private String source;
     // String for the variable name
     private String variableName;
-    
+    //record the number of the simulation to determine the size of data
     private int simulationNumber;
+    
+    /*
+     * A data structure to save generated random variables from the model.
+     * The size of the double[] array is equal to the simulaitonNumber. 
+     * String stands for the variableName
+     */
+    private static HashMap<String, double[]> randomVariableList = new HashMap<String, double[]>();
+    
+    /*
+     * Add all the listeners from GUI
+     */
+    // add the image panel listener to monitor the image generation
+    private List<DistGenerationListeners> distGeneListeners;
+    // listen the data from the model
+    private List<ModelDataListener> dataListeners;
 
+    public Model() {
+	distGeneListeners = new ArrayList<DistGenerationListeners>();
+	dataListeners = new ArrayList<ModelDataListener>();
+    }
+
+    /**
+     * register the listener for the model. The GUI will communicate with the
+     * model through this listener
+     * @param d
+     */
+    public void addDistGeneListeners(DistGenerationListeners d) {
+	distGeneListeners.add(d);
+    }
+    
+    public void addModelDataListeners(ModelDataListener m){
+	dataListeners.add(m);
+    }
+    
+    /**
+     * get the size of the data structure.
+     * @return
+     */
+    public int getGeneratedVariableSize(){
+	return randomVariableList.size();
+    }
+
+    /**
+     * set the file directory for the model
+     * @param s
+     */
     public void setSource(String s) {
 	source = s;
     }
 
+    /**
+     * set the name of the variable for the model
+     * @param v
+     */
     public void setVariable(String v) {
 	variableName = v;
     }
-    
-    public void setSimulationNumber(int number){
+
+    /**
+     * set the simulation number for the model
+     * @param number
+     */
+    public void setSimulationNumber(int number) {
 	simulationNumber = number;
     }
+    
+    public HashMap<String, double[]> getData(){
+	return randomVariableList;
+    }
+
 
     /**
      * 
@@ -58,12 +125,12 @@ public class Model {
      *            truncated tor
      * @return
      */
-    public Object[] fitData(double[] data,String sortby, String dataType, String lower,
-	    String upper) {
+    public Object[] fitData(double[] data, String sortby, String dataType,
+	    String lower, String upper) {
 	FitDist fitDistr = null;
 	Object[] fitDistInputs = new Object[8];
 	fitDistInputs[0] = source;
-	fitDistInputs[1] = FIT_NAME+variableName+IMAGE_POST;
+	fitDistInputs[1] = DIST_NAME + variableName + IMAGE_POST;
 	fitDistInputs[2] = data;
 	fitDistInputs[3] = simulationNumber;
 	fitDistInputs[4] = sortby;
@@ -137,22 +204,22 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-    public double[] generateRV(String distrName, double[] distrParam, String lower, String upper) {
+    public void generateRV(String distrName, double[] distrParam,
+	    String lower, String upper) {
 	MakeDist makeDistr = null;
 	Object[] makeDistInputs = new Object[7];
 	makeDistInputs[0] = source;
-	makeDistInputs[1] = MAKE_NAME+variableName+IMAGE_POST;
+	makeDistInputs[1] = DIST_NAME + variableName + IMAGE_POST;
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
-	//makeDistInputs[5] = lower;
-	//makeDistInputs[6] = upper;
+	// makeDistInputs[5] = lower;
+	// makeDistInputs[6] = upper;
 	makeDistInputs[5] = Double.parseDouble(lower); // min
 	makeDistInputs[6] = Double.parseDouble(upper); // max
-	for (int i = 0; i<7; i++){
-		System.out.println(makeDistInputs[i]);
+	for (int i = 0; i < 7; i++) {
+	    System.out.println(makeDistInputs[i]);
 	}
-
 
 	Object[] makeDistResult = null;
 	try {
@@ -162,9 +229,32 @@ public class Model {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
+	
 	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
-	return rndVars.getDoubleData();
-
+	//updates GUIs
+	onDistributionGenerated();
+	randomVariableList.put(variableName, rndVars.getDoubleData());	
+	onDataUpdates();
+    }
+    
+    private void onDistributionGenerated(){
+	for(DistGenerationListeners dgl:distGeneListeners){
+	    if(dgl.getVariable().equals(variableName)){
+		StringBuffer sb = new StringBuffer();
+		sb.append(source);
+		sb.append("\\");
+		sb.append(DIST_NAME);
+		sb.append(variableName);
+		sb.append(IMAGE_POST);
+		dgl.loadDistImage(sb.toString());
+	    }
+	}
+    }
+    
+    private void onDataUpdates(){
+	for(ModelDataListener m: dataListeners){
+	    m.modelDataUpdate(randomVariableList.size());
+	}
     }
 
 }
