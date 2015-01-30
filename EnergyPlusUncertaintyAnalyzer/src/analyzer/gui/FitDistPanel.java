@@ -15,15 +15,19 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import analyzer.listeners.FitDistListeners;
 import analyzer.model.Model;
+import analyzer.readcsv.ReadCSV;
 
-public class FitDistPanel extends JPanel {
-    
+public class FitDistPanel extends JPanel implements FitDistListeners{
+
     private final Model model;
+    private final ReadCSV reader;
     private final String variable;
 
     /*
@@ -42,8 +46,8 @@ public class FitDistPanel extends JPanel {
      */
     private final String SORT_CRITERIA_TEXT = "Sorting Criteria";
     private final String SORT_TIP = "is the likelihood function used to sort the fitted probability distribtuions."
-    	+ "Valid inputs are: NLogL - Negative Log Likelihood BIC - Bayesian Information criterion"
-    	+ "AIC - Akaike information criterion AICc";
+	    + "Valid inputs are: NLogL - Negative Log Likelihood BIC - Bayesian Information criterion"
+	    + "AIC - Akaike information criterion AICc";
     private final String DIST_TYPE_TEXT = "Distribution Type";
     private final String DIST_TIP = "dataType specifies whether to fit a 'DISCRETE' or 'CONTINUOUS' distribution";
     private final String LOWER_TEXT = "0";
@@ -67,73 +71,28 @@ public class FitDistPanel extends JPanel {
     private final JTextField upperText;
     private final JTextField csvText;
     private final JButton loadButton;
+    
+    /*
+     * Setting the TextArea for display the fitted results
+     */
+    private final JTextArea fittedResults;
+    private final String TEXT_TITLE = "Dist Result";
 
     /*
      * Setting the finish button
      */
     private final JButton doneButton;
     private final JButton refreshButton;
-    private final String DONE_TEXT = "Done";
+    private final String DONE_TEXT = "Generate RV";
     private final String REFRESH_TEXT = "Re-do";
 
-    public FitDistPanel(JTabbedPane tp, Model m,  String v) {
+    public FitDistPanel(JTabbedPane tp, Model m, String v) {
 	model = m;
+	model.addFitDistListeners(this);
+	reader = new ReadCSV();
 	parentPanel = tp;
 	variable = v;
 	this.setLayout(new BorderLayout());
-
-	fitPanel = new JPanel(new BorderLayout());
-	loadPanel = new JPanel();
-	csvText = new JTextField("Enter Your Data File Directory Here:");
-	csvText.setBorder(BorderFactory.createLoweredBevelBorder());
-	loadButton = new JButton("Load");
-	loadButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent arg0) {
-		// 1. check the file validity
-		// 2. load the csv file
-	    }
-	});
-
-	loadPanel.add(csvText);
-	loadPanel.add(loadButton);
-
-	// the the finish button
-	doneButton = new JButton(DONE_TEXT);
-	doneButton.setEnabled(false);
-	doneButton.addActionListener(new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		// 1. send the information to the model
-		// fill in the code
-		// later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// 2. disable another tab
-		parentPanel.setEnabledAt(1, false);
-	    }
-	});
-
-	doneButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
-	loadPanel.add(doneButton);
-
-	refreshButton = new JButton(REFRESH_TEXT);
-	refreshButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		// cancel the information sending
-		// fill in the code later
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// enable the other tab
-		parentPanel.setEnabledAt(1, true);
-	    }
-	});
-
-	refreshButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
-	loadPanel.add(refreshButton);
-
-	// add loadpanel to fitpanel
-	fitPanel.add(loadPanel, BorderLayout.NORTH);
-
 	/*
 	 * Setting panel set-up
 	 */
@@ -151,7 +110,7 @@ public class FitDistPanel extends JPanel {
 	settingPanel.add(sortCriteriaLabel);
 
 	// set sorting criteria combo box
-	String[] sortingList = { "BIC", "AIC" };
+	String[] sortingList = { "NLogL","BIC", "AIC","AICc"};
 	// set the default sorting criteria to BIC
 	sortCriteriaCombo = new JComboBox(sortingList);
 	sortCriteriaCombo.setSelectedIndex(0);
@@ -187,8 +146,8 @@ public class FitDistPanel extends JPanel {
 	distTypeCombo.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 	distTypeCombo.setPreferredSize(new Dimension(100, 25));
 	settingPanel.add(distTypeCombo);
-	
-	//setting the lower boundary label and text field
+
+	// setting the lower boundary label and text field
 	lowerLabel = new JLabel(LOWER_LABEL_TEXT);
 	settingPanel.add(lowerLabel);
 
@@ -197,8 +156,8 @@ public class FitDistPanel extends JPanel {
 	lowerText.setPreferredSize(new Dimension(50, 25));
 	lowerText.setToolTipText(LOWER_TIP);
 	settingPanel.add(lowerText);
-	
-	//setting the upper boundary label and text field
+
+	// setting the upper boundary label and text field
 	upperLabel = new JLabel(UPPER_LABEL_TEXT);
 	settingPanel.add(upperLabel);
 
@@ -208,6 +167,7 @@ public class FitDistPanel extends JPanel {
 	upperText.setToolTipText(UPPER_TIP);
 	settingPanel.add(upperText);
 
+	fitPanel = new JPanel(new BorderLayout());
 	fitPanel.add(settingPanel, BorderLayout.CENTER);
 	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,
@@ -215,9 +175,94 @@ public class FitDistPanel extends JPanel {
 	fitPanel.setBorder(title);
 	this.add(fitPanel, BorderLayout.NORTH);
 
+	loadPanel = new JPanel();
+
+	// the the finish button
+	doneButton = new JButton(DONE_TEXT);
+	doneButton.setEnabled(false);
+	doneButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// 1. send the information to the model
+		doneButton.setEnabled(false);
+		model.setVariable(variable);
+		model.fitData(reader.getData(),
+			(String)sortCriteriaCombo.getSelectedItem(),
+			(String)distTypeCombo.getSelectedItem(), lowerText.getText(),
+			upperText.getText());
+		// 2. disable another tab
+		doneButton.setEnabled(true);
+		parentPanel.setEnabledAt(1, false);
+	    }
+	});
+	doneButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+
+	// csv loading text field and button
+	csvText = new JTextField("Enter Your Data File Directory Here:");
+	csvText.setPreferredSize(new Dimension(250,25));
+	csvText.setBorder(BorderFactory.createLoweredBevelBorder());
+	loadButton = new JButton("Load");
+	loadButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent evt) {
+		String filePath = csvText.getText();
+		File file = new File(filePath);
+		if (!file.isFile()) {
+		    csvText.setText("This is not a valid directory!!");
+		} else {
+		    try {
+			// 2. load the csv file
+			reader.readData(filePath);
+			doneButton.setEnabled(true);
+		    } catch (Exception e) {
+			csvText.setText("This is not a .csv file!!");
+		    }
+		}
+	    }
+	});
+
+	loadPanel.add(csvText);
+	loadPanel.add(loadButton);
+	loadPanel.add(doneButton);
+
+	refreshButton = new JButton(REFRESH_TEXT);
+	refreshButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// cancel the information sending
+		// fill in the code later
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// enable the other tab
+		parentPanel.setEnabledAt(1, true);
+	    }
+	});
+
+	refreshButton.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+	loadPanel.add(refreshButton);
+
+	// add loadpanel to fitpanel
+	fitPanel.add(loadPanel, BorderLayout.NORTH);
+	
+	//JTextArea set-up for the dist results display
+	fittedResults = new JTextArea();
+	TitledBorder textAreaTitle = BorderFactory.createTitledBorder(raisedbevel,
+		TEXT_TITLE);
+	fittedResults.setBorder(textAreaTitle);
+	fittedResults.setEnabled(false);
+	this.add(fittedResults,BorderLayout.LINE_START);
+
 	// set-up the display panel
-	displayPanel = new ImageDisplayPanel(model,variable);
+	displayPanel = new ImageDisplayPanel(model, variable);
 	add(displayPanel, BorderLayout.CENTER);
     }
 
+    @Override
+    public void fitDataGenerated(StringBuffer sb) {
+	fittedResults.setText(sb.toString());
+    }
+
+    @Override
+    public String getVariable() {
+	return variable;
+    }
 }
