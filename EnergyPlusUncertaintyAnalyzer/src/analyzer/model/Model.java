@@ -29,6 +29,7 @@ public class Model {
     //record the number of the simulation to determine the size of data
     private int simulationNumber;
     
+    
     /*
      * A data structure to save generated random variables from the model.
      * The size of the double[] array is equal to the simulaitonNumber. 
@@ -47,6 +48,7 @@ public class Model {
     public Model() {
 	distGeneListeners = new ArrayList<DistGenerationListeners>();
 	dataListeners = new ArrayList<ModelDataListener>();
+	
     }
 
     /**
@@ -150,7 +152,7 @@ public class Model {
 	Object[] output = new Object[2];
 	// .getDoubleData returns double[] containing random variables
 	output[0] = rndVars.getDoubleData();
-	output[1] = fitDistResult[1];
+	output[1] = fitDistResult[1].toString(); // convert to String
 	return output;
     }
 
@@ -213,8 +215,6 @@ public class Model {
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
-	// makeDistInputs[5] = lower;
-	// makeDistInputs[6] = upper;
 	makeDistInputs[5] = Double.parseDouble(lower); // min
 	makeDistInputs[6] = Double.parseDouble(upper); // max
 	for (int i = 0; i < 7; i++) {
