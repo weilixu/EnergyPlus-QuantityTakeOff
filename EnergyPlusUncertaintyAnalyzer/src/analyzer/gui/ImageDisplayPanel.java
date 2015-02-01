@@ -23,11 +23,14 @@ public class ImageDisplayPanel extends JPanel implements DistGenerationListeners
     
     private final Model model;
     private final String variable;
+    private final JLabel imageLabel;
     
     public ImageDisplayPanel(Model m, String v){
 	setBackground(Color.WHITE);
 	model = m;
 	variable  = v;
+	imageLabel = new JLabel();
+	add(imageLabel);
 	//register the listener
 	m.addDistGeneListeners(this);
     }
@@ -42,10 +45,9 @@ public class ImageDisplayPanel extends JPanel implements DistGenerationListeners
 	    e.printStackTrace();
 	}
 	ImageIcon imageIcon = new ImageIcon(image);
-	JLabel label = new JLabel();
-	label.setIcon(imageIcon);
-	
-	add(label);
+	imageLabel.removeAll();
+	imageLabel.setIcon(imageIcon);
+
     }
 
     @Override

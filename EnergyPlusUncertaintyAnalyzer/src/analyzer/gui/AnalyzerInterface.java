@@ -91,6 +91,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private JButton simulationButton;
     private JButton createIDFButton;
+    private JButton analysisButton;
     private int number_Variable;
 
     public AnalyzerInterface(Model c, JFrame f, File file) {
@@ -264,8 +265,12 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationButton.setEnabled(false);
 	simulationButton.addActionListener(new SimulationActionListener(frame,
 		resultFolder));
+	analysisButton = new JButton("Analyze Results");
+	analysisButton.setEnabled(false);
+	
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
+	tempPanel.add(analysisButton);
 	return tempPanel;
     }
     

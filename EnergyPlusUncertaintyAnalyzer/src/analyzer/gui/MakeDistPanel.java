@@ -447,17 +447,20 @@ public class MakeDistPanel extends JPanel {
 	    public void actionPerformed(ActionEvent e) {
 		double[] distrParm = new double[1];
 		try {
+		    done.setEnabled(false);
 		    distrParm[0] = Double.parseDouble(field.getText());
 		    // disable the selection
 		    model.setVariable(variable);
 		    model.generateRV(selectBox.getSelectedItem().toString(),
 			    distrParm, lowerText.getText(), upperText.getText());
 		    // disable the other tab
+		    done.setEnabled(true);
 		    selectBox.setEnabled(false);
 		    parentPane.setEnabledAt(0, false);
 		} catch (NumberFormatException ne) {
 		    showErrorDialog(new JFrame(), "Error Found in input",
 			    "Enter Integer or Double values! e.g (100)");
+		    done.setEnabled(true);
 		}
 
 	    }
@@ -481,14 +484,17 @@ public class MakeDistPanel extends JPanel {
 		try {
 		    distrParm[0] = Double.parseDouble(field1.getText());
 		    distrParm[1] = Double.parseDouble(field2.getText());
+		    done.setEnabled(false);
 		    // disable the selection
 		    model.setVariable(variable);
 		    model.generateRV(selectBox.getSelectedItem().toString(),
 			    distrParm, lowerText.getText(), upperText.getText());
 		    // disable the other tab
+		    done.setEnabled(true);
 		    selectBox.setEnabled(false);
 		    parentPane.setEnabledAt(0, false);
 		} catch (NumberFormatException ne) {
+		    done.setEnabled(true);
 		    showErrorDialog(new JFrame(), "Error Found in input",
 			    "Enter Integer or Double values! e.g (100)");
 		}

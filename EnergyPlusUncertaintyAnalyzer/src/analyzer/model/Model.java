@@ -7,6 +7,7 @@ import java.util.List;
 import allfitdist.FitDist;
 import allmakedist.MakeDist;
 import analyzer.listeners.DistGenerationListeners;
+import analyzer.listeners.FitDistListeners;
 import analyzer.listeners.ModelDataListener;
 
 import com.mathworks.toolbox.javabuilder.MWException;
@@ -44,11 +45,17 @@ public class Model {
     private List<DistGenerationListeners> distGeneListeners;
     // listen the data from the model
     private List<ModelDataListener> dataListeners;
+    // listen the data from the model for fit distribution results
+    private List<FitDistListeners> fitDistListeners;
 
     public Model() {
 	distGeneListeners = new ArrayList<DistGenerationListeners>();
 	dataListeners = new ArrayList<ModelDataListener>();
+<<<<<<< HEAD
 	
+=======
+	fitDistListeners = new ArrayList<FitDistListeners>();
+>>>>>>> 09251998cff682476b6c213caea2a6301ccc5616
     }
 
     /**
@@ -62,6 +69,10 @@ public class Model {
     
     public void addModelDataListeners(ModelDataListener m){
 	dataListeners.add(m);
+    }
+    
+    public void addFitDistListeners(FitDistListeners f){
+	fitDistListeners.add(f);
     }
     
     /**
@@ -127,7 +138,7 @@ public class Model {
      *            truncated tor
      * @return
      */
-    public Object[] fitData(double[] data, String sortby, String dataType,
+    public void fitData(double[] data, String sortby, String dataType,
 	    String lower, String upper) {
 	FitDist fitDistr = null;
 	Object[] fitDistInputs = new Object[8];
@@ -147,13 +158,21 @@ public class Model {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-	System.out.println(fitDistResult[0]);
 	MWNumericArray rndVars = (MWNumericArray) fitDistResult[0];
 	Object[] output = new Object[2];
 	// .getDoubleData returns double[] containing random variables
 	output[0] = rndVars.getDoubleData();
+<<<<<<< HEAD
 	output[1] = fitDistResult[1].toString(); // convert to String
 	return output;
+=======
+	output[1] = fitDistResult[1];
+	
+	onDistributionGenerated();
+	onFitResultsUpdates();
+	randomVariableList.put(variableName, (double[])output[0]);	
+	onDataUpdates();
+>>>>>>> 09251998cff682476b6c213caea2a6301ccc5616
     }
 
     /**
@@ -217,9 +236,6 @@ public class Model {
 	makeDistInputs[4] = distrParam;
 	makeDistInputs[5] = Double.parseDouble(lower); // min
 	makeDistInputs[6] = Double.parseDouble(upper); // max
-	for (int i = 0; i < 7; i++) {
-	    System.out.println(makeDistInputs[i]);
-	}
 
 	Object[] makeDistResult = null;
 	try {
@@ -247,6 +263,18 @@ public class Model {
 		sb.append(variableName);
 		sb.append(IMAGE_POST);
 		dgl.loadDistImage(sb.toString());
+	    }
+	}
+    }
+    
+    private void onFitResultsUpdates(){
+	for(FitDistListeners fdl: fitDistListeners){
+	    if(fdl.getVariable().equals(variableName)){
+		StringBuffer sb = new StringBuffer();
+		sb.append("this is just a sample");
+		sb.append("\n");
+		sb.append("to demonstrate this could work!");
+		fdl.fitDataGenerated(sb);
 	    }
 	}
     }
