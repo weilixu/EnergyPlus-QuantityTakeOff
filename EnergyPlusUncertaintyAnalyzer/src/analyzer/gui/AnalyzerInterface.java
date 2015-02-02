@@ -156,9 +156,10 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		try {
 		    simulationNumber = Integer.parseInt(simulationText
 			    .getText());
-		    System.out.println(simulationNumber);
 		    core.setSimulationNumber(simulationNumber);
 		    try {
+			
+
 			// reads the file
 			idfReader.setFilePath(idfDirText.getText());
 			idfReader.readEplusFile();
@@ -171,6 +172,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			// disable the JTextfield for simulation directory and
 			// simulation number
 			// also add the actionlistener to the create IDFButton
+			
 			createIDFButton
 				.addActionListener(new CreateActionListener(
 					core, idfReader, resultFolder, simulationNumber));

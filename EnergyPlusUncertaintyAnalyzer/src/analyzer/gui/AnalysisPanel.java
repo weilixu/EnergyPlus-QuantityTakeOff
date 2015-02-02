@@ -29,14 +29,7 @@ public class AnalysisPanel extends JPanel implements GraphGenerationListener{
 	while(iterator.hasNext()){
 	    add(iterator.next());
 	}
-	
 	revalidate();
 	repaint();
-	
     }
-    
-    
-    
-    
-
 }

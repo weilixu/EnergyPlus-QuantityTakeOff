@@ -2,6 +2,7 @@ package analyzer.graphs;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import analyzer.listeners.GraphGenerationListener;
@@ -29,12 +30,12 @@ public class GraphGenerator {
     private List<GraphGenerationListener> graphListeners;
     
     public GraphGenerator(File rf, int num, String y){
+	System.out.println(y);
 	resultFolder = rf;
-	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath(),"");
+	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath()+"\\","");
 	numSimulation = num;
 	year = Integer.parseInt(y);
-	numGraph = resultAnalyzer.getVariableLength();
-	numMonths = resultAnalyzer.getKeysLength();
+
 	allCharts = new ArrayList<ChartPanel>();
 	
 	graphListeners = new ArrayList<GraphGenerationListener>();
@@ -49,6 +50,9 @@ public class GraphGenerator {
     }
     
     public void getCharts(){
+	resultAnalyzer.setHeader();
+	numGraph = resultAnalyzer.getVariableLength();
+	numMonths = resultAnalyzer.getKeysLength();
 	resultAnalyzer.setHeader();
 	resultAnalyzer.setData(numSimulation);
 	resultAnalyzer.setStartYear(year);
@@ -68,12 +72,12 @@ public class GraphGenerator {
 			double[] ci = stat.getCI(CONFIDENCE_INTERVAL);
 			lowerCI[j] = ci[0];
 			upperCI[j] = ci[1];
-			// System.out.println(Arrays.toString(ci));
+			System.out.println(Arrays.toString(ci));
 
 		}
 
 		String currentVariable = resultAnalyzer.getVariable(i);
-		// System.out.println(currentVariable);
+		System.out.println(currentVariable);
 		String title = "Mean " + currentVariable + " with "
 				+ (CONFIDENCE_INTERVAL * 100) + "% CI";
 		PlotGraph plotGraph = new PlotGraph(title, averages,
@@ -84,8 +88,7 @@ public class GraphGenerator {
 		ChartPanel chart = plotGraph.getChart();
 		allCharts.add(chart);
 	}
-	
-	
+	onUpdatedGraphGenerated();
     }
     
     private void onUpdatedGraphGenerated(){

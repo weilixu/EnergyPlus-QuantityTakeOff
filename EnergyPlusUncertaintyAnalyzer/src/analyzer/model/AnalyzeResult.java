@@ -93,7 +93,7 @@ public class AnalyzeResult {
 		// HashMap<String, ArrayList<Double[]>> data = new
 		// HashMap<String, ArrayList<Double[]>>();
 
-		for (int i = 1; i < numSim + 1; i++) {
+		for (int i = 0; i < numSim; i++) {
 			try {
 				FileReader file = new FileReader(this.source
 						+ this.idfName + i

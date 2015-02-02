@@ -176,7 +176,7 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 		    String element = "";
 		    if (temp.length > 1) {
 			element = temp[0].trim();
-			description = temp[1].trim();
+			description = temp[1].trim().substring(2);
 		    }
 
 		    // add the special character to the variableList
