@@ -10,8 +10,8 @@ public class testReadCSV {
 		ReadCSV readCSV = new ReadCSV();
 
 		String filename = "/Users/Adrian/Dropbox/testIDFJfreeChart/testCSV.csv";
-		double[] data = readCSV.readData(filename);
-		System.out.println(Arrays.toString(data));
+		//double[] data = readCSV.readData(filename);
+		//System.out.println(Arrays.toString(data));
 		
 
 	}

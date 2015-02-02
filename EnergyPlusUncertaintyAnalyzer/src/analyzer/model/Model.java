@@ -51,11 +51,8 @@ public class Model {
     public Model() {
 	distGeneListeners = new ArrayList<DistGenerationListeners>();
 	dataListeners = new ArrayList<ModelDataListener>();
-<<<<<<< HEAD
 	
-=======
 	fitDistListeners = new ArrayList<FitDistListeners>();
->>>>>>> 09251998cff682476b6c213caea2a6301ccc5616
     }
 
     /**
@@ -162,17 +159,14 @@ public class Model {
 	Object[] output = new Object[2];
 	// .getDoubleData returns double[] containing random variables
 	output[0] = rndVars.getDoubleData();
-<<<<<<< HEAD
 	output[1] = fitDistResult[1].toString(); // convert to String
-	return output;
-=======
+	//return output;
 	output[1] = fitDistResult[1];
 	
 	onDistributionGenerated();
 	onFitResultsUpdates();
 	randomVariableList.put(variableName, (double[])output[0]);	
 	onDataUpdates();
->>>>>>> 09251998cff682476b6c213caea2a6301ccc5616
     }
 
     /**

@@ -37,10 +37,10 @@ public class testModel {
 		distrParam[0] = 0; // mean
 		distrParam[1] = 1;
 
-		double[] makeDistOutput = model.generateRV("NORMAL",
-				distrParam, "-3", "3");
-		System.out.println("RV for 1 parameter dist:");
-		System.out.println(Arrays.toString(makeDistOutput));
+		//double[] makeDistOutput = model.generateRV("NORMAL",
+		//		distrParam, "-3", "3");
+		//System.out.println("RV for 1 parameter dist:");
+		//System.out.println(Arrays.toString(makeDistOutput));
 		
 //		// example usage of generateRV to generate 2 parameter Distribution
 //		Model model2 = new Model();
