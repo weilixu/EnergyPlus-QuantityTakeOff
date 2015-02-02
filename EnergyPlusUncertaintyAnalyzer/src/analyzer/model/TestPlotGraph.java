@@ -11,7 +11,7 @@ public class TestPlotGraph {
 
 	public static void main(String[] args) {
 
-		String source = "C://Users//Weili//weilixu//testIDFJfreeChart//";
+		String source = "/Users/Adrian/Dropbox/testIDFJfreeChart/";
 		String idfName = "One_Montgomery_Plaza";
 		AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName);
 		// plot all graphs
