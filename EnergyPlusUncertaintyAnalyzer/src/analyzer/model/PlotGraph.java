@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import javax.swing.JPanel;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,17 +24,23 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 public class PlotGraph extends ApplicationFrame {
+    private JFreeChart chart;
+    
 
 	public PlotGraph(String title, double[] mean, double[] lower,
 			double[] upper, String month, int numMonths, int year) {
 		super(title);
 		XYDataset dataset = createDataset(mean, lower, upper, month,
 				numMonths, year);
-		JFreeChart chart = createChart(dataset);
+		chart = createChart(dataset);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(560, 370));
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);
+	}
+	
+	public JFreeChart getChart(){
+	    return chart;
 	}
 
 	private XYDataset createDataset(double[] mean, double[] lower,
@@ -77,5 +85,7 @@ public class PlotGraph extends ApplicationFrame {
 				"Time [Month]", "Energy Consumption [J]",
 				dataset, true, false, false);
 	}
+	
+	
 
 }
