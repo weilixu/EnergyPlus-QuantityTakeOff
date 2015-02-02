@@ -514,6 +514,8 @@ public class MakeDistPanel extends JPanel {
 		selectBox.setEnabled(true);
 		// enable the other tab
 		parentPane.setEnabledAt(0, true);
+		model.setVariable(variable);
+		model.refreshGeneration();
 	    }
 	});
 	return refresh;

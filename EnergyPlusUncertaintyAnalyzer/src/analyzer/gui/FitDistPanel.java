@@ -1,6 +1,7 @@
 package analyzer.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -234,6 +235,8 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// enable the other tab
 		parentPanel.setEnabledAt(1, true);
+		model.setVariable(variable);
+		model.refreshGeneration();
 	    }
 	});
 
@@ -245,7 +248,7 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 	
 	//JTextArea set-up for the dist results display
 	fittedResults = new JTextArea();
-	TitledBorder textAreaTitle = BorderFactory.createTitledBorder(raisedbevel,
+	TitledBorder textAreaTitle = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),
 		TEXT_TITLE);
 	fittedResults.setBorder(textAreaTitle);
 	fittedResults.setEnabled(false);
