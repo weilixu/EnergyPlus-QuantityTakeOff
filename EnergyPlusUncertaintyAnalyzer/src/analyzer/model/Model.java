@@ -167,21 +167,14 @@ public class Model {
 	}
 	MWNumericArray rndVars = (MWNumericArray) fitDistResult[0];
 	Object[] output = new Object[2];
-	// .getDoubleData returns double[] containing random variables
-	output[0] = rndVars.getDoubleData();
 
 	output[1] = fitDistResult[1].toString(); // convert to String
 	// return output;
-
-	output[1] = fitDistResult[1].toString(); // convert to String
-	// return output;
-
-	output[1] = fitDistResult[1];
 
 	onDistributionGenerated();
 	onFitResultsUpdates();
 	onVariableEnabled();
-	randomVariableList.put(variableName, (double[]) output[0]);
+	randomVariableList.put(variableName, rndVars.getDoubleData());
 	onDataUpdates();
     }
 
