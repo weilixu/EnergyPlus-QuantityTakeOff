@@ -1,8 +1,9 @@
 package analyzer.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.math3.distribution.TDistribution;
+import org.jfree.chart.JFreeChart;
 import org.jfree.ui.RefineryUtilities;
 
 public class TestPlotGraph {
@@ -16,12 +17,13 @@ public class TestPlotGraph {
 		int numSimulation = 4;
 		analyzeResult.setHeader();
 		analyzeResult.setData(numSimulation);
-		// analyzeResult.setStartYear(2013);
+		 analyzeResult.setStartYear(2013);
 		double confidenceLevel = 0.95;
 		int numVars = analyzeResult.getVariableLength();
 		int numMonths = analyzeResult.getKeysLength();
 		int startYear = analyzeResult.getStartYear();
 		String startMonth = analyzeResult.getKey(0);
+		List<JFreeChart> allCharts = new ArrayList<JFreeChart>();
 		for (int i = 0; i < numVars; i++) {
 			double[] averages = new double[numMonths];
 			double[] lowerCI = new double[numMonths];
@@ -37,21 +39,31 @@ public class TestPlotGraph {
 				double[] ci = stat.getCI(confidenceLevel);
 				lowerCI[j] = ci[0];
 				upperCI[j] = ci[1];
-//				System.out.println(Arrays.toString(ci));
+				// System.out.println(Arrays.toString(ci));
 
 			}
 
 			String currentVariable = analyzeResult.getVariable(i);
-//			System.out.println(currentVariable);
+			// System.out.println(currentVariable);
 			String title = "Mean " + currentVariable + " with "
 					+ (confidenceLevel * 100) + "% CI";
 			PlotGraph plotGraph = new PlotGraph(title, averages,
 					lowerCI, upperCI, startMonth,
 					numMonths, startYear);
+
 			plotGraph.pack();
 			RefineryUtilities.positionFrameRandomly(plotGraph);
 			plotGraph.setVisible(true);
+			
+			JFreeChart chart = plotGraph.getChart();
+			allCharts.add(chart);
+
 		}
+		
+
+		
+
+		
 
 	}
 }
