@@ -23,9 +23,11 @@ import org.jfree.ui.RefineryUtilities;
 
 public class PlotGraph extends ApplicationFrame {
 
-	public PlotGraph(String title, double[] data, String month, int numMonths, int year) {
+	public PlotGraph(String title, double[] mean, double[] lower,
+			double[] upper, String month, int numMonths, int year) {
 		super(title);
-		XYDataset dataset = createDataset(data, month, numMonths, year);
+		XYDataset dataset = createDataset(mean, lower, upper, month,
+				numMonths, year);
 		JFreeChart chart = createChart(dataset);
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(560, 370));
@@ -33,39 +35,47 @@ public class PlotGraph extends ApplicationFrame {
 		setContentPane(chartPanel);
 	}
 
-	private XYDataset createDataset(double[] data, String month, int numMonths, int year) {
-		TimeSeries series = new TimeSeries("Random Data");
+	private XYDataset createDataset(double[] mean, double[] lower,
+			double[] upper, String month, int numMonths, int year) {
 		
+		TimeSeries tsLower = new TimeSeries("lower");
+		TimeSeries tsUpper = new TimeSeries("upper");
+		TimeSeries series = new TimeSeries("mean");
+
 		Calendar cal = Calendar.getInstance();
 		Month current = null;
 
 		try {
 			cal.setTime(new SimpleDateFormat("MMM").parse(month));
-			int monthInt = cal.get(Calendar.MONTH)+1;
+			int monthInt = cal.get(Calendar.MONTH) + 1;
 			current = new Month(monthInt, year);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		
+
 		for (int i = 0; i < numMonths; i++) {
 			try {
-				double value = data[i];						
-				series.add(current, value);
+				series.add(current, mean[i]);
+				tsLower.add(current,lower[i]);
+				tsUpper.add(current, upper[i]);
 				current = (Month) current.next();
 			} catch (SeriesException e) {
 				System.err.println("Error adding to series");
 			}
-			
+
 		}
-		return new TimeSeriesCollection(series);
+		TimeSeriesCollection allDataSets = new TimeSeriesCollection();
+		allDataSets.addSeries(series);
+		allDataSets.addSeries(tsLower);
+		allDataSets.addSeries(tsUpper);
+		return allDataSets;
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
 		return ChartFactory.createTimeSeriesChart(getTitle(),
-				"Time [Month]", "Energy Consumption [J]", dataset, false,
-				false, false);
+				"Time [Month]", "Energy Consumption [J]",
+				dataset, true, false, false);
 	}
-	
+
 }
