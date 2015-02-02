@@ -52,6 +52,7 @@ public class MakeDistPanel extends JPanel {
     private final String UPPER_TIP = "upper bound where the generated random variables will be truncated to";
     private final String LOWER_LABEL_TEXT = "Lower";
     private final String UPPER_LABEL_TEXT = "Upper";
+    private final String VARIABLE_SET;
 
     // distributions
     private final String EXPONENTIAL = "Exponential";
@@ -89,10 +90,11 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, Model m, String v) {
+    public MakeDistPanel(JTabbedPane tp, Model m, String v,String s) {
 	model = m;
 	parentPane = tp;
 	variable = v;
+	VARIABLE_SET = s;
 	setLayout(new BorderLayout());
 
 	/*
@@ -101,7 +103,7 @@ public class MakeDistPanel extends JPanel {
 	selectDistPanel = new JPanel(new BorderLayout());
 	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,
-		"Setting");
+		VARIABLE_SET);
 	selectDistPanel.setBorder(title);
 
 	/*

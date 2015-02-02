@@ -11,7 +11,7 @@ public interface FitDistListeners {
      * update when the data is fitted
      * @param sb
      */
-    public void fitDataGenerated(StringBuffer sb);
+    public void fitDataGenerated(String sb);
     
     /**
      * get the variable name from the model

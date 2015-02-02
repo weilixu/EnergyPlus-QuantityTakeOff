@@ -3,6 +3,7 @@ package analyzer.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.ui.RefineryUtilities;
 
@@ -51,13 +52,9 @@ public class TestPlotGraph {
 					lowerCI, upperCI, startMonth,
 					numMonths, startYear);
 
-			plotGraph.pack();
-			RefineryUtilities.positionFrameRandomly(plotGraph);
-			plotGraph.setVisible(true);
 			
-			JFreeChart chart = plotGraph.getChart();
+			ChartPanel chart = plotGraph.getChart();
 			allCharts.add(chart);
-
 		}
 		
 

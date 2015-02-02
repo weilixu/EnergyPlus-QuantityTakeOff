@@ -57,6 +57,7 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
     private final String UPPER_TIP = "upper bound where the generated random variables will be truncated to";
     private final String LOWER_LABEL_TEXT = "Lower";
     private final String UPPER_LABEL_TEXT = "Upper";
+    private final String VARIABLE_SET;
 
     /*
      * Setting the comboboxes/text fields for distribution generation
@@ -87,12 +88,13 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
     private final String DONE_TEXT = "Generate RV";
     private final String REFRESH_TEXT = "Re-do";
 
-    public FitDistPanel(JTabbedPane tp, Model m, String v) {
+    public FitDistPanel(JTabbedPane tp, Model m, String v, String s) {
 	model = m;
 	model.addFitDistListeners(this);
 	reader = new ReadCSV();
 	parentPanel = tp;
 	variable = v;
+	VARIABLE_SET = s;
 	this.setLayout(new BorderLayout());
 	/*
 	 * Setting panel set-up
@@ -172,7 +174,7 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 	fitPanel.add(settingPanel, BorderLayout.CENTER);
 	Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 	TitledBorder title = BorderFactory.createTitledBorder(raisedbevel,
-		"Setting");
+		VARIABLE_SET);
 	fitPanel.setBorder(title);
 	this.add(fitPanel, BorderLayout.NORTH);
 
@@ -260,8 +262,8 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
     }
 
     @Override
-    public void fitDataGenerated(StringBuffer sb) {
-	fittedResults.setText(sb.toString());
+    public void fitDataGenerated(String sb) {
+	fittedResults.setText(sb);
     }
 
     @Override
