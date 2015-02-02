@@ -51,7 +51,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      * All Menu Items
      */
     private final JMenuItem loadMenus;
-    private final JMenuItem dataAnalysisSwitcherMenus;
 
     /*
      * initial set-up variables
@@ -69,6 +68,9 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     // contains the text field specify the number of simulations
     private final JPanel inputPanel;
     private final JPanel simulationPanel;
+    
+    private final AnalysisPanel analysisPanel;
+    private final JPanel analysisBottomPanel;
 
     /*
      * Eplus File
@@ -93,6 +95,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private JButton simulationButton;
     private JButton createIDFButton;
     private JButton analysisButton;
+    private JButton variableButton;
     private int number_Variable;
 
     public AnalyzerInterface(Model c, JFrame f, File file) {
@@ -125,14 +128,15 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// outerPanel.add(fileLabel, BorderLayout.NORTH);
 
 	variablePane = new VariablePanel(core, eplusFile);
-	innerPanel = variablePane;
-	outerPanel.add(innerPanel, BorderLayout.CENTER);
+	innerPanel = new JPanel(new BorderLayout());
+	innerPanel.add(variablePane, BorderLayout.CENTER);
 
 	// Add the simulation Panel to the outer panel
 	simulationPanel = initSimulationPanel();
 	simulationPanel.setBackground(Color.WHITE);
-	outerPanel.add(simulationPanel, BorderLayout.PAGE_END);
+	innerPanel.add(simulationPanel, BorderLayout.PAGE_END);
 
+	outerPanel.add(innerPanel, BorderLayout.CENTER);
 	frame.add(outerPanel);
 
 	// set up an menu
@@ -179,16 +183,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	});
 	setting.add(loadMenus);
 
-	dataAnalysisSwitcherMenus = new JMenuItem(MENU_SWITCH);
-	dataAnalysisSwitcherMenus.setMnemonic(KeyEvent.VK_D);
-	dataAnalysisSwitcherMenus.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent event) {
-		// switch to data analysis interface;
-	    }
-	});
-	setting.add(dataAnalysisSwitcherMenus);
-
 	// add the separator to divide the data inputs and frame function
 	setting.addSeparator();
 
@@ -202,6 +196,10 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	setting.add(exitMenuItem);
+	
+	//Initialize the analysis panel
+	analysisPanel = new AnalysisPanel(resultFolder);
+	analysisBottomPanel = initializeAnalysisBottomPanel();
 
 	// add menubar
 	settingMenuBar.add(setting);
@@ -276,12 +274,41 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationButton.addActionListener(new SimulationActionListener(frame,
 		resultFolder));
 	analysisButton = new JButton("Analyze Results");
-	analysisButton.setEnabled(false);
+	//analysisButton.setEnabled(false);
+	analysisButton.addActionListener(new ActionListener(){
 
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		innerPanel.removeAll();
+		innerPanel.add(analysisPanel,BorderLayout.CENTER);
+		innerPanel.add(analysisBottomPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	    
+	});
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
 	tempPanel.add(analysisButton);
 	return tempPanel;
+    }
+    
+    private JPanel initializeAnalysisBottomPanel(){
+	JPanel temp = new JPanel();
+	variableButton = new JButton("Variable Setting");
+	variableButton.addActionListener(new ActionListener(){
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		innerPanel.add(variablePane, BorderLayout.CENTER);
+		innerPanel.add(simulationPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	temp.add(variableButton);
+	return temp;
     }
 
     /**

@@ -72,7 +72,7 @@ public class VariablePanel extends JPanel {
 	for (int i = 0; i < variableList.size(); i++) {
 	    enabledFlags[i]=true;
 	    String s = variableList.get(i);
-	    JTabbedPane vbtnTP = fitPanel(s);
+	    JTabbedPane vbtnTP = fitPanel(s, variableDescription.get(i));
 	    fittingPanel.add(vbtnTP, s);
 
 	    listModel.addElement(s);
@@ -115,14 +115,7 @@ public class VariablePanel extends JPanel {
 	selectPanel.setBorder(title);
 
 	listModel = new DefaultListModel<String>();
-	variablesList = new JList(listModel) {
-	    public String getToolTipText(MouseEvent evt) {
-		int index = locationToIndex(evt.getPoint());
-		return "From Object: " + variableList.get(index)
-			+ " Input Information: "
-			+ variableDescription.get(index);
-	    }
-	};
+	variablesList = new JList(listModel);
 	variablesList.setFont(new Font("Times New Roman Bold", Font.ITALIC, 20));
 	variablesList.setCellRenderer(new DiabledItemListCellRenderer());
     }
@@ -131,12 +124,12 @@ public class VariablePanel extends JPanel {
     // once one pane is selected and inputs is complete
     // user can hit the done button to process the data
     // a inputs checking mechanism is required to be complete in the future
-    private JTabbedPane fitPanel(String variableName) {
+    private JTabbedPane fitPanel(String variableName, String setting) {
 	JTabbedPane tp = new JTabbedPane();
 	model.setSource(parentFile.getAbsolutePath());
-	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName));// index
+	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,setting));// index
 									     // 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, variableName));// index
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, variableName,setting));// index
 									       // 1
 	return tp;
     }

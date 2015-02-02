@@ -36,6 +36,7 @@ public class Model {
      * stands for the variableName
      */
     private static HashMap<String, double[]> randomVariableList = new HashMap<String, double[]>();
+    private String distSummary;
 
     /*
      * Add all the listeners from GUI
@@ -51,6 +52,7 @@ public class Model {
 	distGeneListeners = new ArrayList<DistGenerationListeners>();
 	dataListeners = new ArrayList<ModelDataListener>();
 	fitDistListeners = new ArrayList<FitDistListeners>();
+	distSummary = "";
     }
 
     /**
@@ -168,8 +170,8 @@ public class Model {
 	MWNumericArray rndVars = (MWNumericArray) fitDistResult[0];
 	Object[] output = new Object[2];
 
-	output[1] = fitDistResult[1].toString(); // convert to String
-	// return output;
+	distSummary= fitDistResult[1].toString(); // convert to String
+	editDistSummary();
 
 	onDistributionGenerated();
 	onFitResultsUpdates();
@@ -256,6 +258,23 @@ public class Model {
 	randomVariableList.put(variableName, rndVars.getDoubleData());
 	onDataUpdates();
     }
+    
+    private void editDistSummary(){
+	String[] distString = null;
+	if(distSummary!=null){
+	    distString = distSummary.split("   ");
+	}
+	
+	StringBuffer temp = new StringBuffer();
+	for(int i=0; i<distString.length; i++){
+	    if(!distString[i].isEmpty()){
+		temp.append(distString[i].trim());
+		temp.append("\n");
+	    }
+	}
+	distSummary = temp.toString();
+	
+    }
 
     private void onDistributionGenerated() {
 	for (DistGenerationListeners dgl : distGeneListeners) {
@@ -274,11 +293,7 @@ public class Model {
     private void onFitResultsUpdates() {
 	for (FitDistListeners fdl : fitDistListeners) {
 	    if (fdl.getVariable().equals(variableName)) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("this is just a sample");
-		sb.append("\n");
-		sb.append("to demonstrate this could work!");
-		fdl.fitDataGenerated(sb);
+		fdl.fitDataGenerated(distSummary);
 	    }
 	}
     }

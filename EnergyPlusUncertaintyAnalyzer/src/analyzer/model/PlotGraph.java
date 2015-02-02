@@ -17,22 +17,23 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.ApplicationFrame;
 
-public class PlotGraph extends ApplicationFrame {
-    private JFreeChart chart;
+public class PlotGraph {
+    private ChartPanel chart;
+    private String title;
 
-	public PlotGraph(String title, double[] mean, double[] lower,
+	public PlotGraph(String t, double[] mean, double[] lower,
 			double[] upper, String month, int numMonths, int year) {
-		super(title);
+		title = t;
 		XYDataset dataset = createDataset(mean, lower, upper, month,
 				numMonths, year);
-		chart = createChart(dataset);
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(560, 370));
-		chartPanel.setMouseZoomable(true, false);
-		setContentPane(chartPanel);
+		JFreeChart jChart = createChart(dataset);
+		chart = new ChartPanel(jChart);
+		chart.setPreferredSize(new java.awt.Dimension(560, 370));
+		chart.setMouseZoomable(true, false);
+		
 	}
 	
-	public JFreeChart getChart(){
+	public ChartPanel getChart(){
 	    return chart;
 	}
 
@@ -74,8 +75,8 @@ public class PlotGraph extends ApplicationFrame {
 	}
 
 	private JFreeChart createChart(XYDataset dataset) {
-		return ChartFactory.createTimeSeriesChart(getTitle(),
-				"Time [Month]", "Energy Consumption [J]",
+		return ChartFactory.createTimeSeriesChart(title,
+				"Time [Month]", "Energy [kWh]",
 				dataset, true, false, false);
 	}
 

@@ -479,9 +479,9 @@ public class IdfReader implements EnergyPlusFilesGenerator {
     private void onReadEplusFile() {
 	ArrayList<String> variableInfo = new ArrayList<String>();
 	for (String[] sList : variableKeySets) {
-	    StringBuffer sb = new StringBuffer("From: ");
+	    StringBuffer sb = new StringBuffer("SETTINGS FOR: ");
 	    sb.append(sList[ObjectNameIndex]);
-	    sb.append(", Input: ");
+	    sb.append(";    INPUT: ");
 	    sb.append(sList[ObjectInputDescriptionIndex]);
 	    variableInfo.add(sb.toString());
 	}
