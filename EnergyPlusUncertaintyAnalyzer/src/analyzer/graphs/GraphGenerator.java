@@ -28,11 +28,11 @@ public class GraphGenerator {
     
     private List<GraphGenerationListener> graphListeners;
     
-    public GraphGenerator(File rf, int num, int y){
+    public GraphGenerator(File rf, int num, String y){
 	resultFolder = rf;
 	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath(),"");
 	numSimulation = num;
-	year = y;
+	year = Integer.parseInt(y);
 	numGraph = resultAnalyzer.getVariableLength();
 	numMonths = resultAnalyzer.getKeysLength();
 	allCharts = new ArrayList<ChartPanel>();

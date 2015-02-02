@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
 import analyzer.eplus.IdfReader;
+import analyzer.graphs.GraphGenerator;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.ModelDataListener;
 import analyzer.model.Model;
@@ -38,6 +39,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private final Model core;
     private final IdfReader idfReader;
+    private GraphGenerator graphs;
 
     /*
      * All text of menu bar
@@ -68,7 +70,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     // contains the text field specify the number of simulations
     private final JPanel inputPanel;
     private final JPanel simulationPanel;
-    
+
     private final AnalysisPanel analysisPanel;
     private final JPanel analysisBottomPanel;
 
@@ -150,23 +152,28 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	loadMenus.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent event) {
+		Integer simulationNumber = null;
 		try {
-		    core.setSimulationNumber(Integer.parseInt(simulationText
-			    .getText()));
+		    simulationNumber = Integer.parseInt(simulationText
+			    .getText());
+		    System.out.println(simulationNumber);
+		    core.setSimulationNumber(simulationNumber);
 		    try {
 			// reads the file
 			idfReader.setFilePath(idfDirText.getText());
 			idfReader.readEplusFile();
+			
+			//initialize the graphs object for later graph generation
+			graphs = new GraphGenerator(resultFolder,
+				simulationNumber, idfReader.getValue(
+					"RunPeriod", "Start Year"));
 			// after read set the simulaiton number of the model
-
 			// disable the JTextfield for simulation directory and
 			// simulation number
 			// also add the actionlistener to the create IDFButton
 			createIDFButton
 				.addActionListener(new CreateActionListener(
-					core, idfReader, resultFolder, Integer
-						.parseInt(simulationText
-							.getText())));
+					core, idfReader, resultFolder, simulationNumber));
 			simulationText.setEnabled(false);
 			idfDirText.setEnabled(false);
 		    } catch (IOException e) {
@@ -196,8 +203,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	setting.add(exitMenuItem);
-	
-	//Initialize the analysis panel
+
+	// Initialize the analysis panel
 	analysisPanel = new AnalysisPanel(resultFolder);
 	analysisBottomPanel = initializeAnalysisBottomPanel();
 
@@ -228,7 +235,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    simulationButton.setEnabled(true);
 	}
     }
-    
+
     @Override
     public void variableEnabled(String variable) {
 	variablePane.changeFlagState(variable);
@@ -274,29 +281,31 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationButton.addActionListener(new SimulationActionListener(frame,
 		resultFolder));
 	analysisButton = new JButton("Analyze Results");
-	//analysisButton.setEnabled(false);
-	analysisButton.addActionListener(new ActionListener(){
+	// analysisButton.setEnabled(false);
+	analysisButton.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		innerPanel.removeAll();
-		innerPanel.add(analysisPanel,BorderLayout.CENTER);
+		graphs.addGraphGenerationListener(analysisPanel);
+		graphs.getCharts();
+		innerPanel.add(analysisPanel, BorderLayout.CENTER);
 		innerPanel.add(analysisBottomPanel, BorderLayout.PAGE_END);
 		innerPanel.revalidate();
 		innerPanel.repaint();
 	    }
-	    
+
 	});
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
 	tempPanel.add(analysisButton);
 	return tempPanel;
     }
-    
-    private JPanel initializeAnalysisBottomPanel(){
+
+    private JPanel initializeAnalysisBottomPanel() {
 	JPanel temp = new JPanel();
 	variableButton = new JButton("Variable Setting");
-	variableButton.addActionListener(new ActionListener(){
+	variableButton.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {

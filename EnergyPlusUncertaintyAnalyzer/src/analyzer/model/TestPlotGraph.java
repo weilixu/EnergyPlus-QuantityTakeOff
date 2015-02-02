@@ -54,7 +54,7 @@ public class TestPlotGraph {
 
 			
 			ChartPanel chart = plotGraph.getChart();
-			allCharts.add(chart);
+			//allCharts.add(chart);
 		}
 		
 
