@@ -27,17 +27,16 @@ public class Model {
     private String source;
     // String for the variable name
     private String variableName;
-    //record the number of the simulation to determine the size of data
+    // record the number of the simulation to determine the size of data
     private int simulationNumber;
-    
-    
+
     /*
-     * A data structure to save generated random variables from the model.
-     * The size of the double[] array is equal to the simulaitonNumber. 
-     * String stands for the variableName
+     * A data structure to save generated random variables from the model. The
+     * size of the double[] array is equal to the simulaitonNumber. String
+     * stands for the variableName
      */
     private static HashMap<String, double[]> randomVariableList = new HashMap<String, double[]>();
-    
+
     /*
      * Add all the listeners from GUI
      */
@@ -57,30 +56,33 @@ public class Model {
     /**
      * register the listener for the model. The GUI will communicate with the
      * model through this listener
+     * 
      * @param d
      */
     public void addDistGeneListeners(DistGenerationListeners d) {
 	distGeneListeners.add(d);
     }
-    
-    public void addModelDataListeners(ModelDataListener m){
+
+    public void addModelDataListeners(ModelDataListener m) {
 	dataListeners.add(m);
     }
-    
-    public void addFitDistListeners(FitDistListeners f){
+
+    public void addFitDistListeners(FitDistListeners f) {
 	fitDistListeners.add(f);
     }
-    
+
     /**
      * get the size of the data structure.
+     * 
      * @return
      */
-    public int getGeneratedVariableSize(){
+    public int getGeneratedVariableSize() {
 	return randomVariableList.size();
     }
 
     /**
      * set the file directory for the model
+     * 
      * @param s
      */
     public void setSource(String s) {
@@ -89,6 +91,7 @@ public class Model {
 
     /**
      * set the name of the variable for the model
+     * 
      * @param v
      */
     public void setVariable(String v) {
@@ -97,16 +100,24 @@ public class Model {
 
     /**
      * set the simulation number for the model
+     * 
      * @param number
      */
     public void setSimulationNumber(int number) {
 	simulationNumber = number;
     }
-    
-    public HashMap<String, double[]> getData(){
+
+    public HashMap<String, double[]> getData() {
 	return randomVariableList;
     }
 
+    /**
+     * currently only work for re-do option when user enter re-do, model tells
+     * GUI that the option should reopen
+     */
+    public void refreshGeneration() {
+	onVariableEnabled();
+    }
 
     /**
      * 
@@ -160,16 +171,17 @@ public class Model {
 	output[0] = rndVars.getDoubleData();
 
 	output[1] = fitDistResult[1].toString(); // convert to String
-	//return output;
+	// return output;
 
 	output[1] = fitDistResult[1].toString(); // convert to String
-	//return output;
+	// return output;
 
 	output[1] = fitDistResult[1];
-	
+
 	onDistributionGenerated();
 	onFitResultsUpdates();
-	randomVariableList.put(variableName, (double[])output[0]);	
+	onVariableEnabled();
+	randomVariableList.put(variableName, (double[]) output[0]);
 	onDataUpdates();
     }
 
@@ -223,8 +235,8 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-    public void generateRV(String distrName, double[] distrParam,
-	    String lower, String upper) {
+    public void generateRV(String distrName, double[] distrParam, String lower,
+	    String upper) {
 	MakeDist makeDistr = null;
 	Object[] makeDistInputs = new Object[7];
 	makeDistInputs[0] = source;
@@ -243,17 +255,18 @@ public class Model {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-	
+
 	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
-	//updates GUIs
+	// updates GUIs
 	onDistributionGenerated();
-	randomVariableList.put(variableName, rndVars.getDoubleData());	
+	onVariableEnabled();
+	randomVariableList.put(variableName, rndVars.getDoubleData());
 	onDataUpdates();
     }
-    
-    private void onDistributionGenerated(){
-	for(DistGenerationListeners dgl:distGeneListeners){
-	    if(dgl.getVariable().equals(variableName)){
+
+    private void onDistributionGenerated() {
+	for (DistGenerationListeners dgl : distGeneListeners) {
+	    if (dgl.getVariable().equals(variableName)) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(source);
 		sb.append("\\");
@@ -264,10 +277,10 @@ public class Model {
 	    }
 	}
     }
-    
-    private void onFitResultsUpdates(){
-	for(FitDistListeners fdl: fitDistListeners){
-	    if(fdl.getVariable().equals(variableName)){
+
+    private void onFitResultsUpdates() {
+	for (FitDistListeners fdl : fitDistListeners) {
+	    if (fdl.getVariable().equals(variableName)) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("this is just a sample");
 		sb.append("\n");
@@ -276,10 +289,16 @@ public class Model {
 	    }
 	}
     }
-    
-    private void onDataUpdates(){
-	for(ModelDataListener m: dataListeners){
+
+    private void onDataUpdates() {
+	for (ModelDataListener m : dataListeners) {
 	    m.modelDataUpdate(randomVariableList.size());
+	}
+    }
+
+    private void onVariableEnabled() {
+	for (ModelDataListener m : dataListeners) {
+	    m.variableEnabled(variableName);
 	}
     }
 }

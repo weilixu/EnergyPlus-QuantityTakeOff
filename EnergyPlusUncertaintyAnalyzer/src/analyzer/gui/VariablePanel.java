@@ -2,23 +2,26 @@ package analyzer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import analyzer.model.Model;
 
@@ -33,56 +36,67 @@ public class VariablePanel extends JPanel {
     // fitting panel
     private final JPanel fittingPanel;
     // variable selection panel
-    private final JPanel selectPanel;
-    //contains the text field specify the number of simulations
+    private JPanel selectPanel;
+    // contains the text field specify the number of simulations
     private JPanel simulationPanel;
     private File eplusFile;
     private File parentFile;
 
-    private JPanel variableSelectPanel = new JPanel();
+    // all about the JList
+    private final String VARIABLE_LABEL = "Variables";
+    private JList<String> variablesList;
+    private DefaultListModel<String> listModel;
+    private JScrollPane listScroll;
+    private boolean[] enabledFlags;
     
+    // the data retrieve from the model
+    private ArrayList<String> variableList;
+    private ArrayList<String> variableDescription;
+
     public VariablePanel(Model m, File file) {
 	model = m;
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
-	selectPanel = new JPanel();
-	selectPanel.setLayout(new BorderLayout());
 	eplusFile = file;
 	parentFile = eplusFile.getParentFile();
+	initSelectionPanel();
 	initPanel();
     }
 
-    public void changeVariables(ArrayList<String> variableList, ArrayList<String> variableInfo) {
-
-	variableSelectPanel = new JPanel();
-	variableSelectPanel.setLayout(new GridLayout(variableList.size(), 0));
-	
-	//adding tabbedpanes and buttons to the panel
-	for (int i = 0; i<variableList.size(); i++) {
+    public void changeVariables(ArrayList<String> vl, ArrayList<String> vi) {
+	variableList = vl;
+	variableDescription = vi;
+	//set all the variables enabled
+	enabledFlags = new boolean[variableList.size()];
+	// adding tabbedpanes and buttons to the panel
+	for (int i = 0; i < variableList.size(); i++) {
+	    enabledFlags[i]=true;
 	    String s = variableList.get(i);
 	    JTabbedPane vbtnTP = fitPanel(s);
 	    fittingPanel.add(vbtnTP, s);
 
-	    JButton vbtn = new JButton(s);
-	    vbtn.setToolTipText(variableInfo.get(i));
-	    vbtn.addActionListener(new ActionListener() {
+	    listModel.addElement(s);
+	    variablesList.addListSelectionListener(new ListSelectionListener() {
+
 		@Override
-		public void actionPerformed(ActionEvent e) {
-		    CardLayout cardLayout = (CardLayout)(fittingPanel.getLayout());
-		    if(e.getSource()==vbtn){
-			cardLayout.show(fittingPanel, s);
+		public void valueChanged(ListSelectionEvent evt) {
+		    CardLayout cardLayout = (CardLayout) (fittingPanel
+			    .getLayout());
+		    String selection = variablesList.getSelectedValue()
+			    .toString();
+		    if (selection.equals(s)) {
+			cardLayout.show(fittingPanel, selection);
 		    }
 		}
 	    });
-	    variableSelectPanel.add(vbtn);
 	}
 	// tabbedpanels
 	add(fittingPanel, BorderLayout.CENTER);
 	// revalidate();
 	// repaint();
 
-	selectPanel.removeAll();
-	selectPanel.add(variableSelectPanel, BorderLayout.CENTER);
+	listScroll = new JScrollPane(variablesList);
+	selectPanel.add(listScroll, BorderLayout.CENTER);
 
     }
 
@@ -92,6 +106,27 @@ public class VariablePanel extends JPanel {
 	add(fittingPanel, BorderLayout.CENTER);
     }
 
+    private void initSelectionPanel() {	
+	selectPanel = new JPanel(new BorderLayout());
+	
+	TitledBorder title = BorderFactory.createTitledBorder(
+		BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Variables");
+	title.setTitleJustification(TitledBorder.RIGHT);
+	selectPanel.setBorder(title);
+
+	listModel = new DefaultListModel<String>();
+	variablesList = new JList(listModel) {
+	    public String getToolTipText(MouseEvent evt) {
+		int index = locationToIndex(evt.getPoint());
+		return "From Object: " + variableList.get(index)
+			+ " Input Information: "
+			+ variableDescription.get(index);
+	    }
+	};
+	variablesList.setFont(new Font("Times New Roman Bold", Font.ITALIC, 20));
+	variablesList.setCellRenderer(new DiabledItemListCellRenderer());
+    }
+
     // a JTabbedPane to represents two fitting method
     // once one pane is selected and inputs is complete
     // user can hit the done button to process the data
@@ -99,9 +134,44 @@ public class VariablePanel extends JPanel {
     private JTabbedPane fitPanel(String variableName) {
 	JTabbedPane tp = new JTabbedPane();
 	model.setSource(parentFile.getAbsolutePath());
-	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp,model,variableName));// index 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp,model,variableName));// index 1
-
+	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName));// index
+									     // 0
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, variableName));// index
+									       // 1
 	return tp;
+    }
+    
+    //change the state of the flag
+    public void changeFlagState(String variable){
+	int index = variableList.indexOf(variable);
+	if(enabledFlags[index]==true){
+	    enabledFlags[index] = false;
+	}else{
+	    enabledFlags[index] = true;
+	}
+    }
+    
+    //cell renderer overriding
+    private class DiabledItemListCellRenderer extends DefaultListCellRenderer{
+	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
+	    Component comp = super.getListCellRendererComponent(list, value, index, false, false);
+	    JComponent jc = (JComponent) comp;
+	    if(enabledFlags[index]){
+		if(isSelected & cellHasFocus){
+		    comp.setForeground(Color.BLACK);
+		    comp.setBackground(Color.RED);
+		    jc.setBorder(BorderFactory.createLoweredBevelBorder());
+		}else{
+		    comp.setForeground(Color.BLACK);
+		    jc.setBorder(BorderFactory.createRaisedBevelBorder());
+		}
+		return comp;
+	    }
+	    comp.setEnabled(false);
+	    return comp;
+	}
     }
 }
