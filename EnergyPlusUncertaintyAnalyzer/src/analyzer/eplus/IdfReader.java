@@ -595,12 +595,20 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	private String attribute;
 	// comments after the (!)
 	private String description;
+	private String unit;
 
 	private boolean isEnd = false;
 	private boolean isCriticalLine = false;
 
 	public ValueNode(String att, String des) {
-	    description = des;
+	    //extract the units
+	    if(des.indexOf("{")>-1){
+		description = des.substring(0,des.indexOf(" {"));
+		unit = des.substring(des.indexOf("{"));
+	    }else{
+		description = des;
+	    }
+	    
 	    originalAttribute = att;
 
 	    // test whether this line contains parametric value
@@ -641,6 +649,10 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	// get the description of this line
 	private String getDescription() {
 	    return description;
+	}
+	//get the unit of this node
+	private String getUnit(){
+	    return unit;
 	}
 
 	// check whether there is a parametric value defined in this line
