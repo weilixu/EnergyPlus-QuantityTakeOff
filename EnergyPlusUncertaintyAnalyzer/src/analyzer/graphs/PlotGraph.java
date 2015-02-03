@@ -1,9 +1,10 @@
 package analyzer.graphs;
 
+import java.awt.Dimension;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Calendar;
+
 
 
 import org.jfree.chart.ChartFactory;
@@ -11,7 +12,6 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.Month;
-
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -27,7 +27,7 @@ public class PlotGraph {
 				numMonths, year);
 		JFreeChart jChart = createChart(dataset);
 		chart = new ChartPanel(jChart);
-		chart.setPreferredSize(new java.awt.Dimension(560, 370));
+		chart.setPreferredSize(new Dimension(560, 370));
 		chart.setMouseZoomable(true, false);
 	}
 	

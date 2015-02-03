@@ -290,7 +290,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationButton.addActionListener(new SimulationActionListener(frame,
 		resultFolder));
 	analysisButton = new JButton("Analyze Results");
-	// analysisButton.setEnabled(false);
+	//analysisButton.setEnabled(false);
 	analysisButton.addActionListener(new ActionListener() {
 
 	    @Override
@@ -307,8 +307,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		innerPanel.revalidate();
 		innerPanel.repaint();
 	    }
-
 	});
+	
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
 	tempPanel.add(analysisButton);
