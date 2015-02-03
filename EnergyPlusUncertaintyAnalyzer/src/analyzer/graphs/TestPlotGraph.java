@@ -1,4 +1,4 @@
-package analyzer.model;
+package analyzer.graphs;
 
 import java.util.ArrayList;
 import java.util.Arrays;

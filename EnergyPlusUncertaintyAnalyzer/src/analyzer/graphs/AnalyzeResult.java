@@ -1,4 +1,4 @@
-package analyzer.model;
+package analyzer.graphs;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -67,12 +67,12 @@ public class AnalyzeResult {
 
 	public void setHeader() {
 		FileReader file;
-		String filename = this.source + this.idfName + "1Meter.csv";
+		String filename = this.source + this.idfName + "0Meter.csv";
+		String[] tempHeader = null;
 		try {
 			file = new FileReader(filename);
 			BufferedReader br = new BufferedReader(file);
-			header = br.readLine().split(",");
-			varLength = header.length;
+			tempHeader = br.readLine().split(",");
 			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -81,13 +81,13 @@ public class AnalyzeResult {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		header = Arrays.copyOfRange(header, 1, header.length);
+		header = Arrays.copyOfRange(tempHeader, 1, tempHeader.length);
+		varLength = header.length;
 
 		for (int i = 0; i < header.length; i++) {
 			int spaceIdx = header[i].indexOf(" ");
 			header[i] = header[i].substring(0, spaceIdx);
 		}
-
 	}
 
 

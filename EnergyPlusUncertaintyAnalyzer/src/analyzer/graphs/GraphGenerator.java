@@ -3,12 +3,10 @@ package analyzer.graphs;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import analyzer.listeners.GraphGenerationListener;
-import analyzer.model.AnalyzeResult;
-import analyzer.model.GenerateStatistics;
-import analyzer.model.PlotGraph;
 
 import org.jfree.chart.ChartPanel;
 
@@ -30,7 +28,6 @@ public class GraphGenerator {
     private List<GraphGenerationListener> graphListeners;
     
     public GraphGenerator(File rf, int num, String y){
-	System.out.println(y);
 	resultFolder = rf;
 	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath()+"\\","");
 	numSimulation = num;
@@ -51,20 +48,22 @@ public class GraphGenerator {
     
     public void getCharts(){
 	resultAnalyzer.setHeader();
-	numGraph = resultAnalyzer.getVariableLength();
-	numMonths = resultAnalyzer.getKeysLength();
-	resultAnalyzer.setHeader();
 	resultAnalyzer.setData(numSimulation);
 	resultAnalyzer.setStartYear(year);
+	numGraph = resultAnalyzer.getVariableLength();
+	numMonths = resultAnalyzer.getKeysLength();
 	String startMonth = resultAnalyzer.getKey(0);
 	for(int i=0; i<numGraph; i++){
-	    double[] averages = new double[numMonths];
+	    System.out.println("entering reading mode");
+	    	double[] averages = new double[numMonths];
 		double[] lowerCI = new double[numMonths];
 		double[] upperCI = new double[numMonths];
 		for (int j = 0; j < numMonths; j++) {
+		    System.out.println("still reading");
 			String currentKey = resultAnalyzer.getKey(j);
 			double[] temp = resultAnalyzer.getData(
 					currentKey, i);
+			
 			GenerateStatistics stat = new GenerateStatistics(
 					temp);
 			averages[j] = stat.getMean();
@@ -75,7 +74,7 @@ public class GraphGenerator {
 			System.out.println(Arrays.toString(ci));
 
 		}
-
+		
 		String currentVariable = resultAnalyzer.getVariable(i);
 		System.out.println(currentVariable);
 		String title = "Mean " + currentVariable + " with "
@@ -83,12 +82,21 @@ public class GraphGenerator {
 		PlotGraph plotGraph = new PlotGraph(title, averages,
 				lowerCI, upperCI, startMonth,
 				numMonths, year);
-
 		
 		ChartPanel chart = plotGraph.getChart();
 		allCharts.add(chart);
 	}
 	onUpdatedGraphGenerated();
+    }
+    
+    /*
+     * for clearing the data in the all charts
+     */
+    public void clearCharts(){
+	Iterator<ChartPanel> iterator = allCharts.iterator();
+	while(iterator.hasNext()){
+	    iterator.remove();
+	}
     }
     
     private void onUpdatedGraphGenerated(){

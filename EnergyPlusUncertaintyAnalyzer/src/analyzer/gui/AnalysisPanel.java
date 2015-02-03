@@ -1,10 +1,12 @@
 package analyzer.gui;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartPanel;
@@ -27,7 +29,9 @@ public class AnalysisPanel extends JPanel implements GraphGenerationListener{
 	
 	Iterator<ChartPanel> iterator = charts.iterator();
 	while(iterator.hasNext()){
-	    add(iterator.next());
+	    ChartPanel tempChart = iterator.next();
+	    tempChart.setBorder(BorderFactory.createLineBorder(Color.black));
+	    add(tempChart);
 	}
 	revalidate();
 	repaint();

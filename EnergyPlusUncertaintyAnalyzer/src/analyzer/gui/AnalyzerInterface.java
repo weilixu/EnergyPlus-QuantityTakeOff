@@ -20,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
@@ -99,6 +100,11 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private JButton analysisButton;
     private JButton variableButton;
     private int number_Variable;
+    
+    /*
+     * Flags to indicates operations
+     */
+    private boolean analysisFlag = false; //indicates whether an analysis is performed or not
 
     public AnalyzerInterface(Model c, JFrame f, File file) {
 	// assign the model to the interface
@@ -175,7 +181,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			
 			createIDFButton
 				.addActionListener(new CreateActionListener(
-					core, idfReader, resultFolder, simulationNumber));
+					core, idfReader, resultFolder, simulationNumber,createIDFButton));
 			simulationText.setEnabled(false);
 			idfDirText.setEnabled(false);
 		    } catch (IOException e) {
@@ -208,6 +214,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 
 	// Initialize the analysis panel
 	analysisPanel = new AnalysisPanel(resultFolder);
+	analysisPanel.setBackground(Color.WHITE);
 	analysisBottomPanel = initializeAnalysisBottomPanel();
 
 	// add menubar
@@ -289,9 +296,13 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		innerPanel.removeAll();
-		graphs.addGraphGenerationListener(analysisPanel);
-		graphs.getCharts();
-		innerPanel.add(analysisPanel, BorderLayout.CENTER);
+		if(!analysisFlag){
+			graphs.addGraphGenerationListener(analysisPanel);
+			graphs.getCharts(); 
+			analysisFlag = true;
+		}
+		JScrollPane tempScroll = new JScrollPane(analysisPanel);
+		innerPanel.add(tempScroll, BorderLayout.CENTER);
 		innerPanel.add(analysisBottomPanel, BorderLayout.PAGE_END);
 		innerPanel.revalidate();
 		innerPanel.repaint();

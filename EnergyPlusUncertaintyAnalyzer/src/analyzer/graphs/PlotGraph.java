@@ -1,4 +1,4 @@
-package analyzer.model;
+package analyzer.graphs;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,6 @@ import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.ApplicationFrame;
 
 public class PlotGraph {
     private ChartPanel chart;
@@ -30,7 +29,6 @@ public class PlotGraph {
 		chart = new ChartPanel(jChart);
 		chart.setPreferredSize(new java.awt.Dimension(560, 370));
 		chart.setMouseZoomable(true, false);
-		
 	}
 	
 	public ChartPanel getChart(){
