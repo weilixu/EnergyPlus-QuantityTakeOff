@@ -1,6 +1,7 @@
 package analyzer.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jfree.chart.ChartPanel;
@@ -12,15 +13,16 @@ public class TestPlotGraph {
 	public static void main(String[] args) {
 
 		String source = "/Users/Adrian/Dropbox/testIDFJfreeChart/";
-		String idfName = "One_Montgomery_Plaza";
+		String idfName = "";
 		AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName);
 		// plot all graphs
-		int numSimulation = 4;
+		int numSimulation = 2;
 		analyzeResult.setHeader();
 		analyzeResult.setData(numSimulation);
-		 analyzeResult.setStartYear(2013);
+		analyzeResult.setStartYear(2013);
 		double confidenceLevel = 0.95;
 		int numVars = analyzeResult.getVariableLength();
+	
 		int numMonths = analyzeResult.getKeysLength();
 		int startYear = analyzeResult.getStartYear();
 		String startMonth = analyzeResult.getKey(0);
@@ -41,6 +43,7 @@ public class TestPlotGraph {
 				lowerCI[j] = ci[0];
 				upperCI[j] = ci[1];
 				// System.out.println(Arrays.toString(ci));
+				
 
 			}
 

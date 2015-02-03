@@ -16,6 +16,7 @@ public class AnalyzeResult {
 	private final String source;
 	private final String idfName;
 	private int startYear;
+	private int varLength;
 
 	public AnalyzeResult(String source, String idfName) {
 		this.keys = new ArrayList<String>();
@@ -60,7 +61,8 @@ public class AnalyzeResult {
 	}
 	
 	public int getVariableLength(){
-		return header.length;
+		return varLength;
+//		return header.length;
 	}
 
 	public void setHeader() {
@@ -70,6 +72,7 @@ public class AnalyzeResult {
 			file = new FileReader(filename);
 			BufferedReader br = new BufferedReader(file);
 			header = br.readLine().split(",");
+			varLength = header.length;
 			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -104,10 +107,14 @@ public class AnalyzeResult {
 				br.readLine();
 				br.readLine();
 				br.readLine(); // skip first 3 lines (header)
+				Double[] tempData = null;
 				while ((line = br.readLine()) != null) {
 					String[] tempLine = line
 							.split(csvSplitBy);
-					Double[] tempData = convertStringToDouble(tempLine);
+					tempData = convertStringToDouble(tempLine);
+					if (tempData.length < varLength) {
+						varLength = tempData.length;
+					}
 					String month = tempLine[0].trim()
 							.toUpperCase();
 					ArrayList<Double[]> list = data
@@ -123,6 +130,7 @@ public class AnalyzeResult {
 					}
 
 				}
+				
 				br.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -142,7 +150,7 @@ public class AnalyzeResult {
 		for (int i = 0; i < len - 1; i++) {
 			// ignores 1st value of args which is the month string
 			// output should be all numeric data
-			output[i] = Double.parseDouble(args[i + 1])*2.7777777778e-7; // convert to kWh
+			output[i] = Double.parseDouble(args[i + 1]);//*2.7777777778e-7; // convert to kWh
 		}
 		return output;
 	}
