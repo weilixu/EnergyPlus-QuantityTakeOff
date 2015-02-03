@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import analyzer.eplus.IdfReader;
@@ -78,10 +79,10 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     /*
      * Eplus File
      */
-    private final File eplusFile;
-    private final File parentFile;
+    private File eplusFile;
+    private File parentFile;
     private final String RESULT = "Results";
-    private final File resultFolder;
+    private File resultFolder;
 
     /*
      * for global variables in inputPanel
@@ -106,23 +107,20 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private boolean analysisFlag = false; //indicates whether an analysis is performed or not
 
-    public AnalyzerInterface(Model c, JFrame f, File file) {
+    public AnalyzerInterface(Model c) {
 	// assign the model to the interface
 	core = c;
 	core.addModelDataListeners(this);
-	eplusFile = file;
-	parentFile = eplusFile.getParentFile();
-	resultFolder = createResultsFolder();
 
 	// add the reader to the interface and load the listener
 	idfReader = new IdfReader();
 	idfReader.addLoadIDFListeners(this);
 
 	// build the frame
-	frame = f;
-	f.setTitle(DEFAULT_TITLE);
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setPreferredSize(new Dimension(700, 600));
+	frame = new JFrame(DEFAULT_TITLE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(650, 500));
+        frame.setResizable(true);
 
 	// Add the frame's panels to the view.
 	outerPanel = new JPanel(new BorderLayout());
@@ -135,7 +133,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// fileLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	// outerPanel.add(fileLabel, BorderLayout.NORTH);
 
-	variablePane = new VariablePanel(core, eplusFile);
+	variablePane = new VariablePanel(core);
 	innerPanel = new JPanel(new BorderLayout());
 	innerPanel.add(variablePane, BorderLayout.CENTER);
 
@@ -164,8 +162,13 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			    .getText());
 		    core.setSimulationNumber(simulationNumber);
 		    try {
+			//initialize the file directories
+			eplusFile = new File(idfDirText.getText());
+			parentFile = eplusFile.getParentFile();
+			resultFolder = createResultsFolder();
+			//set files directories
+			variablePane.setEnergyPlusDir(eplusFile);
 			
-
 			// reads the file
 			idfReader.setFilePath(idfDirText.getText());
 			idfReader.readEplusFile();
@@ -257,15 +260,15 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private JPanel initInputPanel() {
 	JPanel tempPanel = new JPanel();
-	idfDirLabel = new JLabel("File: ");
 	simulationText = new JTextField("Number of Simulation (>=1)");
 	simulationText.setPreferredSize(new Dimension(250, 25));
 	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
 	// center the text
 	simulationText.setHorizontalAlignment(JTextField.CENTER);
 	simulationText.setToolTipText(SIM_TIP);
-
-	idfDirText = new JTextField(eplusFile.getAbsolutePath());
+	
+	idfDirLabel = new JLabel("File: ");
+	idfDirText = new JTextField("Enter EnergyPlus Directory Here:");
 	idfDirText.setPreferredSize(new Dimension(250, 25));
 	idfDirText.setBorder(BorderFactory.createLoweredBevelBorder());
 	idfDirText.setToolTipText(DIR_TIP);

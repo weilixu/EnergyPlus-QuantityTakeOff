@@ -13,16 +13,19 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import analyzer.main.Analyzer;
 import analyzer.model.Model;
 
 public class VariablePanel extends JPanel {
@@ -53,14 +56,19 @@ public class VariablePanel extends JPanel {
     private ArrayList<String> variableList;
     private ArrayList<String> variableDescription;
 
-    public VariablePanel(Model m, File file) {
+    public VariablePanel(Model m) {
 	model = m;
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
-	eplusFile = file;
-	parentFile = eplusFile.getParentFile();
+	//eplusFile = file;
+	//parentFile = eplusFile.getParentFile();
 	initSelectionPanel();
 	initPanel();
+    }
+    
+    public void setEnergyPlusDir(File f){
+	eplusFile = f;
+	parentFile = eplusFile.getParentFile();
     }
 
     public void changeVariables(ArrayList<String> vl, ArrayList<String> vi) {
