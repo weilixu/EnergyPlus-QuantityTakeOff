@@ -20,7 +20,10 @@ public class RunEnergyPlus {
     
     private boolean directoryEntered = false;
 
-    public RunEnergyPlus(File f) {
+    public RunEnergyPlus() {
+    }
+    
+    public void setFolder(File f){
 	folder = f;
     }
 
@@ -71,7 +74,7 @@ public class RunEnergyPlus {
 
     private File createBatchFile() throws IOException {
 	String keyWord = "SET maindir=";
-	File file = new File(folder.getAbsoluteFile() + "\\" + EPLUSBAT);
+	File file = new File(folder.getAbsolutePath() + "\\" + EPLUSBAT);
 	file.createNewFile();
 
 	// reading file and write to the new file

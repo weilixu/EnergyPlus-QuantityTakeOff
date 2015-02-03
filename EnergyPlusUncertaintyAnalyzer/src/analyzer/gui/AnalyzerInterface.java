@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import analyzer.eplus.IdfReader;
+import analyzer.eplus.RunEnergyPlus;
 import analyzer.graphs.GraphGenerator;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.ModelDataListener;
@@ -42,6 +43,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private final Model core;
     private final IdfReader idfReader;
     private GraphGenerator graphs;
+    private RunEnergyPlus run;
+
 
     /*
      * All text of menu bar
@@ -115,6 +118,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// add the reader to the interface and load the listener
 	idfReader = new IdfReader();
 	idfReader.addLoadIDFListeners(this);
+	
+	run = new RunEnergyPlus();
 
 	// build the frame
 	frame = new JFrame(DEFAULT_TITLE);
@@ -166,8 +171,10 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			eplusFile = new File(idfDirText.getText());
 			parentFile = eplusFile.getParentFile();
 			resultFolder = createResultsFolder();
+			
 			//set files directories
 			variablePane.setEnergyPlusDir(eplusFile);
+			run.setFolder(resultFolder);
 			
 			// reads the file
 			idfReader.setFilePath(idfDirText.getText());
@@ -195,6 +202,9 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    showErrorDialog(frame,
 			    "Error found in Number of Simulations",
 			    "The number of simulaitons has to be integers (e.g. 100)");
+		} catch (NullPointerException np){
+		    showErrorDialog(frame, "Encounter an error while processing file!",
+			    "The File Cannot be processed, Please check your both inputs!");
 		}
 
 	    }
@@ -288,12 +298,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	createIDFButton = new JButton("Create...");
 	createIDFButton.setEnabled(false);
 
-	simulationButton = new JButton("Simulate...");
-	simulationButton.setEnabled(false);
-	simulationButton.addActionListener(new SimulationActionListener(frame,
-		resultFolder));
 	analysisButton = new JButton("Analyze Results");
-	//analysisButton.setEnabled(false);
+	analysisButton.setEnabled(false);
 	analysisButton.addActionListener(new ActionListener() {
 
 	    @Override
@@ -311,6 +317,11 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		innerPanel.repaint();
 	    }
 	});
+	
+	simulationButton = new JButton("Simulate...");
+	simulationButton.setEnabled(false);
+	simulationButton.addActionListener(new SimulationActionListener(frame,
+		run, analysisButton));
 	
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);

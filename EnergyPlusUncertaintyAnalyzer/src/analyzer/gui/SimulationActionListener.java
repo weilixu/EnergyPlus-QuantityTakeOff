@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -13,9 +14,9 @@ import javax.swing.JTextField;
 import analyzer.eplus.RunEnergyPlus;
 
 public class SimulationActionListener implements ActionListener{
-    private final File fileFolder;
     private final RunEnergyPlus run;
     private final JFrame parentFrame;
+    private final JButton analysisButton;
     
     //entering the option box's 
     private final JTextField eplusDir;
@@ -26,11 +27,10 @@ public class SimulationActionListener implements ActionListener{
     private final String PROC_NAME = "Number of processor:";
 
     
-    public SimulationActionListener(JFrame frame, File file){
-	fileFolder = file;
+    public SimulationActionListener(JFrame frame, RunEnergyPlus r, JButton ab){
 	parentFrame = frame;
-	
-	run = new RunEnergyPlus(fileFolder);
+	analysisButton = ab;
+	run = r;
 	
 	eplusDir = new JTextField();
 	eplusDir.setToolTipText("EnergyPlus file directory. e.g.C:\\Users\\EnergyPlusV8-1-0\\ (Required field)");
@@ -55,8 +55,10 @@ public class SimulationActionListener implements ActionListener{
 	    run.setNumberOfProcessor(numberProc.getText());
 	    try {
 		run.startSimulation();
+		analysisButton.setEnabled(true);
 	    } catch (Exception e) {
 		showErrorDialog(parentFrame, "Found Error in inputs", "Check your configuration inputs!");
+		e.printStackTrace();
 	    }
 	}else{
 	    //cancel, do nothing
