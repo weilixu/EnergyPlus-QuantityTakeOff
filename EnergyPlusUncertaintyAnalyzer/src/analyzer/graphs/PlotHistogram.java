@@ -16,31 +16,31 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-public class PlotHistogram extends ApplicationFrame {
+public class PlotHistogram{
 	private static int numBins;
 	private static String title;
-	private JPanel jpanel;
+	private ChartPanel chart;
 
 	public PlotHistogram(String t, double[] data, int n) {
-		super(t);
 		numBins = n;
 		title = t;
-		JPanel jpanel = createDemoPanel(data);
-		jpanel.setPreferredSize(new Dimension(500, 270));
-		setContentPane(jpanel);
+		//JPanel jpanel = createDemoPanel(data);
+		//jpanel.setPreferredSize(new Dimension(500, 270));
+		//setContentPane(jpanel);
 	}
 	
-	public JPanel getHistogram() {
-		return jpanel;
-	}
+//	public JPanel getHistogram() {
+//		return jpanel;
+//	}
 	
-	private static IntervalXYDataset createDataset(double[] data) {
+	private IntervalXYDataset createDataset(double[] data) {
 		HistogramDataset histogramdataset = new HistogramDataset();
 		histogramdataset.addSeries("simulation results", data, numBins);
 		return histogramdataset;
 	}
+	
 
-	private static JFreeChart createChart(
+	private JFreeChart createChart(
 			IntervalXYDataset intervalxydataset) {
 		JFreeChart jfreechart = ChartFactory.createHistogram(
 				title, null, null,
@@ -53,33 +53,33 @@ public class PlotHistogram extends ApplicationFrame {
 		xybarrenderer.setDrawBarOutline(false);
 		return jfreechart;
 	}
-
-	public static JPanel createDemoPanel(double[] data) {
+	
+	public ChartPanel createPanel(double[] data) {
 		JFreeChart jfreechart = createChart(createDataset(data));
 		return new ChartPanel(jfreechart);
 	}
-
-	public static void main(String args[]) throws IOException {
-		String source = "/Users/Adrian/Dropbox/testIDFJfreeChart/";
-		String idfName = "";
-		AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName);
-		// plot all graphs
-		int numSimulation = 9;
-		analyzeResult.setHeader();
-		analyzeResult.setData(numSimulation);
-		int numVars = analyzeResult.getVariableLength();
-
-		for (int i = 0; i < numVars; i++) {
-			double[] data = analyzeResult.getHistogramData(i);
-			System.out.println(Arrays.toString(data));
-			String currentVariable = analyzeResult.getVariable(i);
-			String t = "Distribution of " + currentVariable;
-			PlotHistogram histogramdemo1 = new PlotHistogram(t,
-					data, 10);
-			histogramdemo1.pack();
-			RefineryUtilities.centerFrameOnScreen(histogramdemo1);
-			histogramdemo1.setVisible(true);
-		}
-
-	}
+//
+//	public static void main(String args[]) throws IOException {
+//		String source = "C:/Users/Weili/Desktop/New folder/Results/";
+//		String idfName = "";
+//		AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName);
+//		// plot all graphs
+//		int numSimulation = 9;
+//		analyzeResult.setHeader();
+//		analyzeResult.setData(numSimulation);
+//		int numVars = analyzeResult.getVariableLength();
+//
+//		for (int i = 0; i < numVars; i++) {
+//			double[] data = analyzeResult.getHistogramData(i);
+//			System.out.println(Arrays.toString(data));
+//			String currentVariable = analyzeResult.getVariable(i);
+//			String t = "Distribution of " + currentVariable;
+//			PlotHistogram histogramdemo1 = new PlotHistogram(t,
+//					data, 10);
+//			histogramdemo1.pack();
+//			RefineryUtilities.centerFrameOnScreen(histogramdemo1);
+//			histogramdemo1.setVisible(true);
+//		}
+//
+//	}
 }

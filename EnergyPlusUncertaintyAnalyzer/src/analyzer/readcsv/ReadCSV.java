@@ -48,6 +48,31 @@ public class ReadCSV {
 	}
 	return null;
     }
+   /*
+    * get the minimum value from the imported data
+    */
+    public Double getMinimum(){
+	double min = csvData[0];
+	for(double d: csvData){
+	    if (min>d){
+		min = d;
+		}
+	    }
+	return min;
+    }
+    
+    /*
+     * get the maximum value from the imported data
+     */
+    public Double getMaximum(){
+	double max = csvData[0];
+	for(double d: csvData){
+	    if (max<d){
+		max = d;
+		}
+	    }
+	return max;
+    }
     
     
 

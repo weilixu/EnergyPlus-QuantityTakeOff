@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import analyzer.eplus.RunEnergyPlus;
+import analyzer.lang.AnalyzerUtils;
 
 public class SimulationActionListener implements ActionListener{
     private final RunEnergyPlus run;
@@ -32,11 +33,12 @@ public class SimulationActionListener implements ActionListener{
 	analysisButton = ab;
 	run = r;
 	
-	eplusDir = new JTextField();
+	String[] config = AnalyzerUtils.getEplusConfig();
+	eplusDir = new JTextField(config[0]);
 	eplusDir.setToolTipText("EnergyPlus file directory. e.g.C:\\Users\\EnergyPlusV8-1-0\\ (Required field)");
-	weatherFile = new JTextField();
+	weatherFile = new JTextField(config[1]);
 	weatherFile.setToolTipText("Weather file directory. e.g. USA_IL_Chicago-OHare.Intl.AP.725300_TMY3 (Option field)");
-	numberProc = new JTextField();
+	numberProc = new JTextField(config[2]);
 	numberProc.setToolTipText("Number of Parallel simulations. Recommend 4-8 (Option field)");
 	
     }
@@ -50,6 +52,10 @@ public class SimulationActionListener implements ActionListener{
 	
 	int option = JOptionPane.showConfirmDialog(parentFrame, message, "Simulation Initializer", JOptionPane.OK_CANCEL_OPTION);
 	if(option == JOptionPane.OK_OPTION){
+	    AnalyzerUtils.setEplusDirectory(eplusDir.getText());
+	    AnalyzerUtils.setEplusWeather(weatherFile.getText());
+	    AnalyzerUtils.setEplusProcessor(numberProc.getText());
+	    
 	    run.setEnergyPlusDirectory(eplusDir.getText());
 	    run.setWeatherFile(weatherFile.getText());
 	    run.setNumberOfProcessor(numberProc.getText());

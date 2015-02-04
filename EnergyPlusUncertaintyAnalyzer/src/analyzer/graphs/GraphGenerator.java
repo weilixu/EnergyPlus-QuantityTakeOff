@@ -15,46 +15,75 @@ public class GraphGenerator {
     
     private final double CONFIDENCE_INTERVAL = 0.95;
     
+    /*
+     * Set the analyzer and folder
+     */
     private final File resultFolder;
     private final AnalyzeResult resultAnalyzer;
     
-    private int numSimulation;
-    private int year;
-    private int numGraph;
-    private int numMonths;
+    /*
+     * set the parameters required for this graph generation
+     */
+    private int numSimulation;//number of simulations
+    private int year; //start year
+    private int numGraph;//number of graphs
+    private int numMonths;//number of plotting keys
     
-    private List<ChartPanel> allCharts;
+    private List<ChartPanel> timeCharts; //time series graphs
+    private List<ChartPanel> histoCharts; //histogram graphs
     
+    /*
+     * GUI listeners
+     */
     private List<GraphGenerationListener> graphListeners;
     
+    
     public GraphGenerator(File rf, int num, String y){
+	//take in variables
 	resultFolder = rf;
-	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath()+"\\","");
 	numSimulation = num;
 	year = Integer.parseInt(y);
-
-	allCharts = new ArrayList<ChartPanel>();
 	
+	//set-up the resultAnalyzer model
+	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath()+"\\","");
+	resultAnalyzer.setHeader();
+	resultAnalyzer.setData(numSimulation);
+	resultAnalyzer.setStartYear(year);
+	
+	//get the number of graphs and number of keys from the data
+	numGraph = resultAnalyzer.getVariableLength();
+	numMonths = resultAnalyzer.getKeysLength();
+	
+	//initialize the two graph data
+	timeCharts = new ArrayList<ChartPanel>();
+	histoCharts = new ArrayList<ChartPanel>();
+	
+	//initialize the GUI listener
 	graphListeners = new ArrayList<GraphGenerationListener>();
     }
     
+    /**
+     * add GUI listener to listen this class
+     * @param g
+     */
     public void addGraphGenerationListener(GraphGenerationListener g){
 	graphListeners.add(g);
     }
     
+    /**
+     * get the number of graphs
+     * @return
+     */
     public int numberOfGraphs(){
 	return numGraph;
     }
     
-    public void getCharts(){
-	resultAnalyzer.setHeader();
-	resultAnalyzer.setData(numSimulation);
-	resultAnalyzer.setStartYear(year);
-	numGraph = resultAnalyzer.getVariableLength();
-	numMonths = resultAnalyzer.getKeysLength();
+    /**
+     * generate time series charts
+     */
+    public void getTimeSeriesCharts(){
 	String startMonth = resultAnalyzer.getKey(0);
 	for(int i=0; i<numGraph; i++){
-	    System.out.println("entering reading mode");
 	    	double[] averages = new double[numMonths];
 		double[] lowerCI = new double[numMonths];
 		double[] upperCI = new double[numMonths];
@@ -84,24 +113,57 @@ public class GraphGenerator {
 				numMonths, year);
 		
 		ChartPanel chart = plotGraph.getChart();
-		allCharts.add(chart);
+		timeCharts.add(chart);
 	}
-	onUpdatedGraphGenerated();
+	onUpdatedTimeSeriesGraphGenerated();
     }
     
-    /*
-     * for clearing the data in the all charts
+    /**
+     * generates histogram charts
+     */
+    public void getHistogramCharts(){
+	for(int i=0; i<numGraph; i++){
+	    double[] data = resultAnalyzer.getHistogramData(i);
+	    
+	    String currentVariable = resultAnalyzer.getVariable(i);
+	    String title = "Distribution of "+ currentVariable;
+	    
+	    PlotHistogram histogramGraph = new PlotHistogram(title, data,10);
+	    histoCharts.add(histogramGraph.createPanel(data));
+	}
+	onUpdatedHistoGraphGenerated();
+    }
+    
+    
+    /**
+     * Clear the time series charts data and histogram charts data
      */
     public void clearCharts(){
-	Iterator<ChartPanel> iterator = allCharts.iterator();
-	while(iterator.hasNext()){
-	    iterator.remove();
+	Iterator<ChartPanel> timeIterator = timeCharts.iterator();
+	while(timeIterator.hasNext()){
+	    timeIterator.remove();
+	}
+	Iterator<ChartPanel> histoIterator = histoCharts.iterator();
+	while(histoIterator.hasNext()){
+	    histoIterator.remove();
 	}
     }
     
-    private void onUpdatedGraphGenerated(){
+    /**
+     * notify GUI the changes in the time series charts
+     */
+    private void onUpdatedTimeSeriesGraphGenerated(){
 	for(GraphGenerationListener g: graphListeners){
-	    g.graphGenerated(allCharts);
+	    g.timeSeriesGraphGenerated(timeCharts);
+	}
+    }
+    
+    /**
+     * notify GUI the changes in the histogram charts
+     */
+    private void onUpdatedHistoGraphGenerated(){
+	for(GraphGenerationListener g: graphListeners){
+	    g.histogramGraphGenerated(histoCharts);
 	}
     }
 

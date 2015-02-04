@@ -28,6 +28,7 @@ import javax.swing.border.EtchedBorder;
 import analyzer.eplus.IdfReader;
 import analyzer.eplus.RunEnergyPlus;
 import analyzer.graphs.GraphGenerator;
+import analyzer.lang.AnalyzerUtils;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.ModelDataListener;
 import analyzer.model.Model;
@@ -45,19 +46,20 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private GraphGenerator graphs;
     private RunEnergyPlus run;
 
-
     /*
      * All text of menu bar
      */
     private final String MENU_TITLE = "Setting";
     private final String MENU_EXIT = "Exit";
     private final String MENU_LOAD = "Load IDF";
-    private final String MENU_SWITCH = "Data Analysis";
+    private final String MENU_CONFIG = "Configuration";
+    // private final String MENU_SWITCH = "Data Analysis";
 
     /*
      * All Menu Items
      */
     private final JMenuItem loadMenus;
+    private final JMenuItem eplusConfig;
 
     /*
      * initial set-up variables
@@ -104,11 +106,23 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private JButton analysisButton;
     private JButton variableButton;
     private int number_Variable;
-    
+
     /*
      * Flags to indicates operations
      */
-    private boolean analysisFlag = false; //indicates whether an analysis is performed or not
+    private boolean analysisFlag = false; // indicates whether an analysis is
+					  // performed or not
+
+    /*
+     * String[] stores the energyplus configuration
+     */
+    private final String DIR_NAME = "EnergyPlus directory (*):";
+    private final String WEA_NAME = "Weather file name:";
+    private final String PROC_NAME = "Number of processor:";
+    private final JTextField eplusDir;
+    private final JTextField weatherFile;
+    private final JTextField numberProc;
+    private final String CONFIG_TIP = "Simulation Configuration. Click Okay to customize your settings";
 
     public AnalyzerInterface(Model c) {
 	// assign the model to the interface
@@ -118,14 +132,14 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// add the reader to the interface and load the listener
 	idfReader = new IdfReader();
 	idfReader.addLoadIDFListeners(this);
-	
+
 	run = new RunEnergyPlus();
 
 	// build the frame
 	frame = new JFrame(DEFAULT_TITLE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(650, 500));
-        frame.setResizable(true);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.setPreferredSize(new Dimension(650, 500));
+	frame.setResizable(true);
 
 	// Add the frame's panels to the view.
 	outerPanel = new JPanel(new BorderLayout());
@@ -154,6 +168,32 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	settingMenuBar = new JMenuBar();
 	JMenu setting = new JMenu(MENU_TITLE);
 	setting.setMnemonic(KeyEvent.VK_S);
+	
+	//set the configuration button
+	eplusConfig = new JMenuItem(MENU_CONFIG);
+	eplusConfig.setMnemonic(KeyEvent.VK_C);
+	eplusConfig.setToolTipText(CONFIG_TIP);
+	//retrieve the property file
+	String[] config = AnalyzerUtils.getEplusConfig();
+	eplusDir = new JTextField(config[0]);
+	weatherFile = new JTextField(config[1]);
+	numberProc = new JTextField(config[2]);
+	eplusConfig.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		Object[] message = { DIR_NAME, eplusDir, WEA_NAME, weatherFile,
+			PROC_NAME, numberProc };
+		int option = JOptionPane.showConfirmDialog(frame, message,
+			"Simulation Initializer", JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION) {
+		    AnalyzerUtils.setEplusDirectory(eplusDir.getText());
+		    AnalyzerUtils.setEplusWeather(weatherFile.getText());
+		    AnalyzerUtils.setEplusProcessor(numberProc.getText());
+		    AnalyzerUtils.writeProperties();
+		}
+	    }
+	});
+	setting.add(eplusConfig);
 
 	// add load button. load the energyplus model
 	loadMenus = new JMenuItem(MENU_LOAD);
@@ -167,31 +207,35 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			    .getText());
 		    core.setSimulationNumber(simulationNumber);
 		    try {
-			//initialize the file directories
+			// initialize the file directories
 			eplusFile = new File(idfDirText.getText());
 			parentFile = eplusFile.getParentFile();
 			resultFolder = createResultsFolder();
-			
-			//set files directories
+
+			// set files directories
 			variablePane.setEnergyPlusDir(eplusFile);
 			run.setFolder(resultFolder);
-			
+
 			// reads the file
 			idfReader.setFilePath(idfDirText.getText());
 			idfReader.readEplusFile();
-			
-			//initialize the graphs object for later graph generation
+
+			// initialize the graphs object for later graph
+			// generation
 			graphs = new GraphGenerator(resultFolder,
 				simulationNumber, idfReader.getValue(
 					"RunPeriod", "Start Year"));
+			analysisPanel.setGraph(graphs);
+
 			// after read set the simulaiton number of the model
 			// disable the JTextfield for simulation directory and
 			// simulation number
 			// also add the actionlistener to the create IDFButton
-			
+
 			createIDFButton
 				.addActionListener(new CreateActionListener(
-					core, idfReader, resultFolder, simulationNumber,createIDFButton));
+					core, idfReader, resultFolder,
+					simulationNumber, createIDFButton));
 			simulationText.setEnabled(false);
 			idfDirText.setEnabled(false);
 		    } catch (IOException e) {
@@ -202,8 +246,9 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    showErrorDialog(frame,
 			    "Error found in Number of Simulations",
 			    "The number of simulaitons has to be integers (e.g. 100)");
-		} catch (NullPointerException np){
-		    showErrorDialog(frame, "Encounter an error while processing file!",
+		} catch (NullPointerException np) {
+		    showErrorDialog(frame,
+			    "Encounter an error while processing file!",
 			    "The File Cannot be processed, Please check your both inputs!");
 		}
 
@@ -276,7 +321,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// center the text
 	simulationText.setHorizontalAlignment(JTextField.CENTER);
 	simulationText.setToolTipText(SIM_TIP);
-	
+
 	idfDirLabel = new JLabel("File: ");
 	idfDirText = new JTextField("Enter EnergyPlus Directory Here:");
 	idfDirText.setPreferredSize(new Dimension(250, 25));
@@ -305,24 +350,22 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		innerPanel.removeAll();
-		if(!analysisFlag){
-			graphs.addGraphGenerationListener(analysisPanel);
-			graphs.getCharts(); 
-			analysisFlag = true;
+		if (!analysisFlag) {
+		    analysisPanel.generateGraph();
+		    analysisFlag = true;
 		}
-		JScrollPane tempScroll = new JScrollPane(analysisPanel);
-		innerPanel.add(tempScroll, BorderLayout.CENTER);
+		innerPanel.add(analysisPanel, BorderLayout.CENTER);
 		innerPanel.add(analysisBottomPanel, BorderLayout.PAGE_END);
 		innerPanel.revalidate();
 		innerPanel.repaint();
 	    }
 	});
-	
+
 	simulationButton = new JButton("Simulate...");
 	simulationButton.setEnabled(false);
 	simulationButton.addActionListener(new SimulationActionListener(frame,
 		run, analysisButton));
-	
+
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
 	tempPanel.add(analysisButton);

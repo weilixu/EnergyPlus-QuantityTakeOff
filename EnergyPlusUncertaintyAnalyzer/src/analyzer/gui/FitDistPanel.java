@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -216,6 +217,11 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 		    try {
 			// 2. load the csv file
 			reader.readData(filePath);
+			
+			//set the lower and upper text field default value
+			lowerText.setText(reader.getMinimum().toString());
+			upperText.setText(reader.getMaximum().toString());
+
 			doneButton.setEnabled(true);
 		    } catch (Exception e) {
 			csvText.setText("This is not a .csv file!!");
@@ -253,7 +259,10 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 	TitledBorder textAreaTitle = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),
 		TEXT_TITLE);
 	fittedResults.setBorder(textAreaTitle);
+	fittedResults.setFont(new Font("Apple Casual",Font.LAYOUT_LEFT_TO_RIGHT,14));
 	fittedResults.setEnabled(false);
+	fittedResults.setDisabledTextColor(Color.BLACK);
+
 	this.add(fittedResults,BorderLayout.LINE_START);
 
 	// set-up the display panel
