@@ -18,8 +18,10 @@ public class AnalyzeResult {
 	private int startYear;
 	private int varLength;
 	private int numberofResults;
+	private String runSizing;
 
-	public AnalyzeResult(String source, String idfName) {
+	public AnalyzeResult(String source, String idfName, String rs) {
+		this.runSizing = rs;
 		this.keys = new ArrayList<String>();
 		this.data = new HashMap<String, ArrayList<Double[]>>();
 		this.header = null;
@@ -123,8 +125,11 @@ public class AnalyzeResult {
 				String line = "";
 				String csvSplitBy = ",";
 				br.readLine();
-				br.readLine();
-				br.readLine(); // skip first 3 lines (header)
+				if (runSizing.equalsIgnoreCase("Yes")) {
+					br.readLine();
+					br.readLine(); // skip first 3 lines (header)
+				}
+				
 				Double[] tempData = null;
 				while ((line = br.readLine()) != null) {
 					String[] tempLine = line
