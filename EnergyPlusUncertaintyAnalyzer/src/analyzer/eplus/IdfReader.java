@@ -460,11 +460,12 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	    energyPlus.add(objectNode);
 	    
 	    //getting the next level information
-	    Set<String> elementCount = eplusMap.keySet();
+	    Set<String> elementCount = eplusMap.get(temp).keySet();
 	    Iterator<String> eIterator = elementCount.iterator();
 	    while(eIterator.hasNext()){
 		String name = eIterator.next();
-		DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(eplusMap.get(temp).get(name));
+		ElementList list = new ElementList(name, eplusMap.get(temp).get(name));
+		DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(list);
 		objectNode.add(elementNode);
 	    }
 	}
@@ -591,6 +592,29 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	    }
 	}
     }
+    
+    /**
+     * This is a wrapper class that wraps the element its correspondent data
+     * @author Weili
+     *
+     */
+    public class ElementList{
+	private final String name;
+	private final ArrayList<ValueNode> infoList;
+	
+	public ElementList(String n, ArrayList<ValueNode> il){
+	    name = n;
+	    infoList = il;
+	}
+	
+	public ArrayList<ValueNode> getInfo(){
+	    return infoList;
+	}
+	
+	public String toString(){
+	    return "Object "+name;
+	}
+    }
 
     /**
      * This private class stores every line in IDF file as a node. Each node
@@ -612,7 +636,7 @@ public class IdfReader implements EnergyPlusFilesGenerator {
      * @author Weili
      *
      */
-    private class ValueNode {
+    public class ValueNode {
 	/**
 	 * Invariance: Each node should contains information includes an
 	 * original attribute and the input description
@@ -660,32 +684,32 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	}
 
 	// gets the attribute of the this line
-	private String getAttribute() {
+	public String getAttribute() {
 	    return attribute;
 	}
 
 	// reset the attribute for this object
 	// can be used to replace the parametric values in the EnergyPlus
-	private void setAttribute(String attr) {
+	public void setAttribute(String attr) {
 	    attribute = attr;
 	}
 
 	// check whether this line is the end statment
-	private boolean isEndStatement() {
+	public boolean isEndStatement() {
 	    return isEnd;
 	}
 
 	// get the description of this line
-	private String getDescription() {
+	public String getDescription() {
 	    return description;
 	}
 	//get the unit of this node
-	private String getUnit(){
+	public String getUnit(){
 	    return unit;
 	}
 
 	// check whether there is a parametric value defined in this line
-	private boolean isCritical() {
+	public boolean isCritical() {
 	    return isCriticalLine;
 	}
 
