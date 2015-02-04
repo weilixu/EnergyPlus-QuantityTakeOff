@@ -63,7 +63,6 @@ public class PlotGraph {
 			} catch (SeriesException e) {
 				System.err.println("Error adding to series");
 			}
-
 		}
 		TimeSeriesCollection allDataSets = new TimeSeriesCollection();
 		allDataSets.addSeries(series);

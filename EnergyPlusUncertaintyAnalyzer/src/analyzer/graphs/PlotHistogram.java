@@ -42,6 +42,11 @@ public class PlotHistogram {
 		double max = ds.getMax();
 		double h = 2*iqr/Math.cbrt(n);
 		int numBins = (int) ((max-min)/h);
+		
+		if(numBins<=0){
+		    numBins = 1;
+		}
+		
 		return numBins;
 	}
 
