@@ -499,8 +499,34 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 
     @Override
     public EnergyPlusFilesGenerator cloneIdfData() {
-	return new IdfReader(path, eplusMap, variableList, variableKeySets,
+	HashMap<String, HashMap<String,ArrayList<ValueNode>>> map = DeepCopyMap();
+	return new IdfReader(path, map, variableList, variableKeySets,
 		loadIDFListeners);
+    }
+    
+    private HashMap<String, HashMap<String,ArrayList<ValueNode>>> DeepCopyMap() {
+	HashMap<String, HashMap<String,ArrayList<ValueNode>>> tempMap = new HashMap<String, HashMap<String,ArrayList<ValueNode>>>();
+	Set<String> objectList = eplusMap.keySet();
+	Iterator<String> iterator = objectList.iterator();
+	while (iterator.hasNext()) {
+	    String object = iterator.next();
+	    
+	    HashMap<String,ArrayList<ValueNode>> objectMap = new HashMap<String,ArrayList<ValueNode>>();
+	    Set<String> elementList = eplusMap.get(object).keySet();
+	    Iterator<String> elementIterator = elementList.iterator();
+	    while(elementIterator.hasNext()){
+		String element = elementIterator.next();
+		ArrayList<ValueNode> temp = eplusMap.get(object).get(element);
+		ArrayList<ValueNode> list = new ArrayList<ValueNode>();
+		for(ValueNode vn: temp){
+		    ValueNode newNode = vn.clone();
+		    list.add(newNode);
+		}
+		objectMap.put(element,list);
+	    }
+	    tempMap.put(object, objectMap);
+	}
+	return tempMap;
     }
 
     /*

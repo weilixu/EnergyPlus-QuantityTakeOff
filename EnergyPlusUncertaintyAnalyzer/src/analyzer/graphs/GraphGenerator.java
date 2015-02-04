@@ -94,9 +94,6 @@ public class GraphGenerator {
      */
     public void getTimeSeriesCharts() {
 	String startMonth = resultAnalyzer.getKey(0);
-	    System.out.println("this is number of graph "+numGraph);
-	    System.out.println("this is number of months "+numMonths);
-
 
 	for (int i = 0; i < numGraph; i++) {
 	    double[] averages = new double[numMonths];

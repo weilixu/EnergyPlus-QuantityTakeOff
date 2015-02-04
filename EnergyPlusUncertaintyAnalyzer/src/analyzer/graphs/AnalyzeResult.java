@@ -122,8 +122,8 @@ public class AnalyzeResult {
 				BufferedReader br = new BufferedReader(file);
 				String line = "";
 				String csvSplitBy = ",";
-				//br.readLine();
-				//br.readLine();
+				br.readLine();
+				br.readLine();
 				br.readLine(); // skip first 3 lines (header)
 				Double[] tempData = null;
 				while ((line = br.readLine()) != null) {

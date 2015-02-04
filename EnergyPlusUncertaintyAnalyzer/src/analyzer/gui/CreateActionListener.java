@@ -48,6 +48,8 @@ public class CreateActionListener implements ActionListener{
 	while(iterator.hasNext()){
 	    String charactor = iterator.next();
 	    Double value = randomVariableList.get(charactor)[index];
+	    System.out.println(value);
+
 	    epg.modifySpecialCharactor(charactor, value.toString());
 	}
 	//write the file
