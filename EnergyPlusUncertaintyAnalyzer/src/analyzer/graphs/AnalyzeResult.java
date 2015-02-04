@@ -59,14 +59,13 @@ public class AnalyzeResult {
 	
 	public double[] getHistogramData(int colNumber) {
 		double[] output = new double[numberSimulation];
-		for (int i=0; i<keys.size(); i++) {
-			ArrayList<Double[]> list = this.data.get(keys.get(i));
-			double sum = 0;
-			for (int j=0; j<list.size(); j++) {
-				Double[] temp = list.get(j);
-				sum = sum + temp[colNumber];
+		for (int i=0; i<keys.size(); i++){
+			String month = keys.get(i);
+			ArrayList<Double[]> monthData = this.data.get(month);
+			for (int j=0; j<monthData.size(); j++){
+				Double[] temp = monthData.get(j);
+				output[j] = output[j] + temp[colNumber];
 			}
-			output[i] = sum;
 		}
 		return output;		
 	}
