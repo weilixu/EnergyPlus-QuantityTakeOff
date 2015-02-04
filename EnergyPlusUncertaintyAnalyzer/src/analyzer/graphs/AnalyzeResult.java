@@ -164,7 +164,7 @@ public class AnalyzeResult {
 		for (int i = 0; i < len - 1; i++) {
 			// ignores 1st value of args which is the month string
 			// output should be all numeric data
-			output[i] = Double.parseDouble(args[i + 1]);//*2.7777777778e-7; // convert to kWh
+			output[i] = Double.parseDouble(args[i + 1])*2.7777777778e-7; // convert to kWh
 		}
 		return output;
 	}

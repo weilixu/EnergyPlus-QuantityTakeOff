@@ -344,7 +344,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	createIDFButton.setEnabled(false);
 
 	analysisButton = new JButton("Analyze Results");
-	analysisButton.setEnabled(false);
+	//analysisButton.setEnabled(false);
 	analysisButton.addActionListener(new ActionListener() {
 
 	    @Override

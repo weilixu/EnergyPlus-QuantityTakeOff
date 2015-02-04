@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import analyzer.listeners.LoadIdfListeners;
 
 /**
@@ -440,6 +442,33 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 		node.setAttribute(toValue);
 	    }
 	}
+    }
+    
+    /**
+     * create a default mutable tree node for display purpose
+     * @return
+     */
+    public DefaultMutableTreeNode createTree(){
+	DefaultMutableTreeNode energyPlus = new DefaultMutableTreeNode("EnergyPlus");
+	
+	Set<String> objectName = eplusMap.keySet();
+	Iterator<String> oIterator = objectName.iterator();
+	while(oIterator.hasNext()){
+	    String temp = oIterator.next();
+	    //create object level node
+	    DefaultMutableTreeNode objectNode = new DefaultMutableTreeNode(temp);
+	    energyPlus.add(objectNode);
+	    
+	    //getting the next level information
+	    Set<String> elementCount = eplusMap.keySet();
+	    Iterator<String> eIterator = elementCount.iterator();
+	    while(eIterator.hasNext()){
+		String name = eIterator.next();
+		DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(eplusMap.get(temp).get(name));
+		objectNode.add(elementNode);
+	    }
+	}
+	return energyPlus;
     }
 
     @Override
