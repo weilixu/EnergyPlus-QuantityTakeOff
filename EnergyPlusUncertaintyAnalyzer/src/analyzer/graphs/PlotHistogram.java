@@ -53,7 +53,7 @@ public class PlotHistogram {
 
 	private JFreeChart createChart(IntervalXYDataset intervalxydataset) {
 		JFreeChart jfreechart = ChartFactory.createHistogram(title,
-				"Frequency", "Energy [kWh]", intervalxydataset,
+				 "Energy [kWh]", "Frequency",intervalxydataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		XYPlot xyplot = (XYPlot) jfreechart.getPlot();
 		xyplot.setForegroundAlpha(0.85F);
