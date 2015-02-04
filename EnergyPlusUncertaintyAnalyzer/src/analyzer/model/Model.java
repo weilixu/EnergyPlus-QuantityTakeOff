@@ -168,9 +168,8 @@ public class Model {
 	    e.printStackTrace();
 	}
 	MWNumericArray rndVars = (MWNumericArray) fitDistResult[0];
-	Object[] output = new Object[2];
 
-	distSummary= fitDistResult[1].toString(); // convert to String
+	distSummary = fitDistResult[1].toString(); // convert to String
 	editDistSummary();
 
 	onDistributionGenerated();
@@ -232,10 +231,12 @@ public class Model {
      */
     public void generateRV(String distrName, double[] distrParam, String lower,
 	    String upper) {
+
 	MakeDist makeDistr = null;
 	Object[] makeDistInputs = new Object[7];
 	makeDistInputs[0] = source;
-	makeDistInputs[1] = DIST_NAME + variableName + IMAGE_POST;
+	makeDistInputs[1] = DIST_NAME + variableName
+		+ IMAGE_POST;
 	makeDistInputs[2] = simulationNumber;
 	makeDistInputs[3] = distrName;
 	makeDistInputs[4] = distrParam;
@@ -252,28 +253,30 @@ public class Model {
 	}
 
 	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
+	System.out.println(rndVars.getDoubleData());
+	
 	// updates GUIs
 	onDistributionGenerated();
 	onVariableEnabled();
 	randomVariableList.put(variableName, rndVars.getDoubleData());
 	onDataUpdates();
     }
-    
-    private void editDistSummary(){
+
+    private void editDistSummary() {
 	String[] distString = null;
-	if(distSummary!=null){
+	if (distSummary != null) {
 	    distString = distSummary.split("   ");
 	}
-	
+
 	StringBuffer temp = new StringBuffer();
-	for(int i=0; i<distString.length; i++){
-	    if(!distString[i].isEmpty()){
+	for (int i = 0; i < distString.length; i++) {
+	    if (!distString[i].isEmpty()) {
 		temp.append(distString[i].trim());
 		temp.append("\n");
 	    }
 	}
 	distSummary = temp.toString();
-	
+
     }
 
     private void onDistributionGenerated() {

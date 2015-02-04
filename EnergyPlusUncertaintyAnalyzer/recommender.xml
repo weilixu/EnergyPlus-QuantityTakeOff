@@ -1,7 +1,5 @@
 <recommender>
-    <Conductivity>
-        <reference>Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.</reference>  
-        <unit>W/mK</unit>
+    <Conductivity object="Material" information="Conductivity" unit = "W/mK" reference = "Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
         <Asbestos>
             <boards>
                 <distributionName>Normal</distributionName>
