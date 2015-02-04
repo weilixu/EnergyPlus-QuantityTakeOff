@@ -17,6 +17,7 @@ public class AnalyzeResult {
 	private final String idfName;
 	private int startYear;
 	private int varLength;
+	private int numberSimulation;
 
 	public AnalyzeResult(String source, String idfName) {
 		this.keys = new ArrayList<String>();
@@ -54,6 +55,20 @@ public class AnalyzeResult {
 			output[i] = temp[colNumber];
 		}
 		return output;
+	}
+	
+	public double[] getHistogramData(int colNumber) {
+		double[] output = new double[numberSimulation];
+		for (int i=0; i<keys.size(); i++) {
+			ArrayList<Double[]> list = this.data.get(keys.get(i));
+			double sum = 0;
+			for (int j=0; j<list.size(); j++) {
+				Double[] temp = list.get(j);
+				sum = sum + temp[colNumber];
+			}
+			output[i] = sum;
+		}
+		return output;		
 	}
 	
 	public String getVariable(int index){
@@ -95,7 +110,7 @@ public class AnalyzeResult {
 	public void setData(int numSim) {
 		// HashMap<String, ArrayList<Double[]>> data = new
 		// HashMap<String, ArrayList<Double[]>>();
-
+		numberSimulation = numSim;
 		for (int i = 0; i < numSim; i++) {
 			try {
 				FileReader file = new FileReader(this.source
