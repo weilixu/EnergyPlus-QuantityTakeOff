@@ -222,9 +222,11 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 
 			// initialize the graphs object for later graph
 			// generation
+
 			graphs = new GraphGenerator(resultFolder,
 				simulationNumber, idfReader.getValue(
 					"RunPeriod", "Start Year"));
+			
 			analysisPanel.setGraph(graphs);
 
 			// after read set the simulaiton number of the model

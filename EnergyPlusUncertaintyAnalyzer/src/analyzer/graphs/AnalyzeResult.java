@@ -17,7 +17,7 @@ public class AnalyzeResult {
 	private final String idfName;
 	private int startYear;
 	private int varLength;
-	private int numberSimulation;
+	private int numberofResults;
 
 	public AnalyzeResult(String source, String idfName) {
 		this.keys = new ArrayList<String>();
@@ -58,7 +58,9 @@ public class AnalyzeResult {
 	}
 	
 	public double[] getHistogramData(int colNumber) {
-		double[] output = new double[numberSimulation];
+		double[] output = new double[numberofResults];
+		System.out.println(output.length);
+		System.out.println(colNumber);
 		for (int i=0; i<keys.size(); i++){
 			String month = keys.get(i);
 			ArrayList<Double[]> monthData = this.data.get(month);
@@ -97,6 +99,7 @@ public class AnalyzeResult {
 		}
 		header = Arrays.copyOfRange(tempHeader, 1, tempHeader.length);
 		varLength = header.length;
+		System.out.println(varLength);
 
 		for (int i = 0; i < header.length; i++) {
 			int spaceIdx = header[i].indexOf(" ");
@@ -109,7 +112,7 @@ public class AnalyzeResult {
 	public void setData(int numSim) {
 		// HashMap<String, ArrayList<Double[]>> data = new
 		// HashMap<String, ArrayList<Double[]>>();
-		numberSimulation = numSim;
+		numberofResults = 0;
 		for (int i = 0; i < numSim; i++) {
 			try {
 				FileReader file = new FileReader(this.source
@@ -118,8 +121,8 @@ public class AnalyzeResult {
 				BufferedReader br = new BufferedReader(file);
 				String line = "";
 				String csvSplitBy = ",";
-				br.readLine();
-				br.readLine();
+				//br.readLine();
+				//br.readLine();
 				br.readLine(); // skip first 3 lines (header)
 				Double[] tempData = null;
 				while ((line = br.readLine()) != null) {
@@ -146,6 +149,7 @@ public class AnalyzeResult {
 				}
 				
 				br.close();
+				numberofResults++;
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -164,7 +168,11 @@ public class AnalyzeResult {
 		for (int i = 0; i < len - 1; i++) {
 			// ignores 1st value of args which is the month string
 			// output should be all numeric data
+		    if(args[i+1].equals("")){
+			output[i]=0.0;
+		    }else{
 			output[i] = Double.parseDouble(args[i + 1])*2.7777777778e-7; // convert to kWh
+		    }
 		}
 		return output;
 	}

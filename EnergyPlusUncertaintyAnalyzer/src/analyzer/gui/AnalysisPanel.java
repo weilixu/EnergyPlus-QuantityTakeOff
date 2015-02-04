@@ -82,6 +82,7 @@ public class AnalysisPanel extends JTabbedPane implements
      * generates the graphs
      */
     public void generateGraph() {
+	graph.setResults();
 	graph.getTimeSeriesCharts();
 	graph.getHistogramCharts();
     }
