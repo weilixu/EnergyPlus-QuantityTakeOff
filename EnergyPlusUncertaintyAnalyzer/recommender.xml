@@ -219,9 +219,7 @@
             </timberBoards>                                             
         </Timber>             
     </Conductivity>  
-    <Density>
-       <reference>Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.</reference>
-        <unit>kg/m3</unit>
+    <Density object="Material" information="Density" unit = "kg/m3" reference = "Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
         <Asbestos>
             <boards>
                 <distributionName>Normal</distributionName>
@@ -437,9 +435,7 @@
             </timberBoards>                                             
         </Timber>             
     </Density>  
-    <SpecificHeatCapacity>
-       <reference>Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.</reference>
-        <unit>J/kgK</unit>
+    <SpecificHeatCapacity object="Material" information="Specific Heat" unit = "J/kg-K" reference = "Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
         <Asbestos>
             <boards>
                 <distributionName>Normal</distributionName>

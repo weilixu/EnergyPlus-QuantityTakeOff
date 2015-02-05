@@ -18,25 +18,33 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.tree.TreeSelectionModel;
 
 import analyzer.model.Model;
+import analyzer.recommender.Recommender;
 
 public class MakeDistPanel extends JPanel {
 
     private final Model model;
+    private final Recommender recommender;
     // set the parent tabbed pane
     private final JTabbedPane parentPane;
     private final String variable;
+    private final String object;
+    private final String input;
 
     // set-up two panels for this panel
     private final JPanel selectDistPanel;
     private final JPanel distInputPanel;
     private final JPanel displayPanel;
     private final JPanel comboBoxPane;
+    private final JPanel recommendPanel;
 
     // combo-box for distribution selection
     private final JComboBox selectBox;
@@ -90,11 +98,14 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, Model m, String v,String s) {
+    public MakeDistPanel(JTabbedPane tp, Model m, Recommender r,String v,String s, String o, String i) {
 	model = m;
+	recommender = r;
 	parentPane = tp;
 	variable = v;
 	VARIABLE_SET = s;
+	object = o;
+	input = i;
 	setLayout(new BorderLayout());
 
 	/*
@@ -175,6 +186,9 @@ public class MakeDistPanel extends JPanel {
 	// set-up the display panel
 	displayPanel = new ImageDisplayPanel(model,variable);
 	add(displayPanel, BorderLayout.CENTER);
+	
+	recommendPanel = new RecommenderPanel(recommender.getPartialTree(object, input));
+	add(recommendPanel, BorderLayout.LINE_START);
 
     }
 
@@ -527,5 +541,4 @@ public class MakeDistPanel extends JPanel {
     private static void showErrorDialog(Component c, String title, String msg) {
 	JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);
     }
-
 }

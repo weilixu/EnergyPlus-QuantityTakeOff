@@ -180,19 +180,20 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 			element = temp[0].trim();
 			description = temp[1].trim().substring(2);
 		    }
-
+		    
+		    ValueNode tempVN = new ValueNode(element, description);
 		    // add the special character to the variableList
 		    if (element.indexOf("$") > -1) {
 			variableList.add(element.substring(0,
 				element.length() - 1));
 			String[] keyPair = { startToken, elementCount,
-				description };
+				tempVN.getDescription()};
 			variableKeySets.add(keyPair);
 		    }
 
 		    // put element into the map
 		    eplusMap.get(startToken).get(elementCount)
-			    .add(new ValueNode(element, description));
+			    .add(tempVN);
 
 		    if (line.indexOf(endToken) > -1) {
 			// find the end line of the statement, swithc the flag!
@@ -533,17 +534,8 @@ public class IdfReader implements EnergyPlusFilesGenerator {
      * notify GUI for the updates of variableList and the variableInfo
      */
     private void onReadEplusFile() {
-	ArrayList<String> variableInfo = new ArrayList<String>();
-	for (String[] sList : variableKeySets) {
-	    StringBuffer sb = new StringBuffer("SETTINGS FOR: ");
-	    sb.append(sList[ObjectNameIndex]);
-	    sb.append(";    INPUT: ");
-	    sb.append(sList[ObjectInputDescriptionIndex]);
-	    variableInfo.add(sb.toString());
-	}
-
 	for (LoadIdfListeners l : loadIDFListeners) {
-	    l.loadedEnergyPlusFile(variableList, variableInfo);
+	    l.loadedEnergyPlusFile(variableList, variableKeySets);
 	}
     }
 

@@ -14,7 +14,7 @@ public class TestPlotGraph {
 
 		String source = "/Users/Adrian/Dropbox/testIDFJfreeChart/";
 		String idfName = "";
-		AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName);
+		AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName, "YES");
 		// plot all graphs
 		int numSimulation = 2;
 		analyzeResult.setHeader();

@@ -27,10 +27,12 @@ import javax.swing.event.ListSelectionListener;
 
 import analyzer.main.Analyzer;
 import analyzer.model.Model;
+import analyzer.recommender.Recommender;
 
 public class VariablePanel extends JPanel {
 
     private final Model model;
+    private final Recommender recommender;
 
     // MESSAGE or Titles
     private final String FIT_DIST_TITLE = "Fit Distribution";
@@ -55,9 +57,11 @@ public class VariablePanel extends JPanel {
     // the data retrieve from the model
     private ArrayList<String> variableList;
     private ArrayList<String> variableDescription;
+    private ArrayList<String[]>variableKeySets;
 
     public VariablePanel(Model m) {
 	model = m;
+	recommender = new Recommender();
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
 	//eplusFile = file;
@@ -71,16 +75,29 @@ public class VariablePanel extends JPanel {
 	parentFile = eplusFile.getParentFile();
     }
 
-    public void changeVariables(ArrayList<String> vl, ArrayList<String> vi) {
+    public void changeVariables(ArrayList<String> vl, ArrayList<String[]> vk) {
 	variableList = vl;
-	variableDescription = vi;
+	variableDescription = new ArrayList<String>();
+	variableKeySets = vk;
+
+	//set the variable description for display
+	for (String[] sList : variableKeySets) {
+	    StringBuffer sb = new StringBuffer("SETTINGS FOR: ");
+	    sb.append(sList[0]);
+	    sb.append(";    INPUT: ");
+	    sb.append(sList[2]);
+	    variableDescription.add(sb.toString());
+	}
+
+	
 	//set all the variables enabled
 	enabledFlags = new boolean[variableList.size()];
 	// adding tabbedpanes and buttons to the panel
 	for (int i = 0; i < variableList.size(); i++) {
 	    enabledFlags[i]=true;
 	    String s = variableList.get(i);
-	    JTabbedPane vbtnTP = fitPanel(s, variableDescription.get(i));
+
+	    JTabbedPane vbtnTP = fitPanel(s, variableDescription.get(i),variableKeySets.get(i)[0],variableKeySets.get(i)[2]);
 	    fittingPanel.add(vbtnTP, s);
 
 	    listModel.addElement(s);
@@ -132,12 +149,12 @@ public class VariablePanel extends JPanel {
     // once one pane is selected and inputs is complete
     // user can hit the done button to process the data
     // a inputs checking mechanism is required to be complete in the future
-    private JTabbedPane fitPanel(String variableName, String setting) {
+    private JTabbedPane fitPanel(String variableName, String setting, String object, String input) {
 	JTabbedPane tp = new JTabbedPane();
 	model.setSource(parentFile.getAbsolutePath());
 	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,setting));// index
 									     // 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, variableName,setting));// index
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, recommender,variableName,setting,object,input));// index
 									       // 1
 	return tp;
     }

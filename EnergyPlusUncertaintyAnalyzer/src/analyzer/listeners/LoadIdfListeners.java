@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 public interface LoadIdfListeners {
     
-    public void loadedEnergyPlusFile(ArrayList<String> variableList, ArrayList<String> variableInfo);
+    public void loadedEnergyPlusFile(ArrayList<String> variableList, ArrayList<String[]> variableKeySet);
 
 }

@@ -130,7 +130,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// add the reader to the interface and load the listener
 	idfReader = new IdfReader();
 	idfReader.addLoadIDFListeners(this);
-
 	run = new RunEnergyPlus();
 
 	// build the frame
@@ -206,6 +205,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    core.setSimulationNumber(simulationNumber);
 		    try {
 			// initialize the file directories
+			
 			eplusFile = new File(idfDirText.getText());
 			parentFile = eplusFile.getParentFile();
 			resultFolder = createResultsFolder();
@@ -217,13 +217,14 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			// reads the file
 			idfReader.setFilePath(idfDirText.getText());
 			idfReader.readEplusFile();
-
 			// initialize the graphs object for later graph
 			// generation
-
+			String isSized = idfReader.getValue("SimulationControl", "Run Simulation for Sizing Periods");
+			System.out.println(isSized);
 			graphs = new GraphGenerator(resultFolder,
 				simulationNumber, idfReader.getValue(
 					"RunPeriod", "Start Year"));
+			graphs.setSized(isSized);
 			
 			analysisPanel.setGraph(graphs);
 
@@ -250,6 +251,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    showErrorDialog(frame,
 			    "Encounter an error while processing file!",
 			    "The File Cannot be processed, Please check your both inputs!");
+		    np.printStackTrace();
 		}
 
 	    }
@@ -287,8 +289,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     // found in each node and send it back to gui
     @Override
     public void loadedEnergyPlusFile(ArrayList<String> variableList,
-	    ArrayList<String> variableInfo) {
-	variablePane.changeVariables(variableList, variableInfo);
+	    ArrayList<String[]> variableKeySets) {
+	variablePane.changeVariables(variableList, variableKeySets);
 	number_Variable = variableList.size();
 	// outerPanel.add(innerPanel, BorderLayout.CENTER);
 	outerPanel.revalidate();

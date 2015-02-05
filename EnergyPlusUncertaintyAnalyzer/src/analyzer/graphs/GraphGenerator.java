@@ -13,6 +13,7 @@ import org.jfree.chart.ChartPanel;
 public class GraphGenerator {
 
     private final double CONFIDENCE_INTERVAL = 0.95;
+    private String isSized = "NO";
 
     /*
      * Set the analyzer and folder
@@ -41,15 +42,14 @@ public class GraphGenerator {
 	resultFolder = rf;
 	numSimulation = num;
 
-
 	// set-up the resultAnalyzer model
 	resultAnalyzer = new AnalyzeResult(resultFolder.getAbsolutePath()
-		+ "\\", "");
+		+ "\\", "", isSized);
 	try {
 	    year = Integer.parseInt(y);
 	    resultAnalyzer.setStartYear(year);
 	} catch (NumberFormatException e) {
-	    //do nothing
+	    // do nothing
 	}
 
 	// initialize the two graph data
@@ -87,6 +87,15 @@ public class GraphGenerator {
 	// get the number of graphs and number of keys from the data
 	numGraph = resultAnalyzer.getVariableLength();
 	numMonths = resultAnalyzer.getKeysLength();
+    }
+
+    /**
+     * get whether this simulation has sizing day simulated or not
+     * 
+     * @param s
+     */
+    public void setSized(String s) {
+	isSized = s;
     }
 
     /**
