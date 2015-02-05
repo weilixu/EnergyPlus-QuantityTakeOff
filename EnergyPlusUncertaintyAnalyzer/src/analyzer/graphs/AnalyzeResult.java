@@ -28,8 +28,6 @@ public class AnalyzeResult {
 		this.source = source;
 		this.idfName = idfName;
 		this.startYear = Calendar.getInstance().get(Calendar.YEAR);
-
-
 	}
 	
 	public void setStartYear(int idfYear){
