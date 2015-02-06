@@ -51,6 +51,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener{
 	infoText = new JTextArea(op.getFullDescription());
 	infoText.setLineWrap(true);
 	infoText.setFont(new Font("Arial", Font.BOLD, 12));
+	infoText.setEditable(false);
 	
 	tempText = new JTextArea("Data Info");
 	tempText.setLineWrap(true);
@@ -88,6 +89,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener{
 	if(node == null){
 	    return;
 	}
+	
 	Object nodeInfo = node.getUserObject();
 	if(node.getParent().getParent()==null){
 	    //do nothing
@@ -100,5 +102,6 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener{
     
     private void displayLeaves(DistributionInfo di){
 	tempText.setText(di.getFullDescription());
+	tempText.setEditable(false);
     }
 }

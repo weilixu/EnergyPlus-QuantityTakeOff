@@ -40,7 +40,11 @@ public class AnalyzeResult {
 		this.idfName = idfName;
 		this.startYear = Calendar.getInstance().get(Calendar.YEAR);
 	}
-
+	
+	public void setSized(String sized){
+	    runSizing = sized;
+	}
+	
 	/**
 	 * set year to plot timeseries graph
 	 * 
@@ -104,14 +108,10 @@ public class AnalyzeResult {
 	 */
 	public double[] getHistogramData(int colNumber) {
 		double[] output = new double[numberofResults];
-		System.out.println(output.length);
-		System.out.println(colNumber);
-		for (int i = 0; i < keys.size(); i++) {
+		for (int i=0; i<keys.size(); i++){
 			String month = keys.get(i);
 			ArrayList<Double[]> monthData = this.data.get(month);
-			for (int j = 0; j < monthData.size(); j++) {
-				System.out.println("This is the month data size: "
-						+ monthData.size());
+			for (int j=0; j<monthData.size(); j++){
 				Double[] temp = monthData.get(j);
 				output[j] = output[j] + temp[colNumber];
 			}

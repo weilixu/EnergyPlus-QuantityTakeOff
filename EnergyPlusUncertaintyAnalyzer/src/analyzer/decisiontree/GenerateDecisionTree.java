@@ -36,7 +36,7 @@ public class GenerateDecisionTree {
 		// TODO Auto-generated method stub
 		FileReader file;
 		try {
-			file = new FileReader("/Users/Adrian/Dropbox/test.arff");
+			file = new FileReader("C:\\Users\\Weili\\Desktop\\New folder\\test.arff");
 			BufferedReader reader = new BufferedReader(file);
 			Instances data = new Instances(reader);
 			reader.close();
