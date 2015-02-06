@@ -40,15 +40,11 @@ public class AnalyzeResult {
 		this.idfName = idfName;
 		this.startYear = Calendar.getInstance().get(Calendar.YEAR);
 	}
-<<<<<<< HEAD
 	
 	public void setSized(String sized){
 	    runSizing = sized;
 	}
 	
-	public void setStartYear(int idfYear){
-=======
-
 	/**
 	 * set year to plot timeseries graph
 	 * 
@@ -56,7 +52,6 @@ public class AnalyzeResult {
 	 *                starting year of simulation
 	 */
 	public void setStartYear(int idfYear) {
->>>>>>> fffad7d4a6fd09c6c4ed1bc13ef4cd25d67e0ac9
 		startYear = idfYear;
 	}
 
@@ -113,21 +108,12 @@ public class AnalyzeResult {
 	 */
 	public double[] getHistogramData(int colNumber) {
 		double[] output = new double[numberofResults];
-<<<<<<< HEAD
 		for (int i=0; i<keys.size(); i++){
 			String month = keys.get(i);
 			ArrayList<Double[]> monthData = this.data.get(month);
 			for (int j=0; j<monthData.size(); j++){
-=======
-		System.out.println(output.length);
-		System.out.println(colNumber);
-		for (int i = 0; i < keys.size(); i++) {
-			String month = keys.get(i);
-			ArrayList<Double[]> monthData = this.data.get(month);
-			for (int j = 0; j < monthData.size(); j++) {
 				System.out.println("This is the month data size: "
 						+ monthData.size());
->>>>>>> fffad7d4a6fd09c6c4ed1bc13ef4cd25d67e0ac9
 				Double[] temp = monthData.get(j);
 				output[j] = output[j] + temp[colNumber];
 			}
