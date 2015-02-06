@@ -96,6 +96,7 @@ public class GraphGenerator {
      */
     public void setSized(String s) {
 	isSized = s;
+	resultAnalyzer.setSized(isSized);
     }
 
     /**
