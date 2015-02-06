@@ -112,8 +112,6 @@ public class AnalyzeResult {
 			String month = keys.get(i);
 			ArrayList<Double[]> monthData = this.data.get(month);
 			for (int j=0; j<monthData.size(); j++){
-				System.out.println("This is the month data size: "
-						+ monthData.size());
 				Double[] temp = monthData.get(j);
 				output[j] = output[j] + temp[colNumber];
 			}
