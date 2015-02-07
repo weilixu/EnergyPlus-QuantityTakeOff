@@ -2,6 +2,7 @@ package analyzer.decisiontree;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,6 +22,8 @@ import weka.classifiers.meta.AttributeSelectedClassifier;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.REPTree;
 import weka.core.Instances;
+import weka.core.converters.ArffSaver;
+import weka.core.converters.ConverterUtils.DataSource;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeVisualizer;
 
@@ -36,7 +39,7 @@ public class GenerateDecisionTree {
 		// TODO Auto-generated method stub
 		FileReader file;
 		try {
-			file = new FileReader("C:\\Users\\Weili\\Desktop\\New folder\\test.arff");
+			file = new FileReader("C:\\Users\\Weili\\Desktop\\New folder\\trial.arff");
 			BufferedReader reader = new BufferedReader(file);
 			Instances data = new Instances(reader);
 			reader.close();
@@ -48,7 +51,17 @@ public class GenerateDecisionTree {
 			
 			REPTree tree = new REPTree();
 			tree.buildClassifier(data);
-
+			
+//			DataSource source = new DataSource("C://Users//Weili//Desktop//New folder//testData.csv");
+//			Instances testData = source.getDataSet();
+//			ArffSaver saver = new ArffSaver();
+//			
+//			saver.setInstances(testData);
+//			saver.setFile(new File("C://Users//Weili//Desktop//New folder//trial.arff"));
+//			saver.writeBatch();
+			
+			
+			
 			// Print tree
 //			System.out.println(tree);
 
