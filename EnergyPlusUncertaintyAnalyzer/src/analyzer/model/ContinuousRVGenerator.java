@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.distribution.*;
 
-public class JavaRandVarGenerator {
+public class ContinuousRVGenerator {
 	final private int numRV; // number of random variables to generate
 
 	/**
@@ -13,7 +13,7 @@ public class JavaRandVarGenerator {
 	 * @param n
 	 *                number of random variables to genrate
 	 */
-	public JavaRandVarGenerator(int n) {
+	public ContinuousRVGenerator(int n) {
 		numRV = n;
 	}
 
