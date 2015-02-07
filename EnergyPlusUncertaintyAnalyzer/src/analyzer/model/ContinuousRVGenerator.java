@@ -52,7 +52,7 @@ public class ContinuousRVGenerator {
 			rv = normRnd(param1, param2);
 			break;
 		case "UNIFORM":
-			rv = uniformRnd(param1, param2);
+			rv = unifContinuousRnd(param1, param2);
 			break;
 		case "WEIBULL":
 			rv = weibullRnd(param1, param2);
@@ -184,7 +184,7 @@ public class ContinuousRVGenerator {
 	 * @return array of random variables of size numRV from pareto
 	 *         distribution
 	 */
-	private double[] uniformRnd(double lower, double upper) {
+	private double[] unifContinuousRnd(double lower, double upper) {
 		UniformRealDistribution ud = new UniformRealDistribution(lower,
 				upper);
 		double[] rv = ud.sample(numRV);
@@ -206,9 +206,10 @@ public class ContinuousRVGenerator {
 		double[] rv = wd.sample(numRV);
 		return rv;
 	}
-
+	
+	// example usage
 	public static void main(String[] args) {
-		JavaRandVarGenerator r = new JavaRandVarGenerator(1000);
+		ContinuousRVGenerator r = new ContinuousRVGenerator(1000);
 		double[] output = r.getSamples("NaKaGami", 1, 1);
 		System.out.println(Arrays.toString(output));
 	}
