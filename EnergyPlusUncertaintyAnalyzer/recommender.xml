@@ -650,7 +650,7 @@
         </SpecificHeatCapacity>
     </Material>
     <Infiltration object="ZoneInfiltration:DesignFlowRate">
-        <flow field="Flow per Exterior Surface Area" unit="m3/s-m2">
+        <flowPerSurfaceArea field="Flow per Exterior Surface Area" unit="m3/s-m2" notes="split by building type">
             <commercialBuildings  description="Commercial Buildings" reference="Emmerich,S.J., & Persily,A.K.(2005). Airtightness of Commercial Buildings in the U.S. Paper presented at the 26th AIVC Conference, Brussels, Belgium." notes="value converted from 75Pa to 4Pa assuming a flow exponent of 0.65">
                 <distributionName>Normal</distributionName>
                 <mean>0.0012</mean>
@@ -658,85 +658,231 @@
                 <minimum>0.00011</minimum>
                 <maximum>0.0069</maximum>
             </commercialBuildings>
-        </flow>
+        </flowPerSurfaceArea>
     </Infiltration>
     <People object="People">
-        <fractionRadiant field="Fraction Radiant" unit="fraction">
-            <activity>
-                <seatedTheater description="Seated at theater" buildingType="Theater, matinee" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.27</lower>
-                    <upper>0.60</upper>
-                </seatedTheater>
-                <seatedTheaterNight description="Seated at theater, night" buildingType="Theater, night" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.27</lower>
-                    <upper>0.60</upper>
-                </seatedTheaterNight>
-                <seatedLightWork description="Seated, very light work" buildingType="Offices, hotels, apartments" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.27</lower>
-                    <upper>0.60</upper>
-                </seatedLightWork>
-                <moderateOfficeWork description="Moderately active office work" buildingType="Offices, hotels, apartments" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.38</lower>
-                    <upper>0.58</upper>
-                </moderateOfficeWork>
-                <standingLightWork description="Standing, light work; walking" buildingType="Department store; retail sotre" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.38</lower>
-                    <upper>0.58</upper>
-                </standingLightWork>
-                <walkingStanding description="Walking, standing" buildingType="Drug store, bank" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.38</lower>
-                    <upper>0.58</upper>
-                </walkingStanding>
-                <sedentaryWork description="Sedentary work" buildingType="Restaurant" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.38</lower>
-                    <upper>0.58</upper>
-                </sedentaryWork>
-                <lightBenchWork description="Light bench work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.35</lower>
-                    <upper>0.49</upper>
-                </lightBenchWork>
-                <moderateDancing description="Moderate dancing" buildingType="Dance hall" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.35</lower>
-                    <upper>0.49</upper>
-                </moderateDancing>
-                <walkingLightMachine description="Walking 4.8 km/h; light machine work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.35</lower>
-                    <upper>0.49</upper>
-                </walkingLightMachine>
-                <bowling description="Bowling" buildingType="Bowling alley" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.19</lower>
-                    <upper>0.54</upper>
-                </bowling>
-                <heavyWork description="Heavy work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.19</lower>
-                    <upper>0.54</upper>
-                </heavyWork>
-                <heavyMachineWork description="Heavy machine work; lifting" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.19</lower>
-                    <upper>0.54</upper>
-                </heavyMachineWork>
-                <athletics description="Athletics" buildingType="Gymnasium" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                    <distributionName>Uniform</distributionName>
-                    <lower>0.19</lower>
-                    <upper>0.54</upper>
-                </athletics>
-            </activity>
+        <fractionRadiant field="Fraction Radiant" unit="fraction" notes="split by activity and building type">
+            <seatedTheater description="Seated at theater" buildingType="Theater, matinee" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.27</lower>
+                <upper>0.60</upper>
+            </seatedTheater>
+            <seatedTheaterNight description="Seated at theater, night" buildingType="Theater, night" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.27</lower>
+                <upper>0.60</upper>
+            </seatedTheaterNight>
+            <seatedLightWork description="Seated, very light work" buildingType="Offices, hotels, apartments" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.27</lower>
+                <upper>0.60</upper>
+            </seatedLightWork>
+            <moderateOfficeWork description="Moderately active office work" buildingType="Offices, hotels, apartments" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.38</lower>
+                <upper>0.58</upper>
+            </moderateOfficeWork>
+            <standingLightWork description="Standing, light work; walking" buildingType="Department store; retail sotre" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.38</lower>
+                <upper>0.58</upper>
+            </standingLightWork>
+            <walkingStanding description="Walking, standing" buildingType="Drug store, bank" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.38</lower>
+                <upper>0.58</upper>
+            </walkingStanding>
+            <sedentaryWork description="Sedentary work" buildingType="Restaurant" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.38</lower>
+                <upper>0.58</upper>
+            </sedentaryWork>
+            <lightBenchWork description="Light bench work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.35</lower>
+                <upper>0.49</upper>
+            </lightBenchWork>
+            <moderateDancing description="Moderate dancing" buildingType="Dance hall" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.35</lower>
+                <upper>0.49</upper>
+            </moderateDancing>
+            <walkingLightMachine description="Walking 4.8 km/h; light machine work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.35</lower>
+                <upper>0.49</upper>
+            </walkingLightMachine>
+            <bowling description="Bowling" buildingType="Bowling alley" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.19</lower>
+                <upper>0.54</upper>
+            </bowling>
+            <heavyWork description="Heavy work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.19</lower>
+                <upper>0.54</upper>
+            </heavyWork>
+            <heavyMachineWork description="Heavy machine work; lifting" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.19</lower>
+                <upper>0.54</upper>
+            </heavyMachineWork>
+            <athletics description="Athletics" buildingType="Gymnasium" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.19</lower>
+                <upper>0.54</upper>
+            </athletics>
         </fractionRadiant>
     </People>
+    <Lights object="Lights">
+        <LPD field="Watts per Zone Floor Area" unit="W/m2" notes="split by principal building activity">
+            <office description="Office/professional" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>19.4</mean>
+                <standardDeviation>1.29</standardDeviation>
+            </office>
+            <lab description="Laboratory" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>18.3</mean>
+                <standardDeviation>1.22</standardDeviation>
+            </lab>
+            <nonrefrigeratedWarehouse description="Nonrefrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>15.1</mean>
+                <standardDeviation>1.01</standardDeviation>
+            </nonrefrigeratedWarehouse>
+            <foodSales description="Food sales" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>20.5</mean>
+                <standardDeviation>1.37</standardDeviation>
+            </foodSales>
+            <publicOrderAndSafety description="Public order and safety" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>14.0</mean>
+                <standardDeviation>0.93</standardDeviation>
+            </publicOrderAndSafety>
+            <outpatientHealthCare description="Outpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>18.3</mean>
+                <standardDeviation>1.22</standardDeviation>
+            </outpatientHealthCare>
+            <refrigeratedWarehouse description="Refrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>15.1</mean>
+                <standardDeviation>1.01</standardDeviation>
+            </refrigeratedWarehouse>
+            <religiousWorship description="Religious worship" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>15.1</mean>
+                <standardDeviation>1.01</standardDeviation>
+            </religiousWorship>
+            <publicAssembly description="Public Assembly" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>15.1</mean>
+                <standardDeviation>1.01</standardDeviation>
+            </publicAssembly>
+            <education description="Education" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>19.4</mean>
+                <standardDeviation>1.29</standardDeviation>
+            </education>
+            <foodService description="Food Service" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>17.2</mean>
+                <standardDeviation>1.15</standardDeviation>
+            </foodService>
+            <inpatientHealthCare description="Inpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>18.3</mean>
+                <standardDeviation>1.22</standardDeviation>
+            </inpatientHealthCare>
+            <skilledNursing description="Skilled nursing" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>14.0</mean>
+                <standardDeviation>0.93</standardDeviation>
+            </skilledNursing>
+            <lodging description="Lodging" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>14.0</mean>
+                <standardDeviation>0.93</standardDeviation>
+            </lodging>
+            <retail description="Retail (except malls)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>20.5</mean>
+                <standardDeviation>1.37</standardDeviation>
+            </retail>
+            <service description="Service (except food)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+                <distributionName>Normal</distributionName>
+                <mean>18.3</mean>
+                <standardDeviation>1.22</standardDeviation>
+            </service>
+        </LPD>
+        <fractionRadiant field="Fraction Radiant" unit="fraction" notes="split by luminaire category">
+            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.25</lower>
+                <upper>0.37</upper>
+            </recessedFluorescentNoLens>
+            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.22</lower>
+                <upper>0.28</upper>
+            </recessedFluorescentWithLens>
+            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.30</lower>
+                <upper>0.40</upper>
+            </downlightCompact>
+            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.10</lower>
+                <upper>0.15</upper>
+            </downlightIncandescent>
+        </fractionRadiant>
+        <fractionVisible field="Fraction Visible" unit="fraction" notes="split by luminaire category">
+            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.23</lower>
+                <upper>0.31</upper>
+            </recessedFluorescentNoLens>
+            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.39</lower>
+                <upper>0.45</upper>
+            </recessedFluorescentWithLens>
+            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.60</lower>
+                <upper>0.70</upper>
+            </downlightCompact>
+            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+                <distributionName>Uniform</distributionName>
+                <lower>0.85</lower>
+                <upper>0.90</upper>
+            </downlightIncandescent>
+        </fractionVisible>
+    </Lights>
+    <ElectricEquipment object="ElectricEquipment">
+        <EPD field="Watts per Zone Floor Area" unit="W/m2">
+            <office description="Office equipemnt load factor" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>">
+                <distributionName>Uniform</distributionName>
+                <lower>4.7</lower>
+                <upper>11.6</upper>
+            </office>
+            <highlyAutomatedLab description="Highly automated laboratories"" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+                <distributionName>Uniform</distributionName>">
+                <distributionName>Uniform</distributionName>
+                <lower>50.0</lower>
+                <upper>270.0</upper>
+            </highlyAutomatedLab>
+        </EPD>
+    </ElectricEquipment>
 </recommender>
+
+
+
+
 
 
 
