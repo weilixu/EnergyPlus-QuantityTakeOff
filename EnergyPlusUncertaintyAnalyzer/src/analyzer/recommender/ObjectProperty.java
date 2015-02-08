@@ -12,32 +12,23 @@ package analyzer.recommender;
  */
 public class ObjectProperty {
     
-    private final String object;
-    private final String info;
+    private final String field;
     private final String unit;
     private final String reference;
     
-    public ObjectProperty(String o, String i, String u, String r){
-	object = o;
-	info = i;
+    public ObjectProperty(String f, String u, String r){
+	field = f;
 	unit = u;
 	reference = r;
     }
     
-    /**
-     * getter method to get the object
-     * @return
-     */
-    public String getObject(){
-	return object;
-    }
     
     /**
      * getter method to get the information
      * @return
      */
-    public String getInformation(){
-	return info;
+    public String getField(){
+	return field;
     }
     
     /**
@@ -62,9 +53,7 @@ public class ObjectProperty {
      */
     public String getFullDescription(){
 	StringBuffer sb = new StringBuffer();
-	sb.append(object);
-	sb.append("->");
-	sb.append(info);
+	sb.append(field);
 	sb.append(" {");
 	sb.append(unit);
 	sb.append("}");
@@ -79,6 +68,6 @@ public class ObjectProperty {
      */
     @Override
     public String toString(){
-	return info;
+	return field;
     }
 }

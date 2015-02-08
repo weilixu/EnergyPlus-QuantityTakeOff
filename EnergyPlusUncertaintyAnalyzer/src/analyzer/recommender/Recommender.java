@@ -57,20 +57,25 @@ public class Recommender {
 	while (iterator.hasNext()) {
 	    Element child = iterator.next();
 	    DefaultMutableTreeNode childNode = new DefaultMutableTreeNode();
-	    if (child.hasAttributes()) {
+	    if (child.hasAttributes() && child.getParent().getParent() != null) {
+		System.out.println(child.getName());
 		// for condition where the node has attributes
-		String object = child.getAttributeValue("object");
-		String info = child.getAttributeValue("information");
+		String field = child.getAttributeValue("field");
 		String unit = child.getAttributeValue("unit");
 		String reference = child.getAttributeValue("reference");
-		ObjectProperty op = new ObjectProperty(object, info, unit,
-			reference);
+		ObjectProperty op = new ObjectProperty(field, unit, reference);
 		childNode.setUserObject(op);
 		root.add(childNode);
 		builderHelper(child, childNode);
 	    } else if (child.getChildren().isEmpty()) {
 		// for condition where the nodes carries text
 		end.addString(child.getName() + " : " + child.getText());
+	    } else if (child.getParent().getParent() == null) {
+		String object = child.getAttributeValue("object");
+		CategoryProperty cp = new CategoryProperty(object);
+		childNode.setUserObject(cp);
+		root.add(childNode);
+		builderHelper(child,childNode);
 	    } else {
 		// for condition where the nodes is only contains name
 		childNode.setUserObject(child.getName());
@@ -102,16 +107,25 @@ public class Recommender {
      * @param info
      * @return
      */
-    public DefaultMutableTreeNode getPartialTree(String object, String info) {
+    public DefaultMutableTreeNode getPartialTree(String object, String field) {
 	int count = node.getChildCount();
 	System.out.println(count);
 	for (int i = 0; i < count; i++) {
 	    DefaultMutableTreeNode child = (DefaultMutableTreeNode) node
 		    .getChildAt(i);
-	    ObjectProperty op = (ObjectProperty) child.getUserObject();
-	    if (op.getObject().equals(object)
-		    && op.getInformation().equals(info)) {
-		return child;
+	    CategoryProperty cp = (CategoryProperty) child.getUserObject();
+	    //find the first level item
+	    if (cp.getObject().equals(object)) {
+		int grandChildCount = child.getChildCount();
+		for(int j=0; j<grandChildCount; j++){
+		    DefaultMutableTreeNode grandChild = (DefaultMutableTreeNode) child
+			    .getChildAt(i);
+		    ObjectProperty op = (ObjectProperty) grandChild.getUserObject();
+		    //find the correct field
+		    if(op.getField().equals(field)){
+			return grandChild;
+		    }
+		}
 	    }
 	}
 	return null;
