@@ -250,7 +250,7 @@
                 </timberBoards>
             </Timber>
         </Conductivity>
-        <Density field="Density" unit = "kg/m3">
+        <Density field="Density" unit = "kg/m3" notes="">
             <Asbestos description="Asbestos">
                 <boards description="Boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
@@ -502,7 +502,7 @@
                 </timberBoards>
             </Timber>
         </Density>
-        <SpecificHeatCapacity object="Material" information="Specific Heat" unit="J/kg-K">
+        <SpecificHeatCapacity field="Specific Heat" unit="J/kg-K" notes="">
             <Asbestos description="Asbestos">
                 <boards description="Boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
@@ -531,7 +531,7 @@
                     <maximum></maximum>
                 </asphalt>
             </BitumenAndAsphalt>
-            <Blockwork description=Blockwork>
+            <Blockwork description="Blockwork">
                 <heavyweightBlockwork description="Heavyweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
                     <distributionParameters>Mean: 840 Standard Deviation: 90</distributionParameters>
@@ -757,7 +757,7 @@
     </Material>
     <Infiltration object="ZoneInfiltration:DesignFlowRate">
         <flowPerSurfaceArea field="Flow per Exterior Surface Area" unit="m3/s-m2" notes="split by building type">
-            <commercialBuildings  description="Commercial Buildings" reference="Emmerich,S.J., & Persily,A.K.(2005). Airtightness of Commercial Buildings in the U.S. Paper presented at the 26th AIVC Conference, Brussels, Belgium." notes="value converted from 75Pa to 4Pa assuming a flow exponent of 0.65">
+            <commercialBuildings  description="Commercial Buildings" reference="Emmerich,S.J., Persily,A.K.(2005). Airtightness of Commercial Buildings in the U.S. Paper presented at the 26th AIVC Conference, Brussels, Belgium." notes="value converted from 75Pa to 4Pa assuming a flow exponent of 0.65">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 0.0012 Standard Deviation: 0.0015</distributionParameters>
                 <minimum>0.00011</minimum>
@@ -855,95 +855,95 @@
     </People>
     <Lights object="Lights">
         <LPD field="Watts per Zone Floor Area" unit="W/m2" notes="split by principal building activity">
-            <office description="Office/professional" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <office description="Office/professional" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 19.4 Standard Deviation: 1.29</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </office>
-            <lab description="Laboratory" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <lab description="Laboratory" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </lab>
-            <nonrefrigeratedWarehouse description="Nonrefrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <nonrefrigeratedWarehouse description="Nonrefrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </nonrefrigeratedWarehouse>
-            <foodSales description="Food sales" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <foodSales description="Food sales" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 20.5 Standard Deviation: 1.37</distributionParameters>
             </foodSales>
-            <publicOrderAndSafety description="Public order and safety" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <publicOrderAndSafety description="Public order and safety" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 14.0 Standard Deviation: 0.93</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </publicOrderAndSafety>
-            <outpatientHealthCare description="Outpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <outpatientHealthCare description="Outpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </outpatientHealthCare>
-            <refrigeratedWarehouse description="Refrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <refrigeratedWarehouse description="Refrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </refrigeratedWarehouse>
-            <religiousWorship description="Religious worship" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <religiousWorship description="Religious worship" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </religiousWorship>
-            <publicAssembly description="Public Assembly" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <publicAssembly description="Public Assembly" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </publicAssembly>
-            <education description="Education" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <education description="Education" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 19.4 Standard Deviation: 1.29</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </education>
-            <foodService description="Food Service" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <foodService description="Food Service" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 17.2 Standard Deviation: 1.15</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </foodService>
-            <inpatientHealthCare description="Inpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <inpatientHealthCare description="Inpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </inpatientHealthCare>
-            <skilledNursing description="Skilled nursing" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <skilledNursing description="Skilled nursing" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 14.0 Standard Deviation: 0.93</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </skilledNursing>
-            <lodging description="Lodging" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <lodging description="Lodging" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 14.0 Standard Deviation: 0.93</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </lodging>
-            <retail description="Retail (except malls)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <retail description="Retail (except malls)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 20.5 Standard Deviation: 1.37</distributionParameters>
                 <minimum>0.0</minimum>
                 <maximum></maximum>
             </retail>
-            <service description="Service (except food)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
+            <service description="Service (except food)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
                 <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
                 <minimum>0.0</minimum>
@@ -951,25 +951,25 @@
             </service>
         </LPD>
         <fractionRadiant field="Fraction Radiant" unit="fraction" notes="split by luminaire category">
-            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.25 Lower: 0.37</distributionParameters>
                 <minimum>0.25</minimum>
                 <maximum>0.37</maximum>
             </recessedFluorescentNoLens>
-            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.22 Lower: 0.28</distributionParameters>
                 <minimum>0.22</minimum>
                 <maximum>0.28</maximum>
             </recessedFluorescentWithLens>
-            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.30 Lower: 0.40</distributionParameters>
                 <minimum>0.30</minimum>
                 <maximum>0.40</maximum>
             </downlightCompact>
-            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.10 Lower: 0.15</distributionParameters>
                 <minimum>0.10</minimum>
@@ -977,25 +977,25 @@
             </downlightIncandescent>
         </fractionRadiant>
         <fractionVisible field="Fraction Visible" unit="fraction" notes="split by luminaire category">
-            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.23 Lower: 0.31</distributionParameters>
                 <minimum>0.23</minimum>
                 <maximum>0.31</maximum>
             </recessedFluorescentNoLens>
-            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.39 Lower: 0.45</distributionParameters>
                 <minimum>0.39</minimum>
                 <maximum>0.45</maximum>
             </recessedFluorescentWithLens>
-            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.60 Lower: 0.70</distributionParameters>
                 <minimum>0.60</minimum>
                 <maximum>0.70</maximum>
             </downlightCompact>
-            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
+            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.85 Lower: 0.90</distributionParameters>
                 <minimum>0.85</minimum>

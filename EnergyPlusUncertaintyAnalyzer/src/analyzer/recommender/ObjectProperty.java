@@ -12,14 +12,10 @@ package analyzer.recommender;
  */
 public class ObjectProperty {
     
-    private final String field;
-    private final String unit;
-    private final String reference;
+    private final String object;
     
-    public ObjectProperty(String f, String u, String r){
-	field = f;
-	unit = u;
-	reference = r;
+    public ObjectProperty(String o){
+	object = o;
     }
     
     
@@ -27,40 +23,8 @@ public class ObjectProperty {
      * getter method to get the information
      * @return
      */
-    public String getField(){
-	return field;
-    }
-    
-    /**
-     * getter method to get the unit
-     * @return
-     */
-    public String getUnit(){
-	return unit;
-    }
-    
-    /**
-     * getter method to get the reference
-     * @return
-     */
-    public String getReference(){
-	return reference;
-    }
-    
-    /**
-     * getter method to get the full description of this object
-     * @return
-     */
-    public String getFullDescription(){
-	StringBuffer sb = new StringBuffer();
-	sb.append(field);
-	sb.append(" {");
-	sb.append(unit);
-	sb.append("}");
-	sb.append("\n");
-	sb.append("Reference: ");
-	sb.append(reference);
-	return sb.toString();
+    public String getObject(){
+	return object;
     }
     
     /**
@@ -68,6 +32,6 @@ public class ObjectProperty {
      */
     @Override
     public String toString(){
-	return field;
+	return object;
     }
 }

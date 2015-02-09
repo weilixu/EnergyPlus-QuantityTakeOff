@@ -1,7 +1,6 @@
 package analyzer.recommender;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class Recommender {
 	try {
 	    document = (Document) builder.build(recommendation);
 	} catch (Exception e) {
-	    // do nothing
+	    e.printStackTrace();
 	}
 	recommenderBuilder();
     }
@@ -52,42 +51,79 @@ public class Recommender {
     private void builderHelper(Element current, DefaultMutableTreeNode root) {
 	List<Element> children = current.getChildren();
 	Iterator<Element> iterator = children.iterator();
-	DefaultMutableTreeNode leafNode = new DefaultMutableTreeNode();
-	DistributionInfo end = new DistributionInfo();
+	// DefaultMutableTreeNode leafNode = new DefaultMutableTreeNode();
+	// DistributionInfo end = new DistributionInfo();
 	while (iterator.hasNext()) {
-	    Element child = iterator.next();
-	    DefaultMutableTreeNode childNode = new DefaultMutableTreeNode();
-	    if (child.hasAttributes() && child.getParent().getParent() != null) {
-		System.out.println(child.getName());
-		// for condition where the node has attributes
-		String field = child.getAttributeValue("field");
-		String unit = child.getAttributeValue("unit");
-		String reference = child.getAttributeValue("reference");
-		ObjectProperty op = new ObjectProperty(field, unit, reference);
-		childNode.setUserObject(op);
-		root.add(childNode);
-		builderHelper(child, childNode);
-	    } else if (child.getChildren().isEmpty()) {
-		// for condition where the nodes carries text
-		end.addString(child.getName() + " : " + child.getText());
-	    } else if (child.getParent().getParent() == null) {
-		String object = child.getAttributeValue("object");
-		CategoryProperty cp = new CategoryProperty(object);
-		childNode.setUserObject(cp);
-		root.add(childNode);
-		builderHelper(child,childNode);
-	    } else {
-		// for condition where the nodes is only contains name
-		childNode.setUserObject(child.getName());
-		root.add(childNode);
-		builderHelper(child, childNode);
-	    }
+	    Element firstLevel = iterator.next();
+	    DefaultMutableTreeNode firstNode = new DefaultMutableTreeNode();
+
+	    ObjectProperty op = new ObjectProperty(
+		    firstLevel.getAttributeValue("object"));
+	    firstNode.setUserObject(op);
+	    root.add(firstNode);
+	    buildSecondLevel(firstLevel, firstNode);
 	}
-	// if this is leaf nodes, then we need to wait for the loop completed
-	// and then add it to the parent node
-	if (end.isFilled()) {
-	    leafNode.setUserObject(end);
-	    root.add(leafNode);
+    }
+    
+    /**
+     * build as the second level of the XML data structure
+     * @param current
+     * @param root
+     */
+    private void buildSecondLevel(Element current, DefaultMutableTreeNode root) {
+	List<Element> children = current.getChildren();
+	Iterator<Element> iterator = children.iterator();
+	while (iterator.hasNext()) {
+	    Element secondLevel = iterator.next();
+	    DefaultMutableTreeNode secondNode = new DefaultMutableTreeNode();
+
+	    String field = secondLevel.getAttributeValue("field");
+	    String unit = secondLevel.getAttributeValue("unit");
+	    String notes = secondLevel.getAttributeValue("notes");
+
+	    FieldProperty fp = new FieldProperty(field, unit, notes);
+	    secondNode.setUserObject(fp);
+	    root.add(secondNode);
+	    buildOthers(secondLevel, secondNode);
+	}
+    }
+    
+    /**
+     * Build other levels of the XML data structure
+     * @param current
+     * @param root
+     */
+    private void buildOthers(Element current, DefaultMutableTreeNode root) {
+	List<Element> children = current.getChildren();
+	Iterator<Element> iterator = children.iterator();
+	while (iterator.hasNext()) {
+	    Element otherLevel = iterator.next();
+	    DefaultMutableTreeNode otherNode = new DefaultMutableTreeNode();
+	    // passing the middle node, has only description
+	    if (otherLevel.getAttributes().size() == 1) {
+		String temp = otherLevel.getAttributeValue("description");
+		otherNode.setUserObject(temp);
+		root.add(otherNode);
+		buildOthers(otherLevel,otherNode);
+		// find the leaf node (not include distribution...)
+	    } else if (otherLevel.getAttributes().size() == 3) {
+		String description = otherLevel
+			.getAttributeValue("description");
+		String reference = otherLevel.getAttributeValue("reference");
+		String notes = otherLevel.getAttributeValue("notes");
+		String distributionName = otherLevel
+			.getChildText("distributionName");
+		String distributionParam = otherLevel
+			.getChildText("distributionParameters");
+		String min = otherLevel.getChildText("minimum");
+		String max = otherLevel.getChildText("maximum");
+
+		LeafProperty lp = new LeafProperty(description, reference,
+			notes, distributionName, distributionParam, min, max);
+		otherNode.setUserObject(lp);
+		root.add(otherNode);
+		//thats it, end of the building
+	    }
 	}
     }
 
@@ -108,26 +144,37 @@ public class Recommender {
      * @return
      */
     public DefaultMutableTreeNode getPartialTree(String object, String field) {
+	DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+	
 	int count = node.getChildCount();
-	System.out.println(count);
 	for (int i = 0; i < count; i++) {
 	    DefaultMutableTreeNode child = (DefaultMutableTreeNode) node
 		    .getChildAt(i);
-	    CategoryProperty cp = (CategoryProperty) child.getUserObject();
-	    //find the first level item
-	    if (cp.getObject().equals(object)) {
-		int grandChildCount = child.getChildCount();
-		for(int j=0; j<grandChildCount; j++){
-		    DefaultMutableTreeNode grandChild = (DefaultMutableTreeNode) child
-			    .getChildAt(i);
-		    ObjectProperty op = (ObjectProperty) grandChild.getUserObject();
-		    //find the correct field
-		    if(op.getField().equals(field)){
-			return grandChild;
-		    }
+	    ObjectProperty cp = (ObjectProperty) child.getUserObject();
+	    // find the first level item
+	    if(cp.getObject().equals(object)){
+		root.setUserObject(cp);
+		root.add(findChildren(child, field));
+	    }
+	}
+	return root;
+    }
+    
+    private DefaultMutableTreeNode findChildren(DefaultMutableTreeNode child,String field){
+	DefaultMutableTreeNode children = new DefaultMutableTreeNode();
+	
+	int count = child.getChildCount();
+	for(int i=0; i<count; i++){
+	    DefaultMutableTreeNode temp = (DefaultMutableTreeNode) child
+		    .getChildAt(i);
+	    FieldProperty fp = (FieldProperty) temp.getUserObject();
+	    if(fp.getField().equals(field)){
+		children.setUserObject(fp);
+		for(int j=0; j<temp.getChildCount(); j++){
+		    children.add((DefaultMutableTreeNode)temp.getChildAt(j));
 		}
 	    }
 	}
-	return null;
+	return children;
     }
 }

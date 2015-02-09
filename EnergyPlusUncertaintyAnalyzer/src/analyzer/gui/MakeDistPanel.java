@@ -44,7 +44,7 @@ public class MakeDistPanel extends JPanel {
     private final JPanel distInputPanel;
     private final JPanel displayPanel;
     private final JPanel comboBoxPane;
-    private final JPanel recommendPanel;
+    private JPanel recommendPanel;
 
     // combo-box for distribution selection
     private final JComboBox selectBox;
@@ -98,7 +98,8 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, Model m, Recommender r,String v,String s, String o, String i) {
+    public MakeDistPanel(JTabbedPane tp, Model m, Recommender r, String v,
+	    String s, String o, String i) {
 	model = m;
 	recommender = r;
 	parentPane = tp;
@@ -184,10 +185,16 @@ public class MakeDistPanel extends JPanel {
 	add(selectDistPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new ImageDisplayPanel(model,variable);
+	displayPanel = new ImageDisplayPanel(model, variable);
 	add(displayPanel, BorderLayout.CENTER);
-	
-	recommendPanel = new RecommenderPanel(recommender.getPartialTree(object, input));
+
+	System.out.println("This is system calling: " + object + " " + input);
+	try {
+	    recommendPanel = new RecommenderPanel(recommender.getPartialTree(
+		    object, input));
+	} catch (NullPointerException e) {
+	    recommendPanel = new RecommenderPanel(recommender.getTree());
+	}
 	add(recommendPanel, BorderLayout.LINE_START);
 
     }
