@@ -180,20 +180,19 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 			element = temp[0].trim();
 			description = temp[1].trim().substring(2);
 		    }
-		    
+
 		    ValueNode tempVN = new ValueNode(element, description);
 		    // add the special character to the variableList
 		    if (element.indexOf("$") > -1) {
 			variableList.add(element.substring(0,
 				element.length() - 1));
 			String[] keyPair = { startToken, elementCount,
-				tempVN.getDescription()};
+				tempVN.getDescription() };
 			variableKeySets.add(keyPair);
 		    }
 
 		    // put element into the map
-		    eplusMap.get(startToken).get(elementCount)
-			    .add(tempVN);
+		    eplusMap.get(startToken).get(elementCount).add(tempVN);
 
 		    if (line.indexOf(endToken) > -1) {
 			// find the end line of the statement, swithc the flag!
@@ -292,10 +291,10 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 		}
 	    }
 	}
-	//if found the correct inputs group
+	// if found the correct inputs group
 	if (targetList != null) {
 	    for (ValueNode target : targetList) {
-		//search for the specific value
+		// search for the specific value
 		if (target.getDescription().equals(description)) {
 		    return target.getAttribute();
 		}
@@ -444,29 +443,33 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	    }
 	}
     }
-    
+
     /**
      * create a default mutable tree node for display purpose
+     * 
      * @return
      */
-    public DefaultMutableTreeNode createTree(){
-	DefaultMutableTreeNode energyPlus = new DefaultMutableTreeNode("EnergyPlus");
-	
+    public DefaultMutableTreeNode createTree() {
+	DefaultMutableTreeNode energyPlus = new DefaultMutableTreeNode(
+		"EnergyPlus");
+
 	Set<String> objectName = eplusMap.keySet();
 	Iterator<String> oIterator = objectName.iterator();
-	while(oIterator.hasNext()){
+	while (oIterator.hasNext()) {
 	    String temp = oIterator.next();
-	    //create object level node
+	    // create object level node
 	    DefaultMutableTreeNode objectNode = new DefaultMutableTreeNode(temp);
 	    energyPlus.add(objectNode);
-	    
-	    //getting the next level information
+
+	    // getting the next level information
 	    Set<String> elementCount = eplusMap.get(temp).keySet();
 	    Iterator<String> eIterator = elementCount.iterator();
-	    while(eIterator.hasNext()){
+	    while (eIterator.hasNext()) {
 		String name = eIterator.next();
-		ElementList list = new ElementList(name, eplusMap.get(temp).get(name));
-		DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(list);
+		ElementList list = new ElementList(name, eplusMap.get(temp)
+			.get(name));
+		DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(
+			list);
 		objectNode.add(elementNode);
 	    }
 	}
@@ -476,13 +479,21 @@ public class IdfReader implements EnergyPlusFilesGenerator {
     @Override
     public void modifySpecialCharactor(String specialCharactor, String value) {
 	if (dataFilled) {
-	    int index = variableList.indexOf(specialCharactor);
-	    ArrayList<ValueNode> temp = eplusMap.get(
-		    variableKeySets.get(index)[ObjectNameIndex]).get(
-		    variableKeySets.get(index)[ObjectElementCountIndex]);
-	    for (ValueNode v : temp) {
-		if (v.isCritical() && v.getAttribute().equals(specialCharactor)) {
-		    v.setAttribute(value);
+	    //loop through the variable loop
+	    for (int i = 0; i < variableList.size(); i++) {
+		//find the index of the matching variable characters
+		if (variableList.get(i).equals(specialCharactor)) {
+		    //retrieve the value nodes data from the map
+		    ArrayList<ValueNode> temp = eplusMap.get(
+			    variableKeySets.get(i)[ObjectNameIndex]).get(
+			    variableKeySets.get(i)[ObjectElementCountIndex]);
+		    //go through the value nodes to find the special characters to replace
+		    for (ValueNode v : temp) {
+			if (v.isCritical()
+				&& v.getAttribute().equals(specialCharactor)) {
+			    v.setAttribute(value);
+			}
+		    }
 		}
 	    }
 	}
@@ -500,30 +511,30 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 
     @Override
     public EnergyPlusFilesGenerator cloneIdfData() {
-	HashMap<String, HashMap<String,ArrayList<ValueNode>>> map = DeepCopyMap();
+	HashMap<String, HashMap<String, ArrayList<ValueNode>>> map = DeepCopyMap();
 	return new IdfReader(path, map, variableList, variableKeySets,
 		loadIDFListeners);
     }
-    
-    private HashMap<String, HashMap<String,ArrayList<ValueNode>>> DeepCopyMap() {
-	HashMap<String, HashMap<String,ArrayList<ValueNode>>> tempMap = new HashMap<String, HashMap<String,ArrayList<ValueNode>>>();
+
+    private HashMap<String, HashMap<String, ArrayList<ValueNode>>> DeepCopyMap() {
+	HashMap<String, HashMap<String, ArrayList<ValueNode>>> tempMap = new HashMap<String, HashMap<String, ArrayList<ValueNode>>>();
 	Set<String> objectList = eplusMap.keySet();
 	Iterator<String> iterator = objectList.iterator();
 	while (iterator.hasNext()) {
 	    String object = iterator.next();
-	    
-	    HashMap<String,ArrayList<ValueNode>> objectMap = new HashMap<String,ArrayList<ValueNode>>();
+
+	    HashMap<String, ArrayList<ValueNode>> objectMap = new HashMap<String, ArrayList<ValueNode>>();
 	    Set<String> elementList = eplusMap.get(object).keySet();
 	    Iterator<String> elementIterator = elementList.iterator();
-	    while(elementIterator.hasNext()){
+	    while (elementIterator.hasNext()) {
 		String element = elementIterator.next();
 		ArrayList<ValueNode> temp = eplusMap.get(object).get(element);
 		ArrayList<ValueNode> list = new ArrayList<ValueNode>();
-		for(ValueNode vn: temp){
+		for (ValueNode vn : temp) {
 		    ValueNode newNode = vn.clone();
 		    list.add(newNode);
 		}
-		objectMap.put(element,list);
+		objectMap.put(element, list);
 	    }
 	    tempMap.put(object, objectMap);
 	}
@@ -551,12 +562,15 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	private HashMap<String, HashMap<String, ArrayList<ValueNode>>> eplusMap;
 	private String path;
 	private String fileID;
-	
+
 	/**
 	 * 
-	 * @param map datastructure that contains energyplus idf file
-	 * @param p path that the newly generated file can be saved at
-	 * @param ID the identification for the file name
+	 * @param map
+	 *            datastructure that contains energyplus idf file
+	 * @param p
+	 *            path that the newly generated file can be saved at
+	 * @param ID
+	 *            the identification for the file name
 	 */
 	private IdfWriter(
 		HashMap<String, HashMap<String, ArrayList<ValueNode>>> map,
@@ -610,27 +624,28 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	    }
 	}
     }
-    
+
     /**
      * This is a wrapper class that wraps the element its correspondent data
+     * 
      * @author Weili
      *
      */
-    public class ElementList{
+    public class ElementList {
 	private final String name;
 	private final ArrayList<ValueNode> infoList;
-	
-	public ElementList(String n, ArrayList<ValueNode> il){
+
+	public ElementList(String n, ArrayList<ValueNode> il) {
 	    name = n;
 	    infoList = il;
 	}
-	
-	public ArrayList<ValueNode> getInfo(){
+
+	public ArrayList<ValueNode> getInfo() {
 	    return infoList;
 	}
-	
-	public String toString(){
-	    return "Object "+name;
+
+	public String toString() {
+	    return "Object " + name;
 	}
     }
 
@@ -672,14 +687,14 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	private boolean isCriticalLine = false;
 
 	public ValueNode(String att, String des) {
-	    //extract the units
-	    if(des.indexOf("{")>-1){
-		description = des.substring(0,des.indexOf(" {"));
+	    // extract the units
+	    if (des.indexOf("{") > -1) {
+		description = des.substring(0, des.indexOf(" {"));
 		unit = des.substring(des.indexOf("{"));
-	    }else{
+	    } else {
 		description = des;
 	    }
-	    
+
 	    originalAttribute = att;
 
 	    // test whether this line contains parametric value
@@ -721,8 +736,9 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	public String getDescription() {
 	    return description;
 	}
-	//get the unit of this node
-	public String getUnit(){
+
+	// get the unit of this node
+	public String getUnit() {
 	    return unit;
 	}
 
