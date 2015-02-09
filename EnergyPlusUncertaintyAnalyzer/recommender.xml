@@ -1,650 +1,756 @@
 <recommender>
     <Material object="Material">
-        <Conductivity field="Conductivity" unit = "W/mK" reference = "Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
-            <Asbestos>
-                <boards>
+        <Conductivity field="Conductivity" unit = "W/mK" notes="split by material category">
+            <Asbestos description="Abestos">
+                <boards description="Boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.430</mean>
-                    <standardDeviation>0.153</standardDeviation>
+                    <distributionParameters>Mean: 0.43 Standard Deviation: 0.153</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </boards>
-                <cements>
+                <cements description="Cements" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.775</mean>
-                    <standardDeviation>0.346</standardDeviation>
+                    <distributionParameters>Mean: 0.775 Standard Deviation: 0.346</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </cements>
             </Asbestos>
-            <BitumenAndAsphalt>
-                <bitumen>
+            <BitumenAndAsphalt description="Bitumen and Asphalt">
+                <bitumen description="Bitumen" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.237</mean>
-                    <standardDeviation>0.186</standardDeviation>
+                    <distributionParameters>Mean: 0.237 Standard Deviation: 0.186</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </bitumen>
-                <asphalt>
+                <asphalt description="Asphalt" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.050</mean>
-                    <standardDeviation>0.308</standardDeviation>
+                    <distributionParameters>Mean: 1.050 Standard Deviation: 0.308</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </asphalt>
             </BitumenAndAsphalt>
-            <Blockwork>
-                <heavyweightBlockwork>
+            <Blockwork description="Blockwork">
+                <heavyweightBlockwork description="Heavyweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.922</mean>
-                    <standardDeviation>0.243</standardDeviation>
+                    <distributionParameters>Mean: 0.922 Standard Deviation: 0.243</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </heavyweightBlockwork>
-                <mediumweightBlockwork>
+                <mediumweightBlockwork description="Mediumwight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.258</mean>
-                    <standardDeviation>0.040</standardDeviation>
+                    <distributionParameters>Mean: 0.258 Standard Deviation: 0.040</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </mediumweightBlockwork>
-                <lightweightBlockwork>
+                <lightweightBlockwork description="Lightweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.258</mean>
-                    <standardDeviation>0.040</standardDeviation>
+                    <distributionParameters>Mean: 0.258 Standard Deviation: 0.040</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </lightweightBlockwork>
             </Blockwork>
-            <Bricks>
-                <clayBricks>
+            <Bricks description="Bricks">
+                <clayBricks description="Clay bricks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.789</mean>
-                    <standardDeviation>0.261</standardDeviation>
+                    <distributionParameters>Mean: 0.789 Standard Deviation: 0.261</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </clayBricks>
-                <silicateBricks>
+                <silicateBricks description="Silicate bricks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.250</mean>
-                    <standardDeviation>0.354</standardDeviation>
+                    <distributionParameters>Mean: 1.250 Standard Deviation: 0.354</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </silicateBricks>
             </Bricks>
-            <Concrete>
-                <heavyweightAggregates>
+            <Concrete description="Concrete">
+                <heavyweightAggregates description="Heavyweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.491</mean>
-                    <standardDeviation>0.300</standardDeviation>
+                    <distributionParameters>Mean: 1.491 Standard Deviation: 0.300</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </heavyweightAggregates>
-                <mediumweightAggregates>
+                <mediumweightAggregates description="Mediumweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.718</mean>
-                    <standardDeviation>0.324</standardDeviation>
+                    <distributionParameters>Mean: 0.718 Standard Deviation: 0.324</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </mediumweightAggregates>
-                <lightweightAggregates>
+                <lightweightAggregates description="Lightweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.480</mean>
-                    <standardDeviation>0.185</standardDeviation>
+                    <distributionParameters>Mean: 0.480 Standard Deviation: 0.185</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </lightweightAggregates>
-                <aeratedConcrete>
+                <aeratedConcrete description="Aerated concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.267</mean>
-                    <standardDeviation>0.229</standardDeviation>
+                    <distributionParameters>Mean: 0.267 Standard Deviation: 0.229</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </aeratedConcrete>
-                <lightweightConcrete>
+                <lightweightConcrete description="Lightweight concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.313</mean>
-                    <standardDeviation>0.144</standardDeviation>
+                    <distributionParameters>Mean: 1.313 Standard Deviation: 0.144</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </lightweightConcrete>
-                <reinforcedConcrete>
+                <reinforcedConcrete description="Reinforced concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.680</mean>
-                    <standardDeviation>0.540</standardDeviation>
+                    <distributionParameters>Mean: 1.680 Standard Deviation: 0.540</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </reinforcedConcrete>
             </Concrete>
-            <FloorCoverings>
-                <carpets>
+            <FloorCoverings description="Floor Coverings">
+                <carpets description="Carpets" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.060</mean>
-                    <standardDeviation>0.008</standardDeviation>
+                    <distributionParameters>Mean: 0.060 Standard Deviation: 0.008</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </carpets>
-                <underfelts>
+                <underfelts description="Underfelts" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.052</mean>
-                    <standardDeviation>0.015</standardDeviation>
+                    <distributionParameters>Mean: 0.052 Standard Deviation: 0.015</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </underfelts>
             </FloorCoverings>
-            <Glass>
-                <glassBlocks>
+            <Glass description="Glass">
+                <glassBlocks description="Glass blocks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.050</mean>
-                    <standardDeviation>0.495</standardDeviation>
+                    <distributionParameters>Mean: 1.050 Standard Deviation: 0.495</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </glassBlocks>
-                <floatGlass>
+                <floatGlass description="Float glass" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.294</mean>
-                    <standardDeviation>0.690</standardDeviation>
+                    <distributionParameters>Mean: 1.294 Standard Deviation: 0.690</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </floatGlass>
-                <cellularGlass>
+                <cellularGlass description="Cellular glass" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.054</mean>
-                    <standardDeviation>0.008</standardDeviation>
+                    <distributionParameters>Mean: 0.054 Standard Deviation: 0.008</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </cellularGlass>
             </Glass>
-            <Insulation>
-                <inorganicInsulation>
+            <Insulation description="Insulation">
+                <inorganicInsulation description="Inorganic insulation" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.039</mean>
-                    <standardDeviation>0.014</standardDeviation>
+                    <distributionParameters>Mean: 0.039 Standard Deviation: 0.014</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </inorganicInsulation>
-                <organicInsulation>
+                <organicInsulation description="Organic insulation" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.054</mean>
-                    <standardDeviation>0.022</standardDeviation>
+                    <distributionParameters>Mean: 0.054 Standard Deviation: 0.022</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </organicInsulation>
             </Insulation>
-            <Metals>
-                <nonFerrousMetals>
+            <Metals description="Metals">
+                <nonFerrousMetals description="Non ferrous metals" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>224</mean>
-                    <standardDeviation>107</standardDeviation>
+                    <distributionParameters>Mean: 224 Standard Deviation: 107</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </nonFerrousMetals>
-                <ferrousMetals>
+                <ferrousMetals description="Ferrous metals" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>44</mean>
-                    <standardDeviation>18</standardDeviation>
+                    <distributionParameters>Mean: 44 Standard Deviation: 18</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </ferrousMetals>
             </Metals>
-            <MotarsAndSealants>
-                <motarsAndSealants>
+            <MotarsAndSealants description="Motars and Sealants">
+                <motarsAndSealants description="Motars and sealants" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.914</mean>
-                    <standardDeviation>0.341</standardDeviation>
+                    <distributionParameters>Mean: 0.914 Standard Deviation: 0.341</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </motarsAndSealants>
             </MotarsAndSealants>
-            <PlasterAndBoards>
-                <boardsAndSheets>
+            <PlasterAndBoards description="Plaster and Boards">
+                <boardsAndSheets description="Boards and sheets" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.191</mean>
-                    <standardDeviation>0.150</standardDeviation>
+                    <distributionParameters>Mean: 0.191 Standard Deviation: 0.150</distributionParameters>
                 </boardsAndSheets>
-                <plasters>
+                <plasters description="Plasters" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.534</mean>
-                    <standardDeviation>0.252</standardDeviation>
+                    <distributionParameters>Mean: 0.534 Standard Deviation: 0.252</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </plasters>
             </PlasterAndBoards>
-            <PlasticsAndRubbers>
-                <PVC>
+            <PlasticsAndRubbers description="Plastics and Rubbers">
+                <PVC description="PVC" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.283</mean>
-                    <standardDeviation>0.188</standardDeviation>
+                    <distributionParameters>Mean: 0.283 Standard Deviation: 0.188</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </PVC>
-                <rubbers>
+                <rubbers description="Rubbers" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.137</mean>
-                    <standardDeviation>0.111</standardDeviation>
+                    <distributionParameters>Mean: 0.137 Standard Deviation: 0.111</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </rubbers>
             </PlasticsAndRubbers>
-            <RendersAndScreeds>
-                <rendersAndScreeds>
+            <RendersAndScreeds description="Renders and Screeds">
+                <rendersAndScreeds description="Renders and screeds" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.787</mean>
-                    <standardDeviation>0.341</standardDeviation>
+                    <distributionParameters>Mean: 0.787 Standard Deviation: 0.341</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </rendersAndScreeds>
             </RendersAndScreeds>
-            <Soils>
-                <soils>
+            <Soils description="Soils">
+                <soils description="soils" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.106</mean>
-                    <standardDeviation>0.469</standardDeviation>
+                    <distributionParameters>Mean: 1.106 Standard Deviation: 0.469</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </soils>
             </Soils>
-            <Stone>
-                <stone>
+            <Stone description="Stone">
+                <stone description="Stone" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2.536</mean>
-                    <standardDeviation>0.862</standardDeviation>
+                    <distributionParameters>Mean: 2.536 Standard Deviation: 0.862</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </stone>
             </Stone>
-            <Tiles>
-                <ceramicTiles>
+            <Tiles description="Tiles">
+                <ceramicTiles description="Ceramic tiles" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1.060</mean>
-                    <standardDeviation>0.261</standardDeviation>
+                    <distributionParameters>Mean: 1.060 Standard Deviation: 0.261</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </ceramicTiles>
-                <clayTiles>
+                <clayTiles description="Clay tiles" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.932</mean>
-                    <standardDeviation>0.406</standardDeviation>
+                    <distributionParameters>Mean: 0.932 Standard Deviation: 0.406</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </clayTiles>
             </Tiles>
-            <Timber>
-                <timber>
+            <Timber description="Timber">
+                <timber description="timber" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.151</mean>
-                    <standardDeviation>0.042</standardDeviation>
+                    <distributionParameters>Mean: 0.151 Standard Deviation: 0.042</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </timber>
-                <timberBoards>
+                <timberBoards description="Timber boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>0.201</mean>
-                    <standardDeviation>0.274</standardDeviation>
+                    <distributionParameters>Mean: 0.201 Standard Deviation: 0.274</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>5.0</maximum>
                 </timberBoards>
             </Timber>
         </Conductivity>
-        <Density field="Density" unit = "kg/m3" reference = "Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
-            <Asbestos>
-                <boards>
+        <Density field="Density" unit = "kg/m3">
+            <Asbestos description="Asbestos">
+                <boards description="Boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1488</mean>
-                    <standardDeviation>501</standardDeviation>
+                    <distributionParameters>Mean: 1488 Standard Deviation: 501</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </boards>
-                <cements>
+                <cements description="Cements" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1750</mean>
-                    <standardDeviation>29</standardDeviation>
+                    <distributionParameters>Mean: 1750 Standard Deviation: 29</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </cements>
             </Asbestos>
-            <BitumenAndAsphalt>
-                <bitumen>
+            <BitumenAndAsphalt description="Bitumen and Asphalt">
+                <bitumen description="bitumen" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1188</mean>
-                    <standardDeviation>346</standardDeviation>
+                    <distributionParameters>Mean: 1188 Standard Deviation: 346</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </bitumen>
-                <asphalt>
+                <asphalt description="Asphalt" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2146</mean>
-                    <standardDeviation>266</standardDeviation>
+                    <distributionParameters>Mean: 2146 Standard Deviation: 266</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </asphalt>
             </BitumenAndAsphalt>
-            <Blockwork>
-                <heavyweightBlockwork>
+            <Blockwork description="Blockwork">
+                <heavyweightBlockwork description="Heavyweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1925</mean>
-                    <standardDeviation>189</standardDeviation>
+                    <distributionParameters>Mean: 1925 Standard Deviation: 189</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </heavyweightBlockwork>
-                <mediumweightBlockwork>
+                <mediumweightBlockwork description="Mediumweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1299</mean>
-                    <standardDeviation>258</standardDeviation>
+                    <distributionParameters>Mean: 1299 Standard Deviation: 258</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </mediumweightBlockwork>
-                <lightweightBlockwork>
+                <lightweightBlockwork description="Lightweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>695</mean>
-                    <standardDeviation>147</standardDeviation>
+                    <distributionParameters>Mean: 695 Standard Deviation: 147</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </lightweightBlockwork>
             </Blockwork>
-            <Bricks>
-                <clayBricks>
+            <Bricks description="Bricks">
+                <clayBricks description="Clay bricks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1720</mean>
-                    <standardDeviation>301</standardDeviation>
+                    <distributionParameters>Mean: 1720 Standard Deviation: 301</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </clayBricks>
-                <silicateBricks>
+                <silicateBricks description="Silicate bricks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2000</mean>
-                    <standardDeviation>33</standardDeviation>
+                    <distributionParameters>Mean: 2000 Standard Deviation: 33</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </silicateBricks>
             </Bricks>
-            <Concrete>
-                <heavyweightAggregates>
+            <Concrete description="Concrete">
+                <heavyweightAggregates description="Heavyweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2179</mean>
-                    <standardDeviation>149</standardDeviation>
+                    <distributionParameters>Mean: 2179 Standard Deviation: 149</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </heavyweightAggregates>
-                <mediumweightAggregates>
+                <mediumweightAggregates description="Mediumweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1428</mean>
-                    <standardDeviation>376</standardDeviation>
+                    <distributionParameters>Mean: 1428 Standard Deviation: 376</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </mediumweightAggregates>
-                <lightweightAggregates>
+                <lightweightAggregates description="Lightweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1177</mean>
-                    <standardDeviation>301</standardDeviation>
+                    <distributionParameters>Mean: 1177 Standard Deviation: 301</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </lightweightAggregates>
-                <aeratedConcrete>
+                <aeratedConcrete description="Aerated concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>676</mean>
-                    <standardDeviation>304</standardDeviation>
+                    <distributionParameters>Mean: 676 Standard Deviation: 304</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </aeratedConcrete>
-                <lightweightConcrete>
+                <lightweightConcrete description="Lightweight concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>891</mean>
-                    <standardDeviation>309</standardDeviation>
+                    <distributionParameters>Mean: 891 Standard Deviation: 309</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </lightweightConcrete>
-                <reinforcedConcrete>
+                <reinforcedConcrete description="Reinforced concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2310</mean>
-                    <standardDeviation>225</standardDeviation>
+                    <distributionParameters>Mean: 2310 Standard Deviation: 225</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </reinforcedConcrete>
             </Concrete>
-            <FloorCoverings>
-                <carpets>
+            <FloorCoverings description="Floor Coverings">
+                <carpets description="Carpets" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>183</mean>
-                    <standardDeviation>21</standardDeviation>
+                    <distributionParameters>Mean: 183 Standard Deviation: 21</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </carpets>
-                <underfelts>
+                <underfelts description="Underfelts" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>132</mean>
-                    <standardDeviation>107</standardDeviation>
+                    <distributionParameters>Mean: 132 Standard Deviation: 107</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </underfelts>
             </FloorCoverings>
-            <Glass>
-                <glassBlocks>
+            <Glass description="Glass">
+                <glassBlocks description="Glass blocks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>3000</mean>
-                    <standardDeviation>707</standardDeviation>
+                    <distributionParameters>Mean: 3000 Standard Deviation: 707</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </glassBlocks>
-                <floatGlass>
+                <floatGlass description="Float glass" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2509</mean>
-                    <standardDeviation>105</standardDeviation>
+                    <distributionParameters>Mean: 2509 Standard Deviation: 105</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </floatGlass>
-                <cellularGlass>
+                <cellularGlass description="Cellular glass" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>149</mean>
-                    <standardDeviation>19</standardDeviation>
+                    <distributionParameters>Mean: 149 Standard Deviation: 19</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </cellularGlass>
             </Glass>
-            <Insulation>
-                <inorganicInsulation>
+            <Insulation description="Insulation">
+                <inorganicInsulation description="Inorganic insulation" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>38</mean>
-                    <standardDeviation>27</standardDeviation>
+                    <distributionParameters>Mean: 38 Standard Deviation: 27</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </inorganicInsulation>
-                <organicInsulation>
+                <organicInsulation description="Organic insulation" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>84</mean>
-                    <standardDeviation>59</standardDeviation>
+                    <distributionParameters>Mean: 84 Standard Deviation: 59</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </organicInsulation>
             </Insulation>
-            <Metals>
-                <nonFerrousMetals>
+            <Metals description="Metals">
+                <nonFerrousMetals description="Non ferrous metals" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>6278</mean>
-                    <standardDeviation>2876</standardDeviation>
+                    <distributionParameters>Mean: 6278 Standard Deviation: 2876</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </nonFerrousMetals>
-                <ferrousMetals>
+                <ferrousMetals description="Ferrous metals" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>7807</mean>
-                    <standardDeviation>154</standardDeviation>
+                    <distributionParameters>Mean: 7807 Standard Deviation: 154</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </ferrousMetals>
             </Metals>
-            <MotarsAndSealants>
-                <motarsAndSealants>
+            <MotarsAndSealants description="Motars and Sealants">
+                <motarsAndSealants description="Motars and sealants" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1782</mean>
-                    <standardDeviation>145</standardDeviation>
+                    <distributionParameters>Mean: 1782 Standard Deviation: 145</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </motarsAndSealants>
             </MotarsAndSealants>
-            <PlasterAndBoards>
-                <boardsAndSheets>
+            <PlasterAndBoards description="Plaster and Boards">
+                <boardsAndSheets description="Boards and sheets" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
                     <distributionName>Normal</distributionName>
-                    <mean>704</mean>
-                    <standardDeviation>379</standardDeviation>
+                    <distributionParameters>Mean: 704 Standard Deviation: 379</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </boardsAndSheets>
-                <plasters>
+                <plasters description="Plasters" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1264</mean>
-                    <standardDeviation>425</standardDeviation>
+                    <distributionParameters>Mean: 1264 Standard Deviation: 425</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </plasters>
             </PlasterAndBoards>
-            <PlasticsAndRubbers>
-                <PVC>
+            <PlasticsAndRubbers description="Plastics and Rubbers">
+                <PVC description="PVC" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1210</mean>
-                    <standardDeviation>165</standardDeviation>
+                    <distributionParameters>Mean: 1210 Standard Deviation: 165</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </PVC>
-                <rubbers>
+                <rubbers description="Rubbers" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>894</mean>
-                    <standardDeviation>753</standardDeviation>
+                    <distributionParameters>Mean: 894 Standard Deviation: 753</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </rubbers>
             </PlasticsAndRubbers>
-            <RendersAndScreeds>
-                <rendersAndScreeds>
+            <RendersAndScreeds description="Renders and Screeds">
+                <rendersAndScreeds description="Renders and screeds" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1481</mean>
-                    <standardDeviation>390</standardDeviation>
+                    <distributionParameters>Mean: 1481 Standard Deviation: 390</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </rendersAndScreeds>
             </RendersAndScreeds>
-            <Soils>
-                <soils>
+            <Soils description="Soils">
+                <soils description="Soils" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1878</mean>
-                    <standardDeviation>402</standardDeviation>
+                    <distributionParameters>Mean: 1878 Standard Deviation: 402</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </soils>
             </Soils>
-            <Stone>
-                <stone>
+            <Stone description="Stone">
+                <stone description="stone" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2545</mean>
-                    <standardDeviation>323</standardDeviation>
+                    <distributionParameters>Mean: 2545 Standard Deviation: 323</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </stone>
             </Stone>
-            <Tiles>
-                <ceramicTiles>
+            <Tiles description="Tiles">
+                <ceramicTiles description="Ceramic tiles" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1920</mean>
-                    <standardDeviation>349</standardDeviation>
+                    <distributionParameters>Mean: 1920 Standard Deviation: 349</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </ceramicTiles>
-                <clayTiles>
+                <clayTiles description="Clay tiles" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1610</mean>
-                    <standardDeviation>436</standardDeviation>
+                    <distributionParameters>Mean: 1610 Standard Deviation: 436</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </clayTiles>
             </Tiles>
-            <Timber>
-                <timber>
+            <Timber description="Timber">
+                <timber description="Timber" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>578</mean>
-                    <standardDeviation>148</standardDeviation>
+                    <distributionParameters>Mean: 578 Standard Deviation: 148</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </timber>
-                <timberBoards>
+                <timberBoards description="Timber boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>684</mean>
-                    <standardDeviation>254</standardDeviation>
+                    <distributionParameters>Mean: 684 Standard Deviation: 254</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum></maximum>
                 </timberBoards>
             </Timber>
         </Density>
-        <SpecificHeatCapacity object="Material" information="Specific Heat" unit = "J/kg-K" reference = "Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde.">
-            <Asbestos>
-                <boards>
+        <SpecificHeatCapacity object="Material" information="Specific Heat" unit="J/kg-K">
+            <Asbestos description="Asbestos">
+                <boards description="Boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>958</mean>
-                    <standardDeviation>109</standardDeviation>
+                    <distributionParameters>Mean: 958 Standard Deviation: 109</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </boards>
-                <cements>
+                <cements description="Cements" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>840</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 840 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </cements>
             </Asbestos>
-            <BitumenAndAsphalt>
-                <bitumen>
+            <BitumenAndAsphalt description="Bitumen and Asphalt">
+                <bitumen description="Bitumen" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1135</mean>
-                    <standardDeviation>384</standardDeviation>
+                    <distributionParameters>Mean: 1135 Standard Deviation: 384</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </bitumen>
-                <asphalt>
+                <asphalt description="Asphalt" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1232</mean>
-                    <standardDeviation>431</standardDeviation>
+                    <distributionParameters>Mean: 1232 Standard Deviation: 431</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </asphalt>
             </BitumenAndAsphalt>
-            <Blockwork>
-                <heavyweightBlockwork>
+            <Blockwork description=Blockwork>
+                <heavyweightBlockwork description="Heavyweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>840</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 840 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </heavyweightBlockwork>
-                <mediumweightBlockwork>
+                <mediumweightBlockwork description="Mediumweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>827</mean>
-                    <standardDeviation>89</standardDeviation>
+                    <distributionParameters>Mean: 827 Standard Deviation: 89</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </mediumweightBlockwork>
-                <lightweightBlockwork>
+                <lightweightBlockwork description="Lightweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>981</mean>
-                    <standardDeviation>399</standardDeviation>
+                    <distributionParameters>Mean: 981 Standard Deviation: 399</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </lightweightBlockwork>
             </Blockwork>
-            <Bricks>
-                <clayBricks>
+            <Bricks description="Bricks">
+                <clayBricks description="Clay bricks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>837</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 837 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </clayBricks>
-                <silicateBricks>
+                <silicateBricks description="Silicate bricks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>840</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 840 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </silicateBricks>
             </Bricks>
-            <Concrete>
-                <heavyweightAggregates>
+            <Concrete description="Concrete">
+                <heavyweightAggregates description="Heavyweight aggregates" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>864</mean>
-                    <standardDeviation>92</standardDeviation>
+                    <distributionParameters>Mean: 864 Standard Deviation: 92</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </heavyweightAggregates>
-                <mediumweightAggregates>
+                <mediumweightAggregates description="Mediumweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>842</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 842 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </mediumweightAggregates>
-                <lightweightAggregates>
+                <lightweightAggregates description="Lightweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>851</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 851 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </lightweightAggregates>
-                <aeratedConcrete>
+                <aeratedConcrete description="Aerated concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>915</mean>
-                    <standardDeviation>241</standardDeviation>
+                    <distributionParameters>Mean: 915 Standard Deviation: 241</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </aeratedConcrete>
-                <lightweightConcrete>
+                <lightweightConcrete description="Lightweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>839</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 839 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </lightweightConcrete>
-                <reinforcedConcrete>
+                <reinforcedConcrete description="Reinforced concrete" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>840</mean>
-                    <standardDeviation>90</standardDeviation>
+                    <distributionParameters>Mean: 840 Standard Deviation: 90</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </reinforcedConcrete>
             </Concrete>
-            <FloorCoverings>
-                <carpets>
+            <FloorCoverings description="Floor Coverings">
+                <carpets description="Carpets" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1740</mean>
-                    <standardDeviation>658</standardDeviation>
+                    <distributionParameters>Mean: 1740 Standard Deviation: 658</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </carpets>
-                <underfelts>
+                <underfelts description="Underfelts" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>843</mean>
-                    <standardDeviation>233</standardDeviation>
+                    <distributionParameters>Mean: 843 Standard Deviation: 233</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </underfelts>
             </FloorCoverings>
-            <Glass>
-                <glassBlocks>
+            <Glass description="Glass">
+                <glassBlocks description="Glass blocks" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>840</mean>
-                    <standardDeviation>34</standardDeviation>
+                    <distributionParameters>Mean: 840 Standard Deviation: 34</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </glassBlocks>
-                <floatGlass>
+                <floatGlass description="Float glass" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>820</mean>
-                    <standardDeviation>50</standardDeviation>
+                    <distributionParameters>Mean: 820 Standard Deviation: 50</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </floatGlass>
-                <cellularGlass>
+                <cellularGlass description="Cellular glass" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>814</mean>
-                    <standardDeviation>44</standardDeviation>
+                    <distributionParameters>Mean: 814 Standard Deviation: 44</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </cellularGlass>
             </Glass>
-            <Insulation>
-                <inorganicInsulation>
+            <Insulation description="Insulation">
+                <inorganicInsulation description="Inorganic insulation" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1072</mean>
-                    <standardDeviation>298</standardDeviation>
+                    <distributionParameters>Mean: 1072 Standard Deviation: 298</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </inorganicInsulation>
-                <organicInsulation>
+                <organicInsulation description="Organic insulation" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>796</mean>
-                    <standardDeviation>153</standardDeviation>
+                    <distributionParameters>Mean: 796 Standard Deviation: 153</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </organicInsulation>
             </Insulation>
-            <Metals>
-                <nonFerrousMetals>
+            <Metals description="Metals">
+                <nonFerrousMetals description="Non ferrous metals" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>544</mean>
-                    <standardDeviation>223</standardDeviation>
+                    <distributionParameters>Mean: 544 Standard Deviation: 223</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </nonFerrousMetals>
-                <ferrousMetals>
+                <ferrousMetals description="Ferrous metals" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>501</mean>
-                    <standardDeviation>27</standardDeviation>
+                    <distributionParameters>Mean: 501 Standard Deviation: 27</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </ferrousMetals>
             </Metals>
-            <MotarsAndSealants>
-                <motarsAndSealants>
+            <MotarsAndSealants description="Motars and Sealants">
+                <motarsAndSealants description="Motars and sealants" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>856</mean>
-                    <standardDeviation>91</standardDeviation>
+                    <distributionParameters>Mean: 856 Standard Deviation: 91</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </motarsAndSealants>
             </MotarsAndSealants>
-            <PlasterAndBoards>
-                <boardsAndSheets>
+            <PlasterAndBoards description="Plaster and Boards">
+                <boardsAndSheets description="Boards and sheets" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1359</mean>
-                    <standardDeviation>615</standardDeviation>
+                    <distributionParameters>Mean: 1359 Standard Deviation: 615</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </boardsAndSheets>
-                <plasters>
+                <plasters description="Plasters" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>889</mean>
-                    <standardDeviation>122</standardDeviation>
+                    <distributionParameters>Mean: 889 Standard Deviation: 122</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </plasters>
             </PlasterAndBoards>
-            <PlasticsAndRubbers>
-                <PVC>
+            <PlasticsAndRubbers description="Plastics and Rubbers">
+                <PVC description="PVC" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1103</mean>
-                    <standardDeviation>327</standardDeviation>
+                    <distributionParameters>Mean: 1103 Standard Deviation: 327</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </PVC>
-                <rubbers>
+                <rubbers description="Rubbers" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1524</mean>
-                    <standardDeviation>364</standardDeviation>
+                    <distributionParameters>Mean: 1524 Standard Deviation: 364</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </rubbers>
             </PlasticsAndRubbers>
-            <RendersAndScreeds>
-                <rendersAndScreeds>
+            <RendersAndScreeds description="Renders and Screeds">
+                <rendersAndScreeds description="Renders and screeds" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>904</mean>
-                    <standardDeviation>125</standardDeviation>
+                    <distributionParameters>Mean: 904 Standard Deviation: 125</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </rendersAndScreeds>
             </RendersAndScreeds>
-            <Soils>
-                <soils>
+            <Soils description="Soils">
+                <soils description="Soils" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>885</mean>
-                    <standardDeviation>324</standardDeviation>
+                    <distributionParameters>Mean: 885 Standard Deviation: 324</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </soils>
             </Soils>
-            <Stone>
-                <stone>
+            <Stone description="Stone">
+                <stone description="stone" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>829</mean>
-                    <standardDeviation>162</standardDeviation>
+                    <distributionParameters>Mean: 829 Standard Deviation: 162</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </stone>
             </Stone>
-            <Tiles>
-                <ceramicTiles>
+            <Tiles description="Tiles">
+                <ceramicTiles description="Ceramic tiles" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>844</mean>
-                    <standardDeviation>34</standardDeviation>
+                    <distributionParameters>Mean: 844 Standard Deviation: 34</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </ceramicTiles>
-                <clayTiles>
+                <clayTiles description="Clay tiles" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>818</mean>
-                    <standardDeviation>89</standardDeviation>
+                    <distributionParameters>Mean: 818 Standard Deviation: 89</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </clayTiles>
             </Tiles>
-            <Timber>
-                <timber>
+            <Timber description="Timber">
+                <timber description="Timber" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>2162</mean>
-                    <standardDeviation>646</standardDeviation>
+                    <distributionParameters>Mean: 2162 Standard Deviation: 646</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </timber>
-                <timberBoards>
+                <timberBoards description="Timber boards" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum value based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <mean>1845</mean>
-                    <standardDeviation>870</standardDeviation>
+                    <distributionParameters>Mean: 1845 Standard Deviation: 870</distributionParameters>
+                    <minimum>100.0</minimum>
+                    <maximum></maximum>
                 </timberBoards>
             </Timber>
         </SpecificHeatCapacity>
@@ -653,8 +759,7 @@
         <flowPerSurfaceArea field="Flow per Exterior Surface Area" unit="m3/s-m2" notes="split by building type">
             <commercialBuildings  description="Commercial Buildings" reference="Emmerich,S.J., & Persily,A.K.(2005). Airtightness of Commercial Buildings in the U.S. Paper presented at the 26th AIVC Conference, Brussels, Belgium." notes="value converted from 75Pa to 4Pa assuming a flow exponent of 0.65">
                 <distributionName>Normal</distributionName>
-                <mean>0.0012</mean>
-                <standardDeviation>0.0015</standardDeviation>
+                <distributionParameters>Mean: 0.0012 Standard Deviation: 0.0015</distributionParameters>
                 <minimum>0.00011</minimum>
                 <maximum>0.0069</maximum>
             </commercialBuildings>
@@ -664,217 +769,253 @@
         <fractionRadiant field="Fraction Radiant" unit="fraction" notes="split by activity and building type">
             <seatedTheater description="Seated at theater" buildingType="Theater, matinee" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.27</lower>
-                <upper>0.60</upper>
+                <distributionParameters>Upper: 0.27 Lower: 0.60</distributionParameters>
+                <minimum>0.27</minimum>
+                <maximum>0.60</maximum>
             </seatedTheater>
             <seatedTheaterNight description="Seated at theater, night" buildingType="Theater, night" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.27</lower>
-                <upper>0.60</upper>
+                <distributionParameters>Upper: 0.27 Lower: 0.60</distributionParameters>
+                <minimum>0.27</minimum>
+                <maximum>0.60</maximum>
             </seatedTheaterNight>
             <seatedLightWork description="Seated, very light work" buildingType="Offices, hotels, apartments" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.27</lower>
-                <upper>0.60</upper>
+                <distributionParameters>Upper: 0.27 Lower: 0.60</distributionParameters>
+                <minimum>0.27</minimum>
+                <maximum>0.60</maximum>
             </seatedLightWork>
             <moderateOfficeWork description="Moderately active office work" buildingType="Offices, hotels, apartments" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.38</lower>
-                <upper>0.58</upper>
+                <distributionParameters>Upper: 0.38 Lower: 0.58</distributionParameters>
+                <minimum>0.38</minimum>
+                <maximum>0.58</maximum>
             </moderateOfficeWork>
             <standingLightWork description="Standing, light work; walking" buildingType="Department store; retail sotre" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.38</lower>
-                <upper>0.58</upper>
+                <distributionParameters>Upper: 0.38 Lower: 0.58</distributionParameters>
+                <minimum>0.38</minimum>
+                <maximum>0.58</maximum>
             </standingLightWork>
             <walkingStanding description="Walking, standing" buildingType="Drug store, bank" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.38</lower>
-                <upper>0.58</upper>
+                <distributionParameters>Upper: 0.38 Lower: 0.58</distributionParameters>
+                <minimum>0.38</minimum>
+                <maximum>0.58</maximum>
             </walkingStanding>
             <sedentaryWork description="Sedentary work" buildingType="Restaurant" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.38</lower>
-                <upper>0.58</upper>
+                <distributionParameters>Upper: 0.38 Lower: 0.58</distributionParameters>
+                <minimum>0.38</minimum>
+                <maximum>0.58</maximum>
             </sedentaryWork>
             <lightBenchWork description="Light bench work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.35</lower>
-                <upper>0.49</upper>
+                <distributionParameters>Upper: 0.38 Lower: 0.58</distributionParameters>
+                <minimum>0.38</minimum>
+                <maximum>0.58</maximum>
             </lightBenchWork>
             <moderateDancing description="Moderate dancing" buildingType="Dance hall" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.35</lower>
-                <upper>0.49</upper>
+                <distributionParameters>Upper: 0.35 Lower: 0.49</distributionParameters>
+                <minimum>0.35</minimum>
+                <maximum>0.49</maximum>
             </moderateDancing>
             <walkingLightMachine description="Walking 4.8 km/h; light machine work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.35</lower>
-                <upper>0.49</upper>
+                <distributionParameters>Upper: 0.35 Lower: 0.49</distributionParameters>
+                <minimum>0.35</minimum>
+                <maximum>0.49</maximum>
             </walkingLightMachine>
             <bowling description="Bowling" buildingType="Bowling alley" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.19</lower>
-                <upper>0.54</upper>
+                <distributionParameters>Upper: 0.19 Lower: 0.54</distributionParameters>
+                <minimum>0.19</minimum>
+                <maximum>0.54</maximum>
             </bowling>
             <heavyWork description="Heavy work" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.19</lower>
-                <upper>0.54</upper>
+                <distributionParameters>Upper: 0.19 Lower: 0.54</distributionParameters>
+                <minimum>0.19</minimum>
+                <maximum>0.54</maximum>
             </heavyWork>
             <heavyMachineWork description="Heavy machine work; lifting" buildingType="Factory" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.19</lower>
-                <upper>0.54</upper>
+                <distributionParameters>Upper: 0.19 Lower: 0.54</distributionParameters>
+                <minimum>0.19</minimum>
+                <maximum>0.54</maximum>
             </heavyMachineWork>
             <athletics description="Athletics" buildingType="Gymnasium" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.19</lower>
-                <upper>0.54</upper>
+                <distributionParameters>Upper: 0.19 Lower: 0.54</distributionParameters>
+                <minimum>0.19</minimum>
+                <maximum>0.54</maximum>
             </athletics>
         </fractionRadiant>
     </People>
     <Lights object="Lights">
         <LPD field="Watts per Zone Floor Area" unit="W/m2" notes="split by principal building activity">
-            <office description="Office/professional" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <office description="Office/professional" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>19.4</mean>
-                <standardDeviation>1.29</standardDeviation>
+                <distributionParameters>Mean: 19.4 Standard Deviation: 1.29</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </office>
-            <lab description="Laboratory" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <lab description="Laboratory" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>18.3</mean>
-                <standardDeviation>1.22</standardDeviation>
+                <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </lab>
-            <nonrefrigeratedWarehouse description="Nonrefrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <nonrefrigeratedWarehouse description="Nonrefrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>15.1</mean>
-                <standardDeviation>1.01</standardDeviation>
+                <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </nonrefrigeratedWarehouse>
-            <foodSales description="Food sales" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <foodSales description="Food sales" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>20.5</mean>
-                <standardDeviation>1.37</standardDeviation>
+                <distributionParameters>Mean: 20.5 Standard Deviation: 1.37</distributionParameters>
             </foodSales>
-            <publicOrderAndSafety description="Public order and safety" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <publicOrderAndSafety description="Public order and safety" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>14.0</mean>
-                <standardDeviation>0.93</standardDeviation>
+                <distributionParameters>Mean: 14.0 Standard Deviation: 0.93</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </publicOrderAndSafety>
-            <outpatientHealthCare description="Outpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <outpatientHealthCare description="Outpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>18.3</mean>
-                <standardDeviation>1.22</standardDeviation>
+                <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </outpatientHealthCare>
-            <refrigeratedWarehouse description="Refrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <refrigeratedWarehouse description="Refrigerated warehouse" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>15.1</mean>
-                <standardDeviation>1.01</standardDeviation>
+                <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </refrigeratedWarehouse>
-            <religiousWorship description="Religious worship" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <religiousWorship description="Religious worship" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>15.1</mean>
-                <standardDeviation>1.01</standardDeviation>
+                <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </religiousWorship>
-            <publicAssembly description="Public Assembly" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <publicAssembly description="Public Assembly" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>15.1</mean>
-                <standardDeviation>1.01</standardDeviation>
+                <distributionParameters>Mean: 15.1 Standard Deviation: 1.01</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </publicAssembly>
-            <education description="Education" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <education description="Education" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>19.4</mean>
-                <standardDeviation>1.29</standardDeviation>
+                <distributionParameters>Mean: 19.4 Standard Deviation: 1.29</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </education>
-            <foodService description="Food Service" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <foodService description="Food Service" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>17.2</mean>
-                <standardDeviation>1.15</standardDeviation>
+                <distributionParameters>Mean: 17.2 Standard Deviation: 1.15</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </foodService>
-            <inpatientHealthCare description="Inpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <inpatientHealthCare description="Inpatient health care" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>18.3</mean>
-                <standardDeviation>1.22</standardDeviation>
+                <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </inpatientHealthCare>
-            <skilledNursing description="Skilled nursing" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <skilledNursing description="Skilled nursing" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>14.0</mean>
-                <standardDeviation>0.93</standardDeviation>
+                <distributionParameters>Mean: 14.0 Standard Deviation: 0.93</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </skilledNursing>
-            <lodging description="Lodging" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <lodging description="Lodging" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>14.0</mean>
-                <standardDeviation>0.93</standardDeviation>
+                <distributionParameters>Mean: 14.0 Standard Deviation: 0.93</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </lodging>
-            <retail description="Retail (except malls)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <retail description="Retail (except malls)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>20.5</mean>
-                <standardDeviation>1.37</standardDeviation>
+                <distributionParameters>Mean: 20.5 Standard Deviation: 1.37</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </retail>
-            <service description="Service (except food)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory.">
+            <service description="Service (except food)" reference="Griffith,B., Long,N., Torcellini,P., Judkoff,R., Crawley,D., & Ryan,J. (2008). Methodology for modeling building energy performance across the commercial sector. U.S.A: National Renewable Energy Laboratory." notes="minimum value based on allowable values in EnergyPlus">
                 <distributionName>Normal</distributionName>
-                <mean>18.3</mean>
-                <standardDeviation>1.22</standardDeviation>
+                <distributionParameters>Mean: 18.3 Standard Deviation: 1.22</distributionParameters>
+                <minimum>0.0</minimum>
+                <maximum></maximum>
             </service>
         </LPD>
         <fractionRadiant field="Fraction Radiant" unit="fraction" notes="split by luminaire category">
             <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.25</lower>
-                <upper>0.37</upper>
+                <distributionParameters>Upper: 0.25 Lower: 0.37</distributionParameters>
+                <minimum>0.25</minimum>
+                <maximum>0.37</maximum>
             </recessedFluorescentNoLens>
             <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.22</lower>
-                <upper>0.28</upper>
+                <distributionParameters>Upper: 0.22 Lower: 0.28</distributionParameters>
+                <minimum>0.22</minimum>
+                <maximum>0.28</maximum>
             </recessedFluorescentWithLens>
             <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.30</lower>
-                <upper>0.40</upper>
+                <distributionParameters>Upper: 0.30 Lower: 0.40</distributionParameters>
+                <minimum>0.30</minimum>
+                <maximum>0.40</maximum>
             </downlightCompact>
             <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.10</lower>
-                <upper>0.15</upper>
+                <distributionParameters>Upper: 0.10 Lower: 0.15</distributionParameters>
+                <minimum>0.10</minimum>
+                <maximum>0.15</maximum>
             </downlightIncandescent>
         </fractionRadiant>
         <fractionVisible field="Fraction Visible" unit="fraction" notes="split by luminaire category">
             <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.23</lower>
-                <upper>0.31</upper>
+                <distributionParameters>Upper: 0.23 Lower: 0.31</distributionParameters>
+                <minimum>0.23</minimum>
+                <maximum>0.31</maximum>
             </recessedFluorescentNoLens>
             <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.39</lower>
-                <upper>0.45</upper>
+                <distributionParameters>Upper: 0.39 Lower: 0.45</distributionParameters>
+                <minimum>0.39</minimum>
+                <maximum>0.45</maximum>
             </recessedFluorescentWithLens>
             <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.60</lower>
-                <upper>0.70</upper>
+                <distributionParameters>Upper: 0.60 Lower: 0.70</distributionParameters>
+                <minimum>0.60</minimum>
+                <maximum>0.70</maximum>
             </downlightCompact>
             <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., & Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVAC&R, 13(2), 305-324.">
                 <distributionName>Uniform</distributionName>
-                <lower>0.85</lower>
-                <upper>0.90</upper>
+                <distributionParameters>Upper: 0.85 Lower: 0.90</distributionParameters>
+                <minimum>0.85</minimum>
+                <maximum>0.90</maximum>
             </downlightIncandescent>
         </fractionVisible>
     </Lights>
     <ElectricEquipment object="ElectricEquipment">
         <EPD field="Watts per Zone Floor Area" unit="W/m2">
             <office description="Office equipemnt load factor" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                <distributionName>Uniform</distributionName>">
                 <distributionName>Uniform</distributionName>
-                <lower>4.7</lower>
-                <upper>11.6</upper>
+                <distributionParameters>Upper: 4.7 Lower: 11.6</distributionParameters>
+                <minimum>4.7</minimum>
+                <maximum>11.6</maximum>
             </office>
-            <highlyAutomatedLab description="Highly automated laboratories"" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
-                <distributionName>Uniform</distributionName>">
+            <highlyAutomatedLab description="Highly automated laboratories" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
                 <distributionName>Uniform</distributionName>
-                <lower>50.0</lower>
-                <upper>270.0</upper>
+                <distributionParameters>Upper: 50.0 Lower: 270.0</distributionParameters>
+                <minimum>50.0</minimum>
+                <maximum>270.0</maximum>
             </highlyAutomatedLab>
         </EPD>
     </ElectricEquipment>
