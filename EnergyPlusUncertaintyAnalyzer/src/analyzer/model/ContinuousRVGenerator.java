@@ -24,38 +24,39 @@ public class ContinuousRVGenerator {
 	 * 
 	 * @param distName
 	 *                Name of distribution
-	 * @param param1
-	 *                first parameter of distribution
-	 * @param param2
-	 *                second parameter of distribution
+	 * @param distParam
+	 *                array containing parameters to distName
 	 * @return array of random variables generated from distName
 	 */
-	public double[] getSamples(String distName, double param1, double param2) {
+	public double[] getSamples(String distName, double[] distParam) {
 		double[] rv = null;
 		switch (distName.toUpperCase()) {
 		case "BETA":
-			rv = betaRnd(param1, param2);
+			rv = betaRnd(distParam[0], distParam[1]);
 			break;
 		case "GAMMA":
-			rv = gammaRnd(param1, param2);
+			rv = gammaRnd(distParam[0], distParam[1]);
 			break;
 		case "LOGISTIC":
-			rv = logisticRnd(param1, param2);
+			rv = logisticRnd(distParam[0], distParam[1]);
 			break;
 		case "LOGNORMAL":
-			rv = lognormRnd(param1, param2);
+			rv = lognormRnd(distParam[0], distParam[1]);
 			break;
 		case "NAKAGAMI":
-			rv = nakagamiRnd(param1, param2);
+			rv = nakagamiRnd(distParam[0], distParam[1]);
 			break;
 		case "NORMAL":
-			rv = normRnd(param1, param2);
+			rv = normRnd(distParam[0], distParam[1]);
 			break;
 		case "UNIFORM":
-			rv = unifContinuousRnd(param1, param2);
+			rv = unifContinuousRnd(distParam[0], distParam[1]);
 			break;
 		case "WEIBULL":
-			rv = weibullRnd(param1, param2);
+			rv = weibullRnd(distParam[0], distParam[1]);
+			break;
+		case "EXPONENTIAL":
+			rv = expRnd(distParam[0]);
 			break;
 		default:
 			System.out.println("Distribution not found!");
@@ -88,7 +89,7 @@ public class ContinuousRVGenerator {
 	 * @return array of random variables of size numRV from exponential
 	 *         distribution
 	 */
-	public double[] expRnd(double mu) {
+	private double[] expRnd(double mu) {
 		ExponentialDistribution ed = new ExponentialDistribution(mu);
 		double[] rv = ed.sample(numRV);
 		return rv;
@@ -206,11 +207,12 @@ public class ContinuousRVGenerator {
 		double[] rv = wd.sample(numRV);
 		return rv;
 	}
-	
+
 	// example usage
 	public static void main(String[] args) {
 		ContinuousRVGenerator r = new ContinuousRVGenerator(1000);
-		double[] output = r.getSamples("NaKaGami", 1, 1);
+		double[] param = { 1.0, 1.0 };
+		double[] output = r.getSamples("NaKaGami", param);
 		System.out.println(Arrays.toString(output));
 	}
 
