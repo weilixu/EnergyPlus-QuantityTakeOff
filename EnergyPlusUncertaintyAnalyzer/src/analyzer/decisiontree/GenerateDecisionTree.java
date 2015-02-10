@@ -64,7 +64,7 @@ public class GenerateDecisionTree {
 			
 			// Print tree
 //			System.out.println(tree);
-
+//
 //			TreeVisualizer tv=new TreeVisualizer(null,tree.graph(),new PlaceNode2());
 //			JFrame jf=new JFrame("Weka Classifier Tree Visualizer: J48");
 //			jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
