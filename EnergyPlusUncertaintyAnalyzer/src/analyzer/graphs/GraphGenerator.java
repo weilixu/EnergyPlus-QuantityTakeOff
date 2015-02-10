@@ -13,6 +13,7 @@ import org.jfree.chart.ChartPanel;
 public class GraphGenerator {
 
     private final double CONFIDENCE_INTERVAL = 0.95;
+    private final String unit = "kWh";
     private String isSized = "NO";
 
     /*
@@ -147,7 +148,7 @@ public class GraphGenerator {
 	    String currentVariable = resultAnalyzer.getVariable(i);
 	    String title = "Distribution of " + currentVariable;
 
-	    PlotHistogram histogramGraph = new PlotHistogram(title, data);
+	    PlotHistogram histogramGraph = new PlotHistogram(title, unit,data);
 	    histoCharts.add(histogramGraph.createPanel());
 	}
 	onUpdatedHistoGraphGenerated();

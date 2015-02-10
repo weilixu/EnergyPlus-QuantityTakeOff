@@ -40,12 +40,12 @@ public class VariablePanel extends JPanel {
     // variable selection panel
     private JPanel selectPanel;
     // contains the text field specify the number of simulations
-    private JPanel simulationPanel;
+    //private JPanel simulationPanel;
     private File eplusFile;
     private File parentFile;
 
     // all about the JList
-    private final String VARIABLE_LABEL = "Variables";
+    //private final String VARIABLE_LABEL = "Variables";
     private JList<String> variablesList;
     private DefaultListModel<String> listModel;
     private JScrollPane listScroll;
@@ -93,9 +93,18 @@ public class VariablePanel extends JPanel {
 	// adding tabbedpanes and buttons to the panel
 	for (int i = 0; i < variableList.size(); i++) {
 	    enabledFlags[i]=true;
+	    //variable name
 	    String s = variableList.get(i);
-
-	    JTabbedPane vbtnTP = fitPanel(s, variableDescription.get(i),variableKeySets.get(i)[0],variableKeySets.get(i)[2]);
+	    //variable des;
+	    String des = variableDescription.get(i);
+	    //variable object
+	    String o = variableKeySets.get(i)[0];
+	    //variable field
+	    String f = variableKeySets.get(i)[2];
+	    //variable unit
+	    String u = variableKeySets.get(i)[3];
+	    
+	    JTabbedPane vbtnTP = fitPanel(s, des,o,f,u);
 	    fittingPanel.add(vbtnTP, s);
 
 	    listModel.addElement(s);
@@ -147,12 +156,12 @@ public class VariablePanel extends JPanel {
     // once one pane is selected and inputs is complete
     // user can hit the done button to process the data
     // a inputs checking mechanism is required to be complete in the future
-    private JTabbedPane fitPanel(String variableName, String setting, String object, String input) {
+    private JTabbedPane fitPanel(String variableName, String setting, String object, String input,String unit) {
 	JTabbedPane tp = new JTabbedPane();
 	model.setSource(parentFile.getAbsolutePath());
 	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,setting));// index
 									     // 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, mdModel, recommender,variableName,setting,object,input));// index
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, mdModel, recommender,setting,object,input,unit));// index
 									       // 1
 	return tp;
     }

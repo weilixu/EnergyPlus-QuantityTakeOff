@@ -186,8 +186,8 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 		    if (element.indexOf("$") > -1) {
 			variableList.add(element.substring(0,
 				element.length() - 1));
-			String[] keyPair = { startToken, elementCount,
-				tempVN.getDescription() };
+			String[] keyPair = {startToken, elementCount,
+				tempVN.getDescription(), tempVN.getUnit()};
 			variableKeySets.add(keyPair);
 		    }
 
@@ -693,6 +693,7 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 		unit = des.substring(des.indexOf("{"));
 	    } else {
 		description = des;
+		unit = "";
 	    }
 
 	    originalAttribute = att;

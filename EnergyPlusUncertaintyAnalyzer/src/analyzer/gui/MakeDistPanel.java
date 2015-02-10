@@ -31,9 +31,9 @@ public class MakeDistPanel extends JPanel {
     private final Recommender recommender;
     // set the parent tabbed pane
     private final JTabbedPane parentPane;
-    private final String variable;
     private final String object;
     private final String input;
+    private final String unit;
 
     // set-up two panels for this panel
     private final JPanel selectDistPanel;
@@ -70,15 +70,15 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, MakeDistributionModel m, Recommender r, String v,
-	    String s, String o, String i) {
+    public MakeDistPanel(JTabbedPane tp, MakeDistributionModel m, Recommender r,
+	    String s, String o, String i, String u) {
 	model = m;
 	recommender = r;
 	parentPane = tp;
-	variable = v;
 	VARIABLE_SET = s;
 	object = o;
 	input = i;
+	unit = u;
 	setLayout(new BorderLayout());
 
 	/*
@@ -149,7 +149,7 @@ public class MakeDistPanel extends JPanel {
 	add(selectDistPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new MakeDistDisplayPanel(model,variable);
+	displayPanel = new MakeDistDisplayPanel(model,input,unit);
 	add(displayPanel, BorderLayout.CENTER);
 
 	try {
@@ -352,7 +352,6 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
 		    distrParm[3] = Double.parseDouble(upperText.getText());
 		    model.setDistributionType((DistributionType)selectBox.getSelectedItem());
-		    model.setVariable(variable);
 		    // disable the selection
 		    model.generateRnd(distrParm);
 
@@ -389,7 +388,6 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
 		    distrParm[3] = Double.parseDouble(upperText.getText());
 		    model.setDistributionType((DistributionType)selectBox.getSelectedItem());
-		    model.setVariable(variable);
 		    // disable the selection
 		    model.generateRnd(distrParm);
 		    // disable the other tab

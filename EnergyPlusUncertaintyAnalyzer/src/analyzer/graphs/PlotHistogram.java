@@ -1,12 +1,5 @@
 package analyzer.graphs;
 
-import java.awt.Dimension;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Random;
-
-import javax.swing.JPanel;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
@@ -18,13 +11,14 @@ import org.jfree.data.xy.IntervalXYDataset;
 public class PlotHistogram {
 	private static int numBins;
 	private static String title;
-	private ChartPanel chart;
+	private static String unit;
 	private double[] data;
 
-	public PlotHistogram(String t, double[] data) {
+	public PlotHistogram(String t, String u,double[] data) {
 		this.data = data;
 		numBins = getNumBins();
 		title = t;
+		unit = u;
 	}
 
 	private int getNumBins() {
@@ -53,7 +47,7 @@ public class PlotHistogram {
 
 	private JFreeChart createChart(IntervalXYDataset intervalxydataset) {
 		JFreeChart jfreechart = ChartFactory.createHistogram(title,
-				 "Cost per Square Meter ($/m2)", "Frequency",intervalxydataset,
+				 unit, "Frequency",intervalxydataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		XYPlot xyplot = (XYPlot) jfreechart.getPlot();
 		xyplot.setForegroundAlpha(0.65F);

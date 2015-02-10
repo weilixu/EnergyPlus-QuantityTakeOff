@@ -5,46 +5,71 @@ import java.util.List;
 
 import analyzer.listeners.MakeDistGraphGeneratorListener;
 
+/**
+ * This is the model for generating make distributions tab The model takes in
+ * the number of simulations and generates an array of samples Also, the model
+ * notifies the make distribution graph generator to updates the graph on the
+ * panel
+ * 
+ * @author Weili
+ *
+ */
 public class MakeDistributionModel {
-    
+
     private int numSimulation;
-    private String variable;
-    
-    
+
     private final DistributionFactory factory;
     private DistributionType type;
-    
+
     private List<MakeDistGraphGeneratorListener> mdGraphs;
     
-    public MakeDistributionModel(){
+    
+    public MakeDistributionModel() {
 	factory = new DistributionFactory();
 	mdGraphs = new ArrayList<MakeDistGraphGeneratorListener>();
     }
     
-    public void addMakeDistGraphGeneratorListener(MakeDistGraphGeneratorListener mdL){
+    /**
+     * add the listener <link>MakeDistDisplayPanel<link>
+     * @param mdL
+     */
+    public void addMakeDistGraphGeneratorListener(
+	    MakeDistGraphGeneratorListener mdL) {
 	mdGraphs.add(mdL);
     }
     
-    public void setSimulationNumber(int num){
+    /**
+     * set the simulation number
+     * @param num
+     */
+    public void setSimulationNumber(int num) {
 	numSimulation = num;
     }
-    
-    public void setVariable(String v){
-	variable = v;
-    }
-    
-    public void setDistributionType(DistributionType type){
+
+    /**
+     * set the distribution type of this model
+     * @param type
+     */
+    public void setDistributionType(DistributionType type) {
 	this.type = type;
 	factory.setDistributionType(this.type);
     }
     
-    public void generateRnd(double[] parameters){
+    /**
+     * generates random variables
+     * @param parameters
+     */
+    public void generateRnd(double[] parameters) {
 	TruncatedDistribution dist = factory.getDistribution(parameters);
 	onSamplesUpdated(dist.truncatedSample(numSimulation));
     }
     
-    private void onSamplesUpdated(double[] samples){
-	for(MakeDistGraphGeneratorListener mdl: mdGraphs){
+    /**
+     * update the model
+     * @param samples
+     */
+    private void onSamplesUpdated(double[] samples) {
+	for (MakeDistGraphGeneratorListener mdl : mdGraphs) {
 	    mdl.onUpdatedDistGenerated(samples);
 	}
     }

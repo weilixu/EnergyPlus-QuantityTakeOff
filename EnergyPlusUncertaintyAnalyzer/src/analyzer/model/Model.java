@@ -229,38 +229,38 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-    public void generateRV(String distrName, double[] distrParam, String lower,
-	    String upper) {
-
-	MakeDist makeDistr = null;
-	Object[] makeDistInputs = new Object[7];
-	makeDistInputs[0] = source;
-	makeDistInputs[1] = DIST_NAME + variableName
-		+ IMAGE_POST;
-	makeDistInputs[2] = simulationNumber;
-	makeDistInputs[3] = distrName;
-	makeDistInputs[4] = distrParam;
-	makeDistInputs[5] = Double.parseDouble(lower); // min
-	makeDistInputs[6] = Double.parseDouble(upper); // max
-
-	Object[] makeDistResult = null;
-	try {
-	    makeDistr = new MakeDist();
-	    makeDistResult = makeDistr.allmakedist(1, makeDistInputs);
-	} catch (MWException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-
-	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
-	System.out.println(rndVars.getDoubleData());
-	
-	// updates GUIs
-	//onDistributionGenerated();
-	//onVariableEnabled();
-	randomVariableList.put(variableName, rndVars.getDoubleData());
-	//onDataUpdates();
-    }
+//    public void generateRV(String distrName, double[] distrParam, String lower,
+//	    String upper) {
+//
+//	MakeDist makeDistr = null;
+//	Object[] makeDistInputs = new Object[7];
+//	makeDistInputs[0] = source;
+//	makeDistInputs[1] = DIST_NAME + variableName
+//		+ IMAGE_POST;
+//	makeDistInputs[2] = simulationNumber;
+//	makeDistInputs[3] = distrName;
+//	makeDistInputs[4] = distrParam;
+//	makeDistInputs[5] = Double.parseDouble(lower); // min
+//	makeDistInputs[6] = Double.parseDouble(upper); // max
+//
+//	Object[] makeDistResult = null;
+//	try {
+//	    makeDistr = new MakeDist();
+//	    makeDistResult = makeDistr.allmakedist(1, makeDistInputs);
+//	} catch (MWException e) {
+//	    // TODO Auto-generated catch block
+//	    e.printStackTrace();
+//	}
+//
+//	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
+//	System.out.println(rndVars.getDoubleData());
+//	
+//	// updates GUIs
+//	//onDistributionGenerated();
+//	//onVariableEnabled();
+//	randomVariableList.put(variableName, rndVars.getDoubleData());
+//	//onDataUpdates();
+//    }
 
     private void editDistSummary() {
 	String[] distString = null;
