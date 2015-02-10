@@ -35,5 +35,18 @@ public class TruncatedLogisticDistribution extends LogisticDistribution{
 	}
 	return rnd;
     }
+    
+    /**
+     * generate a number of samples
+     * @param num
+     * @return
+     */
+    public double[] truncatedSample(int num){
+	double[] samples = new double[num];
+	for(int i=0; i<num; i++){
+	    samples[i]=truncatedSample();
+	}
+	return samples;
+    }
 
 }
