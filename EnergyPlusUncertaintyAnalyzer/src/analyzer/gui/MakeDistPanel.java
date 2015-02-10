@@ -159,7 +159,6 @@ public class MakeDistPanel extends JPanel {
 	    recommendPanel = new RecommenderPanel(recommender.getTree());
 	}
 	add(recommendPanel, BorderLayout.LINE_START);
-
     }
 
     private JPanel setExponential() {

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -66,11 +67,11 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
 	splitPane.setTopComponent(treeScroller);
 	splitPane.setBottomComponent(editorScroller);
 
-	Dimension minimumSize = new Dimension(100, 50);
-	treeScroller.setMinimumSize(minimumSize);
-	editorScroller.setMinimumSize(minimumSize);
+	//Dimension minimumSize = new Dimension(100, 50);
+	//treeScroller.setMinimumSize(minimumSize);
+	//editorScroller.setMinimumSize(minimumSize);
 	splitPane.setDividerLocation(500);
-	// splitPane.setPreferredSize(new Dimension(300, 150));
+	//splitPane.setPreferredSize(new Dimension(300, 150));
 
 	Border blackline = BorderFactory.createLineBorder(Color.black);
 	TitledBorder title = BorderFactory.createTitledBorder(blackline,
