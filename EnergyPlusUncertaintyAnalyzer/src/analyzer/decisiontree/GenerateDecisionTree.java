@@ -23,71 +23,49 @@ import weka.classifiers.trees.J48;
 import weka.classifiers.trees.REPTree;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
+import weka.core.converters.CSVLoader;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeVisualizer;
 
 public class GenerateDecisionTree {
 	
-//	public Instances createInstance(String[] randVars){
-//		
-//		return null;
-//		
-//	}
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		FileReader file;
+		
 		try {
-			file = new FileReader("C:\\Users\\Weili\\Desktop\\New folder\\trial.arff");
-			BufferedReader reader = new BufferedReader(file);
-			Instances data = new Instances(reader);
-			reader.close();
-			data.setClassIndex(data.numAttributes()-1);
-//			System.out.println("\nDataset:\n");
-//			System.out.println(data);
-			
 
+
+			File file = new File("/Users/Adrian/Dropbox/test.csv");
+			CSVLoader loader = new CSVLoader();
+			
+			loader.setSource(file);
+			
+			Instances data = loader.getDataSet();
+
+		
+			data.setClassIndex(data.numAttributes()-1);
 			
 			REPTree tree = new REPTree();
 			tree.buildClassifier(data);
 			
-//			DataSource source = new DataSource("C://Users//Weili//Desktop//New folder//testData.csv");
-//			Instances testData = source.getDataSet();
-//			ArffSaver saver = new ArffSaver();
-//			
-//			saver.setInstances(testData);
-//			saver.setFile(new File("C://Users//Weili//Desktop//New folder//trial.arff"));
-//			saver.writeBatch();
+//			J48 tree = new J48(); // new instance of tree 
+//			tree.buildClassifier(data);
 			
-			
-			
-			// Print tree
-//			System.out.println(tree);
+			System.out.println(tree);
 
-//			TreeVisualizer tv=new TreeVisualizer(null,tree.graph(),new PlaceNode2());
-//			JFrame jf=new JFrame("Weka Classifier Tree Visualizer: J48");
-//			jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//			jf.setSize(800,600);
-//			jf.getContentPane().setLayout(new BorderLayout());
-//			jf.getContentPane().add(tv,BorderLayout.CENTER);
-//			jf.setVisible(true);
-//			tv.fitToScreen();
+			TreeVisualizer tv=new TreeVisualizer(null,tree.graph(),new PlaceNode2());
+			JFrame jf=new JFrame("Weka Classifier Tree Visualizer: J48");
+			jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			jf.setSize(800,600);
+			jf.getContentPane().setLayout(new BorderLayout());
+			jf.getContentPane().add(tv,BorderLayout.CENTER);
+			jf.setVisible(true);
+			tv.fitToScreen();
 			
-			AttributeSelection attsel = new AttributeSelection();  // package weka.attributeSelection!
-			CfsSubsetEval eval = new CfsSubsetEval();
-			GreedyStepwise search = new GreedyStepwise();
-			search.setSearchBackwards(true);
-			attsel.setEvaluator(eval);
-			attsel.setSearch(search);
-			attsel.SelectAttributes(data);
-			attsel.setRanking(true);
-			System.out.println("here");
-			  // obtain the attribute indices that were selected
-			int[] indices = attsel.selectedAttributes();
-			System.out.println(Arrays.toString(indices));
-			double[] a=attsel.rankedAttributes()[0];
-			System.out.println(Arrays.toString(a));
+
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
