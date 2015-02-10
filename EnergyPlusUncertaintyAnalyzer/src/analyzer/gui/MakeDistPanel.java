@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
-import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,20 +16,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import javax.swing.tree.TreeSelectionModel;
 
-import analyzer.model.Model;
+import analyzer.distributions.DistributionType;
+import analyzer.distributions.MakeDistributionModel;
 import analyzer.recommender.Recommender;
 
 public class MakeDistPanel extends JPanel {
 
-    private final Model model;
+    private final MakeDistributionModel model;
     private final Recommender recommender;
     // set the parent tabbed pane
     private final JTabbedPane parentPane;
@@ -47,7 +43,7 @@ public class MakeDistPanel extends JPanel {
     private JPanel recommendPanel;
 
     // combo-box for distribution selection
-    private final JComboBox selectBox;
+    private final JComboBox<DistributionType> selectBox;
     private final JLabel lowerLabel;
     private final JTextField lowerText;
     private final JLabel upperLabel;
@@ -62,26 +58,6 @@ public class MakeDistPanel extends JPanel {
     private final String UPPER_LABEL_TEXT = "Upper";
     private final String VARIABLE_SET;
 
-    // distributions
-    private final String EXPONENTIAL = "Exponential";
-    private final String POISSON = "poisson";
-    private final String REYLEIGH = "Reyleigh";
-    private final String BETA = "Beta";
-    private final String BINOMIAL = "Binomial";
-    private final String BS = "Birnbaum-Saunders";
-    private final String EV = "Extreme Value";
-    private final String GAMMA = "Gamma";
-    private final String IG = "Inverse Gaussian";
-    private final String LOG = "Logistic";
-    private final String LOGL = "Loglogistic";
-    private final String LOGN = "LogNormal";
-    private final String NAKA = "Nakagami";
-    private final String NEG_BI = "Negative Binomial";
-    private final String NORMAL = "Normal";
-    private final String RICIAN = "Rician";
-    private final String UNIFORM = "Uniform";
-    private final String WEIBULL = "Weibull";
-
     // elements
     private final String M = "mu";
     private final String L = "lambda";
@@ -89,16 +65,12 @@ public class MakeDistPanel extends JPanel {
     private final String A = "a";
     private final String N = "N";
     private final String P = "p";
-    private final String BA = "beta";
-    private final String G = "gamma";
     private final String SI = "sigma";
     private final String O = "omega";
-    private final String R = "R";
-    private final String S = "s";
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, Model m, Recommender r, String v,
+    public MakeDistPanel(JTabbedPane tp, MakeDistributionModel m, Recommender r, String v,
 	    String s, String o, String i) {
 	model = m;
 	recommender = r;
@@ -122,37 +94,29 @@ public class MakeDistPanel extends JPanel {
 	 * set up the cards panel
 	 */
 	distInputPanel = new JPanel(new CardLayout());
-	distInputPanel.add(setExponential(), EXPONENTIAL);
-	distInputPanel.add(setPossion(), POISSON);
-	distInputPanel.add(setReyleigh(), REYLEIGH);
-	distInputPanel.add(setBeta(), BETA);
-	distInputPanel.add(setBinomial(), BINOMIAL);
-	distInputPanel.add(setBirSau(), BS);
-	distInputPanel.add(setExtreme(), EV);
-	distInputPanel.add(setGamma(), GAMMA);
-	distInputPanel.add(setInverse(), IG);
-	distInputPanel.add(setLogistic(), LOG);
-	distInputPanel.add(setLogLogistic(), LOGL);
-	distInputPanel.add(setLogNormal(), LOGN);
-	distInputPanel.add(setNaka(), NAKA);
-	distInputPanel.add(setNegative(), NEG_BI);
-	distInputPanel.add(setNormal(), NORMAL);
-	distInputPanel.add(setRician(), RICIAN);
-	distInputPanel.add(setUniform(), UNIFORM);
-	distInputPanel.add(setWeibull(), WEIBULL);
+	distInputPanel.add(setExponential(), DistributionType.EXPON.toString());
+	distInputPanel.add(setPossion(), DistributionType.POISSON.toString());
+	distInputPanel.add(setBeta(), DistributionType.BETA.toString());
+	distInputPanel.add(setBinomial(), DistributionType.BINOM.toString());
+	distInputPanel.add(setGamma(), DistributionType.GAMMA.toString());
+	distInputPanel.add(setLogistic(), DistributionType.LOGISTIC.toString());
+	distInputPanel.add(setLogNormal(), DistributionType.LOGNORMAL.toString());
+	distInputPanel.add(setNaka(), DistributionType.NAKAGAMI.toString());
+	distInputPanel.add(setNormal(), DistributionType.NORMAL.toString());
+	distInputPanel.add(setUniformC(), DistributionType.UNIFORMC.toString());
+	distInputPanel.add(setUniformD(), DistributionType.UNIFORMD.toString());
+	distInputPanel.add(setWeibull(), DistributionType.WEIBULL.toString());
 
 	// set up the comboBox
 	comboBoxPane = new JPanel();
-	String comboBoxItems[] = { EXPONENTIAL, POISSON, REYLEIGH, BETA,
-		BINOMIAL, BS, EV, GAMMA, IG, LOG, LOGL, LOGN, NAKA, NEG_BI,
-		NORMAL, RICIAN, UNIFORM, WEIBULL };
-	selectBox = new JComboBox(comboBoxItems);
+	selectBox = new JComboBox<DistributionType>(DistributionType.values());
 	selectBox.setEditable(false);
 	selectBox.addItemListener(new ItemListener() {
 	    @Override
 	    public void itemStateChanged(ItemEvent evt) {
 		CardLayout cl = (CardLayout) (distInputPanel.getLayout());
-		cl.show(distInputPanel, (String) evt.getItem());
+		DistributionType type = (DistributionType)evt.getItem();
+		cl.show(distInputPanel, type.toString());
 	    }
 	});
 	comboBoxPane.add(selectBox);
@@ -185,10 +149,9 @@ public class MakeDistPanel extends JPanel {
 	add(selectDistPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new ImageDisplayPanel(model, variable);
+	displayPanel = new MakeDistDisplayPanel(model,variable);
 	add(displayPanel, BorderLayout.CENTER);
 
-	System.out.println("This is system calling: " + object + " " + input);
 	try {
 	    recommendPanel = new RecommenderPanel(recommender.getPartialTree(
 		    object, input));
@@ -221,17 +184,6 @@ public class MakeDistPanel extends JPanel {
 	return posPanel;
     }
 
-    private JPanel setReyleigh() {
-	JPanel reyPanel = new JPanel();
-	JTextField text = new JTextField(B);
-	text.setToolTipText("b - Defining parameter");
-	text.setPreferredSize(new Dimension(150, 25));
-	reyPanel.add(text);
-	reyPanel.add(setDoneButton(text));
-	reyPanel.add(setRefreshButton());
-	return reyPanel;
-    }
-
     private JPanel setBeta() {
 	JPanel betaPanel = new JPanel();
 	JTextField aText = new JTextField(A);
@@ -262,36 +214,6 @@ public class MakeDistPanel extends JPanel {
 	return binPanel;
     }
 
-    private JPanel setBirSau() {
-	JPanel bsPanel = new JPanel();
-	JTextField aText = new JTextField(BA);
-	aText.setToolTipText("beta - Scale parameter");
-	JTextField bText = new JTextField(G);
-	bText.setToolTipText("gamma - Shape parameter");
-	aText.setPreferredSize(new Dimension(150, 25));
-	bText.setPreferredSize(new Dimension(150, 25));
-	bsPanel.add(aText);
-	bsPanel.add(bText);
-	bsPanel.add(setDoneButton(aText, bText));
-	bsPanel.add(setRefreshButton());
-	return bsPanel;
-    }
-
-    private JPanel setExtreme() {
-	JPanel exPanel = new JPanel();
-	JTextField aText = new JTextField(M);
-	aText.setToolTipText("mu - Location parameter");
-	JTextField bText = new JTextField(SI);
-	bText.setToolTipText("sigma - Scale parameter");
-	aText.setPreferredSize(new Dimension(150, 25));
-	bText.setPreferredSize(new Dimension(150, 25));
-	exPanel.add(aText);
-	exPanel.add(bText);
-	exPanel.add(setDoneButton(aText, bText));
-	exPanel.add(setRefreshButton());
-	return exPanel;
-    }
-
     private JPanel setGamma() {
 	JPanel gammaPanel = new JPanel();
 	JTextField aText = new JTextField(A);
@@ -307,21 +229,6 @@ public class MakeDistPanel extends JPanel {
 	return gammaPanel;
     }
 
-    private JPanel setInverse() {
-	JPanel invPanel = new JPanel();
-	JTextField aText = new JTextField(M);
-	aText.setToolTipText("mu - Scale parameter");
-	JTextField bText = new JTextField(L);
-	bText.setToolTipText("lambda - Shape parameter");
-	aText.setPreferredSize(new Dimension(150, 25));
-	bText.setPreferredSize(new Dimension(150, 25));
-	invPanel.add(aText);
-	invPanel.add(bText);
-	invPanel.add(setDoneButton(aText, bText));
-	invPanel.add(setRefreshButton());
-	return invPanel;
-    }
-
     private JPanel setLogistic() {
 	JPanel logicPanel = new JPanel();
 	JTextField aText = new JTextField(M);
@@ -335,21 +242,6 @@ public class MakeDistPanel extends JPanel {
 	logicPanel.add(setDoneButton(aText, bText));
 	logicPanel.add(setRefreshButton());
 	return logicPanel;
-    }
-
-    private JPanel setLogLogistic() {
-	JPanel logLogicPanel = new JPanel();
-	JTextField aText = new JTextField(M);
-	aText.setToolTipText("mu - Mean");
-	JTextField bText = new JTextField(SI);
-	bText.setToolTipText("sigma - Scale parameter");
-	aText.setPreferredSize(new Dimension(150, 25));
-	bText.setPreferredSize(new Dimension(150, 25));
-	logLogicPanel.add(aText);
-	logLogicPanel.add(bText);
-	logLogicPanel.add(setDoneButton(aText, bText));
-	logLogicPanel.add(setRefreshButton());
-	return logLogicPanel;
     }
 
     private JPanel setLogNormal() {
@@ -382,21 +274,6 @@ public class MakeDistPanel extends JPanel {
 	return nakePanel;
     }
 
-    private JPanel setNegative() {
-	JPanel negativePanel = new JPanel();
-	JTextField aText = new JTextField(R);
-	aText.setToolTipText("R - Number of successes");
-	JTextField bText = new JTextField(P);
-	bText.setToolTipText("p - probability of success");
-	aText.setPreferredSize(new Dimension(150, 25));
-	bText.setPreferredSize(new Dimension(150, 25));
-	negativePanel.add(aText);
-	negativePanel.add(bText);
-	negativePanel.add(setDoneButton(aText, bText));
-	negativePanel.add(setRefreshButton());
-	return negativePanel;
-    }
-
     private JPanel setNormal() {
 	JPanel normalPanel = new JPanel();
 	JTextField aText = new JTextField(M);
@@ -412,22 +289,22 @@ public class MakeDistPanel extends JPanel {
 	return normalPanel;
     }
 
-    private JPanel setRician() {
-	JPanel ricianPanel = new JPanel();
-	JTextField aText = new JTextField(S);
-	aText.setToolTipText("s - Noncentrality parameter");
-	JTextField bText = new JTextField(SI);
-	bText.setToolTipText("sigma - Scale parameter");
+    private JPanel setUniformC() {
+	JPanel uniformPanel = new JPanel();
+	JTextField aText = new JTextField(LO);
+	aText.setToolTipText("lower - Lower parameter");
+	JTextField bText = new JTextField(UP);
+	bText.setToolTipText("upper - Upper parameter");
 	aText.setPreferredSize(new Dimension(150, 25));
 	bText.setPreferredSize(new Dimension(150, 25));
-	ricianPanel.add(aText);
-	ricianPanel.add(bText);
-	ricianPanel.add(setDoneButton(aText, bText));
-	ricianPanel.add(setRefreshButton());
-	return ricianPanel;
+	uniformPanel.add(aText);
+	uniformPanel.add(bText);
+	uniformPanel.add(setDoneButton(aText, bText));
+	uniformPanel.add(setRefreshButton());
+	return uniformPanel;
     }
-
-    private JPanel setUniform() {
+    
+    private JPanel setUniformD() {
 	JPanel uniformPanel = new JPanel();
 	JTextField aText = new JTextField(LO);
 	aText.setToolTipText("lower - Lower parameter");
@@ -468,14 +345,17 @@ public class MakeDistPanel extends JPanel {
 	done.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = new double[1];
+		double[] distrParm = new double[4];
 		try {
 		    done.setEnabled(false);
 		    distrParm[0] = Double.parseDouble(field.getText());
-		    // disable the selection
+		    distrParm[2] = Double.parseDouble(lowerText.getText());
+		    distrParm[3] = Double.parseDouble(upperText.getText());
+		    model.setDistributionType((DistributionType)selectBox.getSelectedItem());
 		    model.setVariable(variable);
-		    model.generateRV(selectBox.getSelectedItem().toString(),
-			    distrParm, lowerText.getText(), upperText.getText());
+		    // disable the selection
+		    model.generateRnd(distrParm);
+
 		    // disable the other tab
 		    done.setEnabled(true);
 		    selectBox.setEnabled(false);
@@ -485,7 +365,6 @@ public class MakeDistPanel extends JPanel {
 			    "Enter Integer or Double values! e.g (100)");
 		    done.setEnabled(true);
 		}
-
 	    }
 	});
 	return done;
@@ -503,15 +382,16 @@ public class MakeDistPanel extends JPanel {
 	done.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		double[] distrParm = new double[2];
+		double[] distrParm = new double[4];
 		try {
 		    distrParm[0] = Double.parseDouble(field1.getText());
 		    distrParm[1] = Double.parseDouble(field2.getText());
-		    done.setEnabled(false);
-		    // disable the selection
+		    distrParm[2] = Double.parseDouble(lowerText.getText());
+		    distrParm[3] = Double.parseDouble(upperText.getText());
+		    model.setDistributionType((DistributionType)selectBox.getSelectedItem());
 		    model.setVariable(variable);
-		    model.generateRV(selectBox.getSelectedItem().toString(),
-			    distrParm, lowerText.getText(), upperText.getText());
+		    // disable the selection
+		    model.generateRnd(distrParm);
 		    // disable the other tab
 		    done.setEnabled(true);
 		    selectBox.setEnabled(false);
@@ -537,8 +417,6 @@ public class MakeDistPanel extends JPanel {
 		selectBox.setEnabled(true);
 		// enable the other tab
 		parentPane.setEnabledAt(0, true);
-		model.setVariable(variable);
-		model.refreshGeneration();
 	    }
 	});
 	return refresh;

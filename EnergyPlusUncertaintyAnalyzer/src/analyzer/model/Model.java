@@ -256,10 +256,10 @@ public class Model {
 	System.out.println(rndVars.getDoubleData());
 	
 	// updates GUIs
-	onDistributionGenerated();
-	onVariableEnabled();
+	//onDistributionGenerated();
+	//onVariableEnabled();
 	randomVariableList.put(variableName, rndVars.getDoubleData());
-	onDataUpdates();
+	//onDataUpdates();
     }
 
     private void editDistSummary() {

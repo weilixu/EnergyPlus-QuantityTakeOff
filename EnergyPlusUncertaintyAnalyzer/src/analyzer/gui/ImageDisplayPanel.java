@@ -47,7 +47,6 @@ public class ImageDisplayPanel extends JPanel implements DistGenerationListeners
 	ImageIcon imageIcon = new ImageIcon(image);
 	imageLabel.removeAll();
 	imageLabel.setIcon(imageIcon);
-
     }
 
     @Override

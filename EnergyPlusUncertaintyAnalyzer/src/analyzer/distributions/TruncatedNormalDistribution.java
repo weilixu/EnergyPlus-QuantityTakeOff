@@ -12,7 +12,7 @@ import org.apache.commons.math3.distribution.NormalDistribution;
  * @author weilix
  *
  */
-public class TruncatedNormalDistribution extends NormalDistribution {
+public class TruncatedNormalDistribution extends NormalDistribution implements TruncatedDistribution{
 
     private double lower;
     private double higher;
@@ -23,12 +23,7 @@ public class TruncatedNormalDistribution extends NormalDistribution {
 	higher = h;
     }
 
-    /**
-     * sample from normal distribution if the sample is not within the selected
-     * range, this method will re-pick the sample
-     * 
-     * @return
-     */
+    @Override
     public double truncatedSample() {
 	double rnd = sample();
 	while (rnd < lower || rnd > higher) {
@@ -37,11 +32,7 @@ public class TruncatedNormalDistribution extends NormalDistribution {
 	return rnd;
     }
     
-    /**
-     * generate a number of samples
-     * @param num
-     * @return
-     */
+    @Override
     public double[] truncatedSample(int num){
 	double[] samples = new double[num];
 	for(int i=0; i<num; i++){

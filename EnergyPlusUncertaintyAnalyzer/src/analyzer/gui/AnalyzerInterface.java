@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
+import analyzer.distributions.MakeDistributionModel;
 import analyzer.eplus.IdfReader;
 import analyzer.eplus.RunEnergyPlus;
 import analyzer.graphs.GraphGenerator;
@@ -40,6 +41,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      * All the models
      */
     private final Model core;
+    private final MakeDistributionModel mdCore;
     private final IdfReader idfReader;
     private GraphGenerator graphs;
     private RunEnergyPlus run;
@@ -126,6 +128,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// assign the model to the interface
 	core = c;
 	core.addModelDataListeners(this);
+	
+	mdCore = new MakeDistributionModel();
 
 	// add the reader to the interface and load the listener
 	idfReader = new IdfReader();
@@ -149,7 +153,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// fileLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	// outerPanel.add(fileLabel, BorderLayout.NORTH);
 
-	variablePane = new VariablePanel(core);
+	variablePane = new VariablePanel(core,mdCore);
 	innerPanel = new JPanel(new BorderLayout());
 	innerPanel.add(variablePane, BorderLayout.CENTER);
 
@@ -203,6 +207,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    simulationNumber = Integer.parseInt(simulationText
 			    .getText());
 		    core.setSimulationNumber(simulationNumber);
+		    mdCore.setSimulationNumber(simulationNumber);
+		    
 		    try {
 			// initialize the file directories
 			

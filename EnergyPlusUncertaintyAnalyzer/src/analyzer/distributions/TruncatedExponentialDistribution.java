@@ -9,7 +9,7 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  * @author weilix
  *
  */
-public class TruncatedExponentialDistribution extends ExponentialDistribution {
+public class TruncatedExponentialDistribution extends ExponentialDistribution implements TruncatedDistribution{
     
     private double lower;
     private double higher;
@@ -21,12 +21,7 @@ public class TruncatedExponentialDistribution extends ExponentialDistribution {
 	this.higher = higher;
     }
     
-    /**
-     * sample from exponential distribution if the sample is not within the selected
-     * range, this method will re-pick the sample
-     * 
-     * @return
-     */
+    @Override
     public double truncatedSample() {
 	double rnd = sample();
 	while (rnd < lower || rnd > higher) {
@@ -35,11 +30,7 @@ public class TruncatedExponentialDistribution extends ExponentialDistribution {
 	return rnd;
     }
     
-    /**
-     * generate a number of samples
-     * @param num
-     * @return
-     */
+    @Override
     public double[] truncatedSample(int num){
 	double[] samples = new double[num];
 	for(int i=0; i<num; i++){

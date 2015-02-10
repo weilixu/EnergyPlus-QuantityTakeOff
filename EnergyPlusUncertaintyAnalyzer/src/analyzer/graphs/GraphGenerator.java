@@ -148,7 +148,7 @@ public class GraphGenerator {
 	    String title = "Distribution of " + currentVariable;
 
 	    PlotHistogram histogramGraph = new PlotHistogram(title, data);
-	    histoCharts.add(histogramGraph.createPanel(data));
+	    histoCharts.add(histogramGraph.createPanel());
 	}
 	onUpdatedHistoGraphGenerated();
     }

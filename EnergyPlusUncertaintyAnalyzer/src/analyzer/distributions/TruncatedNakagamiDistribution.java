@@ -2,7 +2,7 @@ package analyzer.distributions;
 
 import org.apache.commons.math3.distribution.NakagamiDistribution;
 
-public class TruncatedNakagamiDistribution extends NakagamiDistribution{
+public class TruncatedNakagamiDistribution extends NakagamiDistribution implements TruncatedDistribution{
     
     private double lower;
     private double higher;
@@ -13,12 +13,7 @@ public class TruncatedNakagamiDistribution extends NakagamiDistribution{
 	this.higher = higher;
     }
     
-    /**
-     * sample from nakagami distribution if the sample is not within the selected
-     * range, this method will re-pick the sample
-     * 
-     * @return
-     */
+    @Override
     public double truncatedSample() {
 	double rnd = sample();
 	while (rnd < lower || rnd > higher) {
@@ -27,11 +22,7 @@ public class TruncatedNakagamiDistribution extends NakagamiDistribution{
 	return rnd;
     }
     
-    /**
-     * generate a number of samples
-     * @param num
-     * @return
-     */
+    @Override
     public double[] truncatedSample(int num){
 	double[] samples = new double[num];
 	for(int i=0; i<num; i++){

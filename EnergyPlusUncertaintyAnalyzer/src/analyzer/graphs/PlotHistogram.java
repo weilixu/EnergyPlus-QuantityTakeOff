@@ -19,20 +19,15 @@ public class PlotHistogram {
 	private static int numBins;
 	private static String title;
 	private ChartPanel chart;
+	private double[] data;
 
 	public PlotHistogram(String t, double[] data) {
-		numBins = getNumBins(data);
+		this.data = data;
+		numBins = getNumBins();
 		title = t;
-		// JPanel jpanel = createDemoPanel(data);
-		// jpanel.setPreferredSize(new Dimension(500, 270));
-		// setContentPane(jpanel);
 	}
 
-	// public JPanel getHistogram() {
-	// return jpanel;
-	// }
-
-	private int getNumBins(double[] data) {
+	private int getNumBins() {
 		// Use Freedman-Diaconis' rule which is based on IQR to
 		// calculate number of bins for histogram plot
 		DescriptiveStatistics ds = new DescriptiveStatistics(data);
@@ -50,7 +45,7 @@ public class PlotHistogram {
 		return numBins;
 	}
 
-	private IntervalXYDataset createDataset(double[] data) {
+	private IntervalXYDataset createDataset() {
 		HistogramDataset histogramdataset = new HistogramDataset();
 		histogramdataset.addSeries("simulation results", data, numBins);
 		return histogramdataset;
@@ -58,42 +53,18 @@ public class PlotHistogram {
 
 	private JFreeChart createChart(IntervalXYDataset intervalxydataset) {
 		JFreeChart jfreechart = ChartFactory.createHistogram(title,
-				 "Energy [kWh]", "Frequency",intervalxydataset,
+				 "Cost per Square Meter ($/m2)", "Frequency",intervalxydataset,
 				PlotOrientation.VERTICAL, true, true, false);
 		XYPlot xyplot = (XYPlot) jfreechart.getPlot();
-		xyplot.setForegroundAlpha(0.85F);
+		xyplot.setForegroundAlpha(0.65F);
 		XYBarRenderer xybarrenderer = (XYBarRenderer) xyplot
 				.getRenderer();
 		xybarrenderer.setDrawBarOutline(false);
 		return jfreechart;
 	}
 
-	public ChartPanel createPanel(double[] data) {
-		JFreeChart jfreechart = createChart(createDataset(data));
+	public ChartPanel createPanel() {
+		JFreeChart jfreechart = createChart(createDataset());
 		return new ChartPanel(jfreechart);
 	}
-	//
-	// public static void main(String args[]) throws IOException {
-	// String source = "C:/Users/Weili/Desktop/New folder/Results/";
-	// String idfName = "";
-	// AnalyzeResult analyzeResult = new AnalyzeResult(source, idfName);
-	// // plot all graphs
-	// int numSimulation = 9;
-	// analyzeResult.setHeader();
-	// analyzeResult.setData(numSimulation);
-	// int numVars = analyzeResult.getVariableLength();
-	//
-	// for (int i = 0; i < numVars; i++) {
-	// double[] data = analyzeResult.getHistogramData(i);
-	// System.out.println(Arrays.toString(data));
-	// String currentVariable = analyzeResult.getVariable(i);
-	// String t = "Distribution of " + currentVariable;
-	// PlotHistogram histogramdemo1 = new PlotHistogram(t,
-	// data, 10);
-	// histogramdemo1.pack();
-	// RefineryUtilities.centerFrameOnScreen(histogramdemo1);
-	// histogramdemo1.setVisible(true);
-	// }
-	//
-	// }
 }

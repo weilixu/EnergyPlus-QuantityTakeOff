@@ -5,7 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -13,25 +12,23 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import analyzer.main.Analyzer;
+import analyzer.distributions.MakeDistributionModel;
 import analyzer.model.Model;
 import analyzer.recommender.Recommender;
 
 public class VariablePanel extends JPanel {
 
     private final Model model;
+    private final MakeDistributionModel mdModel;
     private final Recommender recommender;
 
     // MESSAGE or Titles
@@ -59,8 +56,9 @@ public class VariablePanel extends JPanel {
     private ArrayList<String> variableDescription;
     private ArrayList<String[]>variableKeySets;
 
-    public VariablePanel(Model m) {
+    public VariablePanel(Model m, MakeDistributionModel dm) {
 	model = m;
+	mdModel = dm;
 	recommender = new Recommender();
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
@@ -154,7 +152,7 @@ public class VariablePanel extends JPanel {
 	model.setSource(parentFile.getAbsolutePath());
 	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,setting));// index
 									     // 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, recommender,variableName,setting,object,input));// index
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, mdModel, recommender,variableName,setting,object,input));// index
 									       // 1
 	return tp;
     }
