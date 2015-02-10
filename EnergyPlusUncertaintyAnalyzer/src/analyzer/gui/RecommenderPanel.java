@@ -30,7 +30,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
     private final JScrollPane treeScroller;
     private final JScrollPane editorScroller;
     private final JTree tree;
-    private final JTextArea infoText;
+    //private final JTextArea infoText;
     private final JTextArea tempText;
     private final JPanel editorPanel;
     private final JSplitPane splitPane;
@@ -50,15 +50,18 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
 
 	ObjectProperty op = (ObjectProperty) node.getUserObject();
 
-	infoText = new JTextArea(op.getObject());
-	infoText.setLineWrap(true);
-	infoText.setFont(new Font("Arial", Font.BOLD, 12));
-	infoText.setEditable(false);
+//	infoText = new JTextArea(op.getObject());
+//	infoText.setLineWrap(true);
+//	infoText.setFont(new Font("Arial", Font.BOLD, 12));
+//	infoText.setEditable(false);
 
 	tempText = new JTextArea("Data Info");
+	tempText.setColumns(10);
+	tempText.setWrapStyleWord(true);
 	tempText.setLineWrap(true);
-	editorPanel.add(infoText, BorderLayout.PAGE_START);
+	//editorPanel.add(infoText, BorderLayout.PAGE_START);
 	editorPanel.add(tempText, BorderLayout.CENTER);
+	editorPanel.setLayout(new GridLayout(1,0));
 
 	editorScroller = new JScrollPane(editorPanel);
 	editorScroller.setBackground(Color.WHITE);
@@ -146,6 +149,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
 
     private void displayLeaves(StringBuffer sb) {
 	tempText.setText(sb.toString());
+	//tempText.setFont(new Font("Arial",,12));
 	tempText.setEditable(false);
     }
 }

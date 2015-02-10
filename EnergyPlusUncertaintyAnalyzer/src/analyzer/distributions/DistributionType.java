@@ -1,27 +1,29 @@
 package analyzer.distributions;
 
 public enum DistributionType {
-    BETA("Beta Distribution"),
-    BINOM("Binomial Distribution"),
-    GAMMA("Gamma Distribution"),
-    LOGISTIC("Logistic Distribution"),
-    LOGNORMAL("Lognormal Distribution"),
-    NAKAGAMI("Nakagami Distribution"),
-    NORMAL("Normal Distribution"),
-    POISSON("Poisson Distribution"),
-    UNIFORMC("Uniform Continuous Distribution"),
-    UNIFORMD("Uniform Discrete Distribution"),
-    WEIBULL("Weibull Distribution"),
-    EXPON("Exponential Distribution");
+    BETA("Beta Distribution","Continuous"),
+    BINOM("Binomial Distribution","Discrete"),
+    GAMMA("Gamma Distribution","Continuous"),
+    LOGISTIC("Logistic Distribution","Continuous"),
+    LOGNORMAL("Lognormal Distribution","Continuous"),
+    NAKAGAMI("Nakagami Distribution","Continuous"),
+    NORMAL("Normal Distribution","Continuous"),
+    POISSON("Poisson Distribution","Discrete"),
+    UNIFORMC("Uniform Distribution","Continuous"),
+    UNIFORMD("Uniform Distribution","Discrete"),
+    WEIBULL("Weibull Distribution","Continuous"),
+    EXPON("Exponential Distribution","Continuous");
     
     private String type;
+    private String category;
     
-    private DistributionType(String type){
+    private DistributionType(String type,String cat){
 	this.type = type;
+	this.category = cat;
     }
     
     @Override
     public String toString(){
-	return type;
+	return type+" ("+category+")";
     }
 }

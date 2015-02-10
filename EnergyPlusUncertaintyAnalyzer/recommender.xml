@@ -32,7 +32,7 @@
             <Blockwork description="Blockwork">
                 <heavyweightBlockwork description="Heavyweight blockwork" reference="Macdonald,I.A.(2002).Quantifying the effects of uncertainty in building simulation.(Doctor of Philosophy Doctoral Dissertation), University of Strathclyde." notes="minimum and maximum values based on allowable values in EnergyPlus">
                     <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 0.922 Standard Deviation: 0.243</distributionParameters>
+                    <distributionParameters>Mean: 0.922;Standard Deviation: 0.243</distributionParameters>
                     <minimum>0.0</minimum>
                     <maximum>5.0</maximum>
                 </heavyweightBlockwork>

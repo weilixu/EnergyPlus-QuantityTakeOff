@@ -61,7 +61,13 @@ public class LeafProperty {
 	sb.append("\n\n");
 	sb.append("Distribution Name: "+distName);
 	sb.append("\n\n");
-	sb.append("Distribution Parameters: "+distParam);
+	
+	String[] distArray = distParam.split(";");
+	sb.append("Distribution Parameters: ");
+	for(String s: distArray){
+	    sb.append("\n");
+	    sb.append(s);
+	}
 	sb.append("\n\n");
 	sb.append("Minimum: "+minimum);
 	sb.append("\n\n");
