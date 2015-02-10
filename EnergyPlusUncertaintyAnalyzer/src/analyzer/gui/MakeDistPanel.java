@@ -70,8 +70,8 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, MakeDistributionModel m, Recommender r,
-	    String s, String o, String i, String u) {
+    public MakeDistPanel(JTabbedPane tp, MakeDistributionModel m,
+	    Recommender r, String s, String o, String i, String u) {
 	model = m;
 	recommender = r;
 	parentPane = tp;
@@ -90,23 +90,6 @@ public class MakeDistPanel extends JPanel {
 		VARIABLE_SET);
 	selectDistPanel.setBorder(title);
 
-	/*
-	 * set up the cards panel
-	 */
-	distInputPanel = new JPanel(new CardLayout());
-	distInputPanel.add(setExponential(), DistributionType.EXPON.toString());
-	distInputPanel.add(setPossion(), DistributionType.POISSON.toString());
-	distInputPanel.add(setBeta(), DistributionType.BETA.toString());
-	distInputPanel.add(setBinomial(), DistributionType.BINOM.toString());
-	distInputPanel.add(setGamma(), DistributionType.GAMMA.toString());
-	distInputPanel.add(setLogistic(), DistributionType.LOGISTIC.toString());
-	distInputPanel.add(setLogNormal(), DistributionType.LOGNORMAL.toString());
-	distInputPanel.add(setNaka(), DistributionType.NAKAGAMI.toString());
-	distInputPanel.add(setNormal(), DistributionType.NORMAL.toString());
-	distInputPanel.add(setUniformC(), DistributionType.UNIFORMC.toString());
-	distInputPanel.add(setUniformD(), DistributionType.UNIFORMD.toString());
-	distInputPanel.add(setWeibull(), DistributionType.WEIBULL.toString());
-
 	// set up the comboBox
 	comboBoxPane = new JPanel();
 	selectBox = new JComboBox<DistributionType>(DistributionType.values());
@@ -115,7 +98,17 @@ public class MakeDistPanel extends JPanel {
 	    @Override
 	    public void itemStateChanged(ItemEvent evt) {
 		CardLayout cl = (CardLayout) (distInputPanel.getLayout());
-		DistributionType type = (DistributionType)evt.getItem();
+		DistributionType type = (DistributionType) evt.getItem();
+		//if uniform, then things is a little different
+		if (type.toString().equals("Uniform Distribution (Discrete)")
+			|| type.toString().equals(
+				"Uniform Distribution (Continuous)")) {
+		    lowerText.setEnabled(false);
+		    upperText.setEnabled(false);
+		} else {
+		    lowerText.setEnabled(true);
+		    upperText.setEnabled(true);
+		}
 		cl.show(distInputPanel, type.toString());
 	    }
 	});
@@ -141,6 +134,24 @@ public class MakeDistPanel extends JPanel {
 	upperText.setToolTipText(UPPER_TIP);
 	comboBoxPane.add(upperText);
 
+	/*
+	 * set up the cards panel
+	 */
+	distInputPanel = new JPanel(new CardLayout());
+	distInputPanel.add(setExponential(), DistributionType.EXPON.toString());
+	distInputPanel.add(setPossion(), DistributionType.POISSON.toString());
+	distInputPanel.add(setBeta(), DistributionType.BETA.toString());
+	distInputPanel.add(setBinomial(), DistributionType.BINOM.toString());
+	distInputPanel.add(setGamma(), DistributionType.GAMMA.toString());
+	distInputPanel.add(setLogistic(), DistributionType.LOGISTIC.toString());
+	distInputPanel.add(setLogNormal(),
+		DistributionType.LOGNORMAL.toString());
+	distInputPanel.add(setNaka(), DistributionType.NAKAGAMI.toString());
+	distInputPanel.add(setNormal(), DistributionType.NORMAL.toString());
+	distInputPanel.add(setUniformC(), DistributionType.UNIFORMC.toString());
+	distInputPanel.add(setUniformD(), DistributionType.UNIFORMD.toString());
+	distInputPanel.add(setWeibull(), DistributionType.WEIBULL.toString());
+
 	// add all the inputs to the selection panel
 	selectDistPanel.add(distInputPanel, BorderLayout.CENTER);
 	selectDistPanel.add(comboBoxPane, BorderLayout.PAGE_START);
@@ -149,7 +160,7 @@ public class MakeDistPanel extends JPanel {
 	add(selectDistPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new MakeDistDisplayPanel(model,input,unit);
+	displayPanel = new MakeDistDisplayPanel(model, input, unit);
 	add(displayPanel, BorderLayout.CENTER);
 
 	try {
@@ -298,11 +309,11 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	uniformPanel.add(aText);
 	uniformPanel.add(bText);
-	uniformPanel.add(setDoneButton(aText, bText));
+	uniformPanel.add(setUniformDoneButton(aText, bText));
 	uniformPanel.add(setRefreshButton());
 	return uniformPanel;
     }
-    
+
     private JPanel setUniformD() {
 	JPanel uniformPanel = new JPanel();
 	JTextField aText = new JTextField(LO);
@@ -313,7 +324,7 @@ public class MakeDistPanel extends JPanel {
 	bText.setPreferredSize(new Dimension(150, 25));
 	uniformPanel.add(aText);
 	uniformPanel.add(bText);
-	uniformPanel.add(setDoneButton(aText, bText));
+	uniformPanel.add(setUniformDoneButton(aText, bText));
 	uniformPanel.add(setRefreshButton());
 	return uniformPanel;
     }
@@ -350,7 +361,8 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[0] = Double.parseDouble(field.getText());
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
 		    distrParm[3] = Double.parseDouble(upperText.getText());
-		    model.setDistributionType((DistributionType)selectBox.getSelectedItem());
+		    model.setDistributionType((DistributionType) selectBox
+			    .getSelectedItem());
 		    // disable the selection
 		    model.generateRnd(distrParm);
 
@@ -386,7 +398,39 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[1] = Double.parseDouble(field2.getText());
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
 		    distrParm[3] = Double.parseDouble(upperText.getText());
-		    model.setDistributionType((DistributionType)selectBox.getSelectedItem());
+		    model.setDistributionType((DistributionType) selectBox
+			    .getSelectedItem());
+		    // disable the selection
+		    model.generateRnd(distrParm);
+		    // disable the other tab
+		    done.setEnabled(true);
+		    selectBox.setEnabled(false);
+		    parentPane.setEnabledAt(0, false);
+		} catch (NumberFormatException ne) {
+		    done.setEnabled(true);
+		    showErrorDialog(new JFrame(), "Error Found in input",
+			    "Enter Integer or Double values! e.g (100)");
+		}
+
+	    }
+	});
+	return done;
+    }
+
+    private JButton setUniformDoneButton(JTextField field1, JTextField field2) {
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		double[] distrParm = new double[4];
+		try {
+		    distrParm[0] = Double.parseDouble(field1.getText());
+		    distrParm[1] = Double.parseDouble(field2.getText());
+		    distrParm[2] = 0.0;
+		    distrParm[3] = 0.0;
+		    model.setDistributionType((DistributionType) selectBox
+			    .getSelectedItem());
 		    // disable the selection
 		    model.generateRnd(distrParm);
 		    // disable the other tab
