@@ -39,7 +39,6 @@ public class SensitivityAnalysis {
 		missingResults = m;
 		computeCorrelation();
 		sortCorrelation();
-
 	}
 
 	/**

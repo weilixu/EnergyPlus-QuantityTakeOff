@@ -23,14 +23,16 @@ import javax.swing.border.TitledBorder;
 
 import analyzer.distributions.DistributionType;
 import analyzer.distributions.MakeDistributionModel;
+import analyzer.model.Model;
 import analyzer.recommender.Recommender;
 
 public class MakeDistPanel extends JPanel {
 
-    private final MakeDistributionModel model;
+    private final Model model;
     private final Recommender recommender;
     // set the parent tabbed pane
     private final JTabbedPane parentPane;
+    private final String variableName;
     private final String object;
     private final String input;
     private final String unit;
@@ -70,8 +72,8 @@ public class MakeDistPanel extends JPanel {
     private final String LO = "lower";
     private final String UP = "upper";
 
-    public MakeDistPanel(JTabbedPane tp, MakeDistributionModel m,
-	    Recommender r, String s, String o, String i, String u) {
+    public MakeDistPanel(JTabbedPane tp, Model m,
+	    Recommender r, String v,String s, String o, String i, String u) {
 	model = m;
 	recommender = r;
 	parentPane = tp;
@@ -79,6 +81,7 @@ public class MakeDistPanel extends JPanel {
 	object = o;
 	input = i;
 	unit = u;
+	variableName = v;
 	setLayout(new BorderLayout());
 
 	/*
@@ -160,7 +163,7 @@ public class MakeDistPanel extends JPanel {
 	add(selectDistPanel, BorderLayout.NORTH);
 
 	// set-up the display panel
-	displayPanel = new MakeDistDisplayPanel(model, input, unit);
+	displayPanel = new MakeDistDisplayPanel(model, variableName, unit);
 	add(displayPanel, BorderLayout.CENTER);
 
 	try {
@@ -363,8 +366,9 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[3] = Double.parseDouble(upperText.getText());
 		    model.setDistributionType((DistributionType) selectBox
 			    .getSelectedItem());
+		    model.setVariable(variableName);
 		    // disable the selection
-		    model.generateRnd(distrParm);
+		    model.generateRV(distrParm);
 
 		    // disable the other tab
 		    done.setEnabled(true);
@@ -400,8 +404,9 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[3] = Double.parseDouble(upperText.getText());
 		    model.setDistributionType((DistributionType) selectBox
 			    .getSelectedItem());
+		    model.setVariable(variableName);
 		    // disable the selection
-		    model.generateRnd(distrParm);
+		    model.generateRV(distrParm);
 		    // disable the other tab
 		    done.setEnabled(true);
 		    selectBox.setEnabled(false);
@@ -411,7 +416,6 @@ public class MakeDistPanel extends JPanel {
 		    showErrorDialog(new JFrame(), "Error Found in input",
 			    "Enter Integer or Double values! e.g (100)");
 		}
-
 	    }
 	});
 	return done;
@@ -431,8 +435,9 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[3] = 0.0;
 		    model.setDistributionType((DistributionType) selectBox
 			    .getSelectedItem());
+		    model.setVariable(variableName);
 		    // disable the selection
-		    model.generateRnd(distrParm);
+		    model.generateRV(distrParm);
 		    // disable the other tab
 		    done.setEnabled(true);
 		    selectBox.setEnabled(false);
@@ -442,7 +447,6 @@ public class MakeDistPanel extends JPanel {
 		    showErrorDialog(new JFrame(), "Error Found in input",
 			    "Enter Integer or Double values! e.g (100)");
 		}
-
 	    }
 	});
 	return done;

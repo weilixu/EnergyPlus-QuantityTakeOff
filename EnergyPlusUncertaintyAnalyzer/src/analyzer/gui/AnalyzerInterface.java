@@ -23,10 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
-import analyzer.distributions.MakeDistributionModel;
-import analyzer.eplus.IdfReader;
-import analyzer.eplus.RunEnergyPlus;
-import analyzer.graphs.GraphGenerator;
 import analyzer.lang.AnalyzerUtils;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.ModelDataListener;
@@ -41,10 +37,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      * All the models
      */
     private final Model core;
-    private final MakeDistributionModel mdCore;
-    private final IdfReader idfReader;
-    private GraphGenerator graphs;
-    private RunEnergyPlus run;
 
     /*
      * All text of menu bar
@@ -84,9 +76,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     /*
      * Eplus File
      */
-    private File eplusFile;
-    private File parentFile;
-    private final String RESULT = "Results";
     private File resultFolder;
 
     /*
@@ -128,14 +117,9 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// assign the model to the interface
 	core = c;
 	core.addModelDataListeners(this);
-	
-	mdCore = new MakeDistributionModel();
-
 	// add the reader to the interface and load the listener
-	idfReader = new IdfReader();
-	idfReader.addLoadIDFListeners(this);
-	run = new RunEnergyPlus();
-
+	core.addLoadIDFListeners(this);
+	
 	// build the frame
 	frame = new JFrame(DEFAULT_TITLE);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -153,7 +137,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	// fileLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	// outerPanel.add(fileLabel, BorderLayout.NORTH);
 
-	variablePane = new VariablePanel(core,mdCore);
+	variablePane = new VariablePanel(core);
 	innerPanel = new JPanel(new BorderLayout());
 	innerPanel.add(variablePane, BorderLayout.CENTER);
 
@@ -207,33 +191,13 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    simulationNumber = Integer.parseInt(simulationText
 			    .getText());
 		    core.setSimulationNumber(simulationNumber);
-		    mdCore.setSimulationNumber(simulationNumber);
 		    
 		    try {
 			// initialize the file directories
 			
-			eplusFile = new File(idfDirText.getText());
-			parentFile = eplusFile.getParentFile();
-			resultFolder = createResultsFolder();
-
-			// set files directories
-			variablePane.setEnergyPlusDir(eplusFile);
-			run.setFolder(resultFolder);
-
-			// reads the file
-			idfReader.setFilePath(idfDirText.getText());
-			idfReader.readEplusFile();
-			// initialize the graphs object for later graph
-			// generation
-			String isSized = idfReader.getValue("SimulationControl", "Run Simulation for Sizing Periods");
-			System.out.println(isSized);
-			graphs = new GraphGenerator(resultFolder,
-				simulationNumber, idfReader.getValue(
-					"RunPeriod", "Start Year"));
-			graphs.setSized(isSized);
+			File eplusFile = new File(idfDirText.getText());
+			core.initializeModel(eplusFile);
 			
-			analysisPanel.setGraph(graphs);
-
 			// after read set the simulaiton number of the model
 			// disable the JTextfield for simulation directory and
 			// simulation number
@@ -241,8 +205,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 
 			createIDFButton
 				.addActionListener(new CreateActionListener(
-					core, idfReader, resultFolder,
-					simulationNumber, createIDFButton));
+					core, createIDFButton));
 			simulationText.setEnabled(false);
 			idfDirText.setEnabled(false);
 		    } catch (IOException e) {
@@ -279,7 +242,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	setting.add(exitMenuItem);
 
 	// Initialize the analysis panel
-	analysisPanel = new AnalysisPanel(resultFolder);
+	analysisPanel = new AnalysisPanel(core);
 	analysisPanel.setBackground(Color.WHITE);
 	analysisBottomPanel = initializeAnalysisBottomPanel();
 
@@ -372,7 +335,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationButton = new JButton("Simulate...");
 	simulationButton.setEnabled(false);
 	simulationButton.addActionListener(new SimulationActionListener(frame,
-		run, analysisButton));
+		core, analysisButton));
 
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
@@ -396,22 +359,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	});
 	temp.add(variableButton);
 	return temp;
-    }
-
-    /**
-     * Create a file under parent folder that contains all the simulation
-     * results
-     * 
-     * @return folder
-     */
-    private File createResultsFolder() {
-	File dir = new File(parentFile.getAbsoluteFile() + "\\" + RESULT);
-	if (dir.exists()) {
-	    return dir;
-	} else {
-	    dir.mkdir();
-	    return dir;
-	}
     }
 
     // for info showing

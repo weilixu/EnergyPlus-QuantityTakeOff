@@ -33,11 +33,6 @@ public class GraphGenerator {
     private List<ChartPanel> timeCharts; // time series graphs
     private List<ChartPanel> histoCharts; // histogram graphs
 
-    /*
-     * GUI listeners
-     */
-    private List<GraphGenerationListener> graphListeners;
-
     public GraphGenerator(File rf, int num, String y) {
 	// take in variables
 	resultFolder = rf;
@@ -58,18 +53,7 @@ public class GraphGenerator {
 	histoCharts = new ArrayList<ChartPanel>();
 
 	// initialize the GUI listener
-	graphListeners = new ArrayList<GraphGenerationListener>();
     }
-
-    /**
-     * add GUI listener to listen this class
-     * 
-     * @param g
-     */
-    public void addGraphGenerationListener(GraphGenerationListener g) {
-	graphListeners.add(g);
-    }
-
     /**
      * get the number of graphs
      * 
@@ -103,7 +87,7 @@ public class GraphGenerator {
     /**
      * generate time series charts
      */
-    public void getTimeSeriesCharts() {
+    public List<ChartPanel> getTimeSeriesCharts() {
 	String startMonth = resultAnalyzer.getKey(0);
 
 	for (int i = 0; i < numGraph; i++) {
@@ -135,13 +119,13 @@ public class GraphGenerator {
 	    ChartPanel chart = plotGraph.getChart();
 	    timeCharts.add(chart);
 	}
-	onUpdatedTimeSeriesGraphGenerated();
+	return timeCharts;
     }
 
     /**
      * generates histogram charts
      */
-    public void getHistogramCharts() {
+    public List<ChartPanel> getHistogramCharts() {
 	for (int i = 0; i < numGraph; i++) {
 	    double[] data = resultAnalyzer.getHistogramData(i);
 
@@ -151,7 +135,7 @@ public class GraphGenerator {
 	    PlotHistogram histogramGraph = new PlotHistogram(title, unit,data);
 	    histoCharts.add(histogramGraph.createPanel());
 	}
-	onUpdatedHistoGraphGenerated();
+	return histoCharts;
     }
 
     /**
@@ -167,23 +151,4 @@ public class GraphGenerator {
 	    histoIterator.remove();
 	}
     }
-
-    /**
-     * notify GUI the changes in the time series charts
-     */
-    private void onUpdatedTimeSeriesGraphGenerated() {
-	for (GraphGenerationListener g : graphListeners) {
-	    g.timeSeriesGraphGenerated(timeCharts);
-	}
-    }
-
-    /**
-     * notify GUI the changes in the histogram charts
-     */
-    private void onUpdatedHistoGraphGenerated() {
-	for (GraphGenerationListener g : graphListeners) {
-	    g.histogramGraphGenerated(histoCharts);
-	}
-    }
-
 }

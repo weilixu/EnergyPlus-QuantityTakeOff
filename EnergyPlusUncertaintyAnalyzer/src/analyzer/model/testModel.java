@@ -13,7 +13,6 @@ public class testModel {
 	public static void main(String[] args) {
 
 		Model model = new Model();
-		model.setSource("/Users/Adrian/Dropbox/testIDFJfreeChart");
 		model.setVariable("$dsfdsf");
 		model.setSimulationNumber(100);
 		// example usage of fitData which calls fitDist

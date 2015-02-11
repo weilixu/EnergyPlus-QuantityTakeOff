@@ -19,24 +19,13 @@ public class MakeDistributionModel {
     private int numSimulation;
 
     private final DistributionFactory factory;
-    private DistributionType type;
-
-    private List<MakeDistGraphGeneratorListener> mdGraphs;
-    
+    private DistributionType type;    
     
     public MakeDistributionModel() {
 	factory = new DistributionFactory();
-	mdGraphs = new ArrayList<MakeDistGraphGeneratorListener>();
     }
     
-    /**
-     * add the listener <link>MakeDistDisplayPanel<link>
-     * @param mdL
-     */
-    public void addMakeDistGraphGeneratorListener(
-	    MakeDistGraphGeneratorListener mdL) {
-	mdGraphs.add(mdL);
-    }
+
     
     /**
      * set the simulation number
@@ -59,18 +48,10 @@ public class MakeDistributionModel {
      * generates random variables
      * @param parameters
      */
-    public void generateRnd(double[] parameters) {
+    public double[] generateRnd(double[] parameters) {
 	TruncatedDistribution dist = factory.getDistribution(parameters);
-	onSamplesUpdated(dist.truncatedSample(numSimulation));
+	double[] samples = dist.truncatedSample(numSimulation);
+	return samples;
     }
-    
-    /**
-     * update the model
-     * @param samples
-     */
-    private void onSamplesUpdated(double[] samples) {
-	for (MakeDistGraphGeneratorListener mdl : mdGraphs) {
-	    mdl.onUpdatedDistGenerated(samples);
-	}
-    }
+
 }

@@ -66,9 +66,6 @@ public class IdfReader implements EnergyPlusFilesGenerator {
     private boolean output = false;
     private boolean dataFilled = false;
 
-    // GUI listener for this module
-    private List<LoadIdfListeners> loadIDFListeners;
-
     // indexes for variableKeySets
     private final int ObjectNameIndex = 0;
     private final int ObjectElementCountIndex = 1;
@@ -82,7 +79,6 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	eplusMap = new HashMap<String, HashMap<String, ArrayList<ValueNode>>>();
 	variableList = new ArrayList<String>();
 	variableKeySets = new ArrayList<String[]>();
-	loadIDFListeners = new ArrayList<LoadIdfListeners>();
     }
 
     /**
@@ -94,22 +90,16 @@ public class IdfReader implements EnergyPlusFilesGenerator {
      */
     public IdfReader(String p,
 	    HashMap<String, HashMap<String, ArrayList<ValueNode>>> map,
-	    ArrayList<String> vl, ArrayList<String[]> vks,
-	    List<LoadIdfListeners> l) {
+	    ArrayList<String> vl, ArrayList<String[]> vks) {
 	dataFilled = true;
 	path = p;
 	eplusMap = map;
 	variableList = vl;
 	variableKeySets = vks;
-	loadIDFListeners = l;
     }
 
     public void setFilePath(String filePath) {
 	path = filePath;
-    }
-
-    public void addLoadIDFListeners(LoadIdfListeners l) {
-	loadIDFListeners.add(l);
     }
 
     /**
@@ -214,7 +204,14 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	}
 	// indicates the data structure is created and filled with data
 	dataFilled = true;
-	onReadEplusFile();
+    }
+
+    public ArrayList<String> getVariableList(){
+	return variableList;
+    }
+    
+    public ArrayList<String[]> getVaraibleKeySets(){
+	return variableKeySets;
     }
 
     /**
@@ -512,8 +509,7 @@ public class IdfReader implements EnergyPlusFilesGenerator {
     @Override
     public EnergyPlusFilesGenerator cloneIdfData() {
 	HashMap<String, HashMap<String, ArrayList<ValueNode>>> map = DeepCopyMap();
-	return new IdfReader(path, map, variableList, variableKeySets,
-		loadIDFListeners);
+	return new IdfReader(path, map, variableList, variableKeySets);
     }
 
     private HashMap<String, HashMap<String, ArrayList<ValueNode>>> DeepCopyMap() {
@@ -539,15 +535,6 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	    tempMap.put(object, objectMap);
 	}
 	return tempMap;
-    }
-
-    /*
-     * notify GUI for the updates of variableList and the variableInfo
-     */
-    private void onReadEplusFile() {
-	for (LoadIdfListeners l : loadIDFListeners) {
-	    l.loadedEnergyPlusFile(variableList, variableKeySets);
-	}
     }
 
     /**

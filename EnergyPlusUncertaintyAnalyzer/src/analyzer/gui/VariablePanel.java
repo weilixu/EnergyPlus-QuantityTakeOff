@@ -28,7 +28,6 @@ import analyzer.recommender.Recommender;
 public class VariablePanel extends JPanel {
 
     private final Model model;
-    private final MakeDistributionModel mdModel;
     private final Recommender recommender;
 
     // MESSAGE or Titles
@@ -41,8 +40,6 @@ public class VariablePanel extends JPanel {
     private JPanel selectPanel;
     // contains the text field specify the number of simulations
     //private JPanel simulationPanel;
-    private File eplusFile;
-    private File parentFile;
 
     // all about the JList
     //private final String VARIABLE_LABEL = "Variables";
@@ -56,9 +53,8 @@ public class VariablePanel extends JPanel {
     private ArrayList<String> variableDescription;
     private ArrayList<String[]>variableKeySets;
 
-    public VariablePanel(Model m, MakeDistributionModel dm) {
+    public VariablePanel(Model m) {
 	model = m;
-	mdModel = dm;
 	recommender = new Recommender();
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
@@ -66,11 +62,6 @@ public class VariablePanel extends JPanel {
 	//parentFile = eplusFile.getParentFile();
 	initSelectionPanel();
 	initPanel();
-    }
-    
-    public void setEnergyPlusDir(File f){
-	eplusFile = f;
-	parentFile = eplusFile.getParentFile();
     }
 
     public void changeVariables(ArrayList<String> vl, ArrayList<String[]> vk) {
@@ -158,10 +149,9 @@ public class VariablePanel extends JPanel {
     // a inputs checking mechanism is required to be complete in the future
     private JTabbedPane fitPanel(String variableName, String setting, String object, String input,String unit) {
 	JTabbedPane tp = new JTabbedPane();
-	model.setSource(parentFile.getAbsolutePath());
 	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,setting));// index
 									     // 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, mdModel, recommender,setting,object,input,unit));// index
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, recommender,variableName,setting,object,input,unit));// index
 									       // 1
 	return tp;
     }

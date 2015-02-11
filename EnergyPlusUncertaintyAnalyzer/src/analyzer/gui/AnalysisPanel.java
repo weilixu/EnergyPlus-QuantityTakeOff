@@ -3,7 +3,6 @@ package analyzer.gui;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,8 +13,8 @@ import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartPanel;
 
-import analyzer.graphs.GraphGenerator;
 import analyzer.listeners.GraphGenerationListener;
+import analyzer.model.Model;
 
 /**
  * a TabbedPane that displays the analysis results in the form of time series
@@ -31,8 +30,7 @@ public class AnalysisPanel extends JTabbedPane implements
     /*
      * set model and files
      */
-    private final File resultFolder;
-    private GraphGenerator graph;
+    private final Model model;
 
     /*
      * set the time series graph panel and histo gram panel
@@ -52,9 +50,10 @@ public class AnalysisPanel extends JTabbedPane implements
     private final String TIME_TAB = "Time Series Results Display";
     private final String HIST_TAB = "Histogram Results Display";
 
-    public AnalysisPanel(File r) {
-	resultFolder = r;
-
+    public AnalysisPanel(Model m) {
+	model = m;
+	model.addGraphGenerationListener(this);
+	
 	timeSeriesPanel = new JPanel(new GridLayout());
 	histoGramPanel = new JPanel(new GridLayout());
 
@@ -69,22 +68,10 @@ public class AnalysisPanel extends JTabbedPane implements
     }
 
     /**
-     * set the model in this class set the listener in the model
-     * 
-     * @param g
-     */
-    public void setGraph(GraphGenerator g) {
-	graph = g;
-	graph.addGraphGenerationListener(this);
-    }
-
-    /**
      * generates the graphs
      */
     public void generateGraph() {
-	graph.setResults();
-	graph.getTimeSeriesCharts();
-	graph.getHistogramCharts();
+	model.generateGraphs();
     }
 
     @Override

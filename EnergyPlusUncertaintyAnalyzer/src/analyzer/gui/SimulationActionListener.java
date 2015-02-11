@@ -11,10 +11,11 @@ import javax.swing.JTextField;
 
 import analyzer.eplus.RunEnergyPlus;
 import analyzer.lang.AnalyzerUtils;
+import analyzer.model.Model;
 
 
 public class SimulationActionListener implements ActionListener{
-    private final RunEnergyPlus run;
+    private final Model model;
     private final JFrame parentFrame;
     private final JButton analysisButton;
     
@@ -27,10 +28,10 @@ public class SimulationActionListener implements ActionListener{
     private final String PROC_NAME = "Number of processor:";
 
     
-    public SimulationActionListener(JFrame frame, RunEnergyPlus r, JButton ab){
+    public SimulationActionListener(JFrame frame, Model m, JButton ab){
 	parentFrame = frame;
 	analysisButton = ab;
-	run = r;
+	model = m;
 	
 	String[] config = AnalyzerUtils.getEplusConfig();
 	eplusDir = new JTextField(config[0]);
@@ -54,12 +55,8 @@ public class SimulationActionListener implements ActionListener{
 	    AnalyzerUtils.setEplusDirectory(eplusDir.getText());
 	    AnalyzerUtils.setEplusWeather(weatherFile.getText());
 	    AnalyzerUtils.setEplusProcessor(numberProc.getText());
-	    
-	    run.setEnergyPlusDirectory(eplusDir.getText());
-	    run.setWeatherFile(weatherFile.getText());
-	    run.setNumberOfProcessor(numberProc.getText());
 	    try {
-		run.startSimulation();
+		model.startSimulation(eplusDir.getText(),weatherFile.getText(),numberProc.getText());
 		analysisButton.setEnabled(true);
 	    } catch (Exception e) {
 		showErrorDialog(parentFrame, "Found Error in inputs", "Check your configuration inputs!");

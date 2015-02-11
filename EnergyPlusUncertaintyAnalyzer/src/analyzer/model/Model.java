@@ -1,17 +1,27 @@
 package analyzer.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import allfitdist.FitDist;
-import allmakedist.MakeDist;
+import org.jfree.chart.ChartPanel;
+
+import analyzer.distributions.DistributionType;
+import analyzer.distributions.MakeDistributionModel;
+import analyzer.eplus.EnergyPlusFilesGenerator;
+import analyzer.eplus.IdfReader;
+import analyzer.eplus.RunEnergyPlus;
+import analyzer.graphs.GraphGenerator;
 import analyzer.listeners.DistGenerationListeners;
 import analyzer.listeners.FitDistListeners;
+import analyzer.listeners.GraphGenerationListener;
+import analyzer.listeners.LoadIdfListeners;
+import analyzer.listeners.MakeDistGraphGeneratorListener;
 import analyzer.listeners.ModelDataListener;
-
-import com.mathworks.toolbox.javabuilder.MWException;
-import com.mathworks.toolbox.javabuilder.MWNumericArray;
 
 /**
  * Distribution model
@@ -23,13 +33,40 @@ public class Model {
     // Strings for the file names
     private final String DIST_NAME = "DIST_";
     private final String IMAGE_POST = ".jpg";
-    // string for parent name
-    private String source;
-    // String for the variable name
+    
     private String variableName;
+
     // record the number of the simulation to determine the size of data
     private int simulationNumber;
-
+    
+    /*
+     * Folders
+     */
+    private File eplusFile;
+    private File parentFile;
+    private File resultFile;
+    
+    /*
+     * All about make distribution model
+     */
+    private final MakeDistributionModel makeDistModel;
+    private DistributionType type;
+    
+    /**
+     * idf reader <link>IdfReader<link>
+     */
+    private final IdfReader idfData;
+    
+    /**
+     * graph generator <link>GraphGenerator<link>
+     */
+    private GraphGenerator graphs;
+    /**
+     * <link>RunEnergyPlus<link>
+     */
+    private RunEnergyPlus run;
+    
+    private RVGenerator generator;
     /*
      * A data structure to save generated random variables from the model. The
      * size of the double[] array is equal to the simulaitonNumber. String
@@ -41,17 +78,32 @@ public class Model {
     /*
      * Add all the listeners from GUI
      */
+    // GUI listener for IdfReader
+    private List<LoadIdfListeners> loadIDFListeners;
     // add the image panel listener to monitor the image generation
     private List<DistGenerationListeners> distGeneListeners;
     // listen the data from the model
     private List<ModelDataListener> dataListeners;
     // listen the data from the model for fit distribution results
     private List<FitDistListeners> fitDistListeners;
+    // listen the make distribution from the model
+    private List<MakeDistGraphGeneratorListener> mdGraphs;
+    // listen to the graph generator
+    private List<GraphGenerationListener> graphListeners;
 
     public Model() {
+	idfData = new IdfReader();
+	run = new RunEnergyPlus();
+	generator = new RVGenerator();
+	
+	makeDistModel = new MakeDistributionModel();
+	loadIDFListeners = new ArrayList<LoadIdfListeners>();
 	distGeneListeners = new ArrayList<DistGenerationListeners>();
 	dataListeners = new ArrayList<ModelDataListener>();
 	fitDistListeners = new ArrayList<FitDistListeners>();
+	mdGraphs = new ArrayList<MakeDistGraphGeneratorListener>();
+	graphListeners = new ArrayList<GraphGenerationListener>();
+
 	distSummary = "";
     }
 
@@ -72,6 +124,29 @@ public class Model {
     public void addFitDistListeners(FitDistListeners f) {
 	fitDistListeners.add(f);
     }
+    
+    /**
+     * add the listener <link>MakeDistDisplayPanel<link>
+     * @param mdL
+     */
+    public void addMakeDistGraphGeneratorListener(
+	    MakeDistGraphGeneratorListener mdL) {
+	mdGraphs.add(mdL);
+    }
+    
+    public void addLoadIDFListeners(LoadIdfListeners l) {
+	loadIDFListeners.add(l);
+    }
+    
+    /**
+     * add GUI listener to listen this class
+     * @param g
+     */
+    public void addGraphGenerationListener(GraphGenerationListener g) {
+	graphListeners.add(g);
+    }
+    
+    
 
     /**
      * get the size of the data structure.
@@ -81,23 +156,20 @@ public class Model {
     public int getGeneratedVariableSize() {
 	return randomVariableList.size();
     }
-
-    /**
-     * set the file directory for the model
-     * 
-     * @param s
-     */
-    public void setSource(String s) {
-	source = s;
+    
+    public File getResultFolder(){
+	return resultFile;
     }
-
-    /**
-     * set the name of the variable for the model
-     * 
-     * @param v
-     */
-    public void setVariable(String v) {
-	variableName = v;
+    
+    public void initializeModel(File file) throws IOException{
+	eplusFile = file;
+	parentFile = eplusFile.getParentFile();
+	resultFile = createResultsFolder();
+	run.setFolder(resultFile);
+	
+	initializedIdfData();
+	
+	initializedGraphGenerator();
     }
 
     /**
@@ -107,6 +179,41 @@ public class Model {
      */
     public void setSimulationNumber(int number) {
 	simulationNumber = number;
+	makeDistModel.setSimulationNumber(simulationNumber);
+    }
+    
+    public void setDistributionType(DistributionType type){
+	makeDistModel.setDistributionType(type);
+    }
+    
+    public void setVariable(String variable){
+	variableName = variable;
+	generator.setVariableName(variableName);
+    }
+    
+    /**
+     * start running EnergyPlus simulation
+     * @param eplus
+     * @param weather
+     * @param numberProc
+     * @throws Exception
+     */
+    public void startSimulation(String eplus, String weather, String numberProc) throws Exception{
+	run.setEnergyPlusDirectory(eplus);
+	run.setWeatherFile(weather);
+	run.setNumberOfProcessor(numberProc);
+	
+	try{
+	    run.startSimulation();
+	}catch(Exception e){
+	    throw e;
+	}
+    }
+    
+    public void writeIdfFile(File targetFolder){
+	for(int i = 0; i<simulationNumber; i++){
+	    writingFile(idfData.cloneIdfData(),i, targetFolder);
+	}
     }
 
     public HashMap<String, double[]> getData() {
@@ -147,35 +254,15 @@ public class Model {
      *            truncated tor
      * @return
      */
-    public void fitData(double[] data, String sortby, String dataType,
-	    String lower, String upper) {
-	FitDist fitDistr = null;
-	Object[] fitDistInputs = new Object[8];
-	fitDistInputs[0] = source;
-	fitDistInputs[1] = DIST_NAME + variableName + IMAGE_POST;
-	fitDistInputs[2] = data;
-	fitDistInputs[3] = simulationNumber;
-	fitDistInputs[4] = sortby;
-	fitDistInputs[5] = dataType;
-	fitDistInputs[6] = Double.parseDouble(lower);
-	fitDistInputs[7] = Double.parseDouble(upper);
-	Object[] fitDistResult = null;
-	try {
-	    fitDistr = new FitDist();
-	    fitDistResult = fitDistr.allfitdist(2, fitDistInputs);
-	} catch (MWException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	MWNumericArray rndVars = (MWNumericArray) fitDistResult[0];
-
-	distSummary = fitDistResult[1].toString(); // convert to String
-	editDistSummary();
+    public void fitData(double[] data, String sortby, String dataType, String lower, String upper) {
+	generator.setVariableName(variableName);
+	double[] samples = generator.fitData(parentFile.getAbsolutePath(), data, simulationNumber, sortby, dataType, lower, upper);
+	distSummary = generator.getDistSummary(); // convert to String
 
 	onDistributionGenerated();
 	onFitResultsUpdates();
 	onVariableEnabled();
-	randomVariableList.put(variableName, rndVars.getDoubleData());
+	randomVariableList.put(variableName, samples);
 	onDataUpdates();
     }
 
@@ -229,61 +316,68 @@ public class Model {
      *            location; 'c' - Upper limit
      * 
      */
-//    public void generateRV(String distrName, double[] distrParam, String lower,
-//	    String upper) {
-//
-//	MakeDist makeDistr = null;
-//	Object[] makeDistInputs = new Object[7];
-//	makeDistInputs[0] = source;
-//	makeDistInputs[1] = DIST_NAME + variableName
-//		+ IMAGE_POST;
-//	makeDistInputs[2] = simulationNumber;
-//	makeDistInputs[3] = distrName;
-//	makeDistInputs[4] = distrParam;
-//	makeDistInputs[5] = Double.parseDouble(lower); // min
-//	makeDistInputs[6] = Double.parseDouble(upper); // max
-//
-//	Object[] makeDistResult = null;
-//	try {
-//	    makeDistr = new MakeDist();
-//	    makeDistResult = makeDistr.allmakedist(1, makeDistInputs);
-//	} catch (MWException e) {
-//	    // TODO Auto-generated catch block
-//	    e.printStackTrace();
-//	}
-//
-//	MWNumericArray rndVars = (MWNumericArray) makeDistResult[0];
-//	System.out.println(rndVars.getDoubleData());
-//	
-//	// updates GUIs
-//	//onDistributionGenerated();
-//	//onVariableEnabled();
-//	randomVariableList.put(variableName, rndVars.getDoubleData());
-//	//onDataUpdates();
-//    }
+    public void generateRV(double[] parameters) {
+	double[] samples = makeDistModel.generateRnd(parameters);
+	// updates GUIs
+	randomVariableList.put(variableName, samples);
+	onVariableEnabled();
+	onSamplesUpdated(samples);
+    }
+    
+    public void generateGraphs(){
+	graphs.setResults();
+	onUpdatedHistoGraphGenerated(graphs.getHistogramCharts());
+	onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
+    }
+    
+    private void initializedGraphGenerator(){
+	graphs = new GraphGenerator(resultFile, simulationNumber, idfData.getValue("RunPeriod", "Start Year"));
+	graphs.setSized(idfData.getValue("SimulationControl", "Run Simulation for Sizing Periods"));
+    }
+    
+    private void initializedIdfData() throws IOException{
+	idfData.setFilePath(eplusFile.getAbsolutePath());
+	idfData.readEplusFile();
+	onReadEplusFile();
+    }
+    
+    private void writingFile(EnergyPlusFilesGenerator reader, Integer index, File folder){
+	Set<String> variable = randomVariableList.keySet();
+	Iterator<String> iterator = variable.iterator();
+	while(iterator.hasNext()){
+	    String charactor = iterator.next();
+	    Double value = randomVariableList.get(charactor)[index];
 
-    private void editDistSummary() {
-	String[] distString = null;
-	if (distSummary != null) {
-	    distString = distSummary.split("   ");
+	    reader.modifySpecialCharactor(charactor, value.toString());
 	}
-
-	StringBuffer temp = new StringBuffer();
-	for (int i = 0; i < distString.length; i++) {
-	    if (!distString[i].isEmpty()) {
-		temp.append(distString[i].trim());
-		temp.append("\n");
-	    }
+	//write the file
+	reader.WriteIdf(folder.getAbsolutePath(),index.toString());
+    }
+    
+    /**
+     * Create a file under parent folder that contains all the simulation
+     * results
+     * 
+     * @return folder
+     */
+    private File createResultsFolder() {
+	File dir = new File(parentFile.getAbsoluteFile() + "\\" + "Results");
+	if (dir.exists()) {
+	    return dir;
+	} else {
+	    dir.mkdir();
+	    return dir;
 	}
-	distSummary = temp.toString();
-
     }
 
+    /**
+     * Listeners
+     */
     private void onDistributionGenerated() {
 	for (DistGenerationListeners dgl : distGeneListeners) {
 	    if (dgl.getVariable().equals(variableName)) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(source);
+		sb.append(parentFile.getAbsolutePath());
 		sb.append("\\");
 		sb.append(DIST_NAME);
 		sb.append(variableName);
@@ -312,4 +406,44 @@ public class Model {
 	    m.variableEnabled(variableName);
 	}
     }
+    
+    /**
+     * update the model
+     * @param samples
+     */
+    private void onSamplesUpdated(double[] samples) {
+	for (MakeDistGraphGeneratorListener mdl : mdGraphs) {
+	    if(mdl.getVariable().equals(variableName)){
+		    mdl.onUpdatedDistGenerated(samples);
+	    }
+	}
+    }
+
+    /*
+     * notify GUI for the updates of variableList and the variableInfo
+     */
+    private void onReadEplusFile() {
+	for (LoadIdfListeners l : loadIDFListeners) {
+	    l.loadedEnergyPlusFile(idfData.getVariableList(), idfData.getVaraibleKeySets());
+	}
+    }
+    
+    /**
+     * notify GUI the changes in the time series charts
+     */
+    private void onUpdatedTimeSeriesGraphGenerated(List<ChartPanel> timeCharts) {
+	for (GraphGenerationListener g : graphListeners) {
+	    g.timeSeriesGraphGenerated(timeCharts);
+	}
+    }
+
+    /**
+     * notify GUI the changes in the histogram charts
+     */
+    private void onUpdatedHistoGraphGenerated(List<ChartPanel> histoCharts) {
+	for (GraphGenerationListener g : graphListeners) {
+	    g.histogramGraphGenerated(histoCharts);
+	}
+    }
+
 }
