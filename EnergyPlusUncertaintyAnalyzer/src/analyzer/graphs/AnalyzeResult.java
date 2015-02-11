@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class AnalyzeResult {
 	private final ArrayList<String> keys;
 	private final HashMap<String, ArrayList<Double[]>> data;
+	private ArrayList<Integer> missing;
 	private String[] header;
 	private final String source;
 	private final String idfName;
@@ -34,17 +35,18 @@ public class AnalyzeResult {
 	public AnalyzeResult(String source, String idfName, String rs) {
 		this.runSizing = rs;
 		this.keys = new ArrayList<String>();
+		this.missing = new ArrayList<Integer>();
 		this.data = new HashMap<String, ArrayList<Double[]>>();
 		this.header = null;
 		this.source = source;
 		this.idfName = idfName;
 		this.startYear = Calendar.getInstance().get(Calendar.YEAR);
 	}
-	
-	public void setSized(String sized){
-	    runSizing = sized;
+
+	public void setSized(String sized) {
+		runSizing = sized;
 	}
-	
+
 	/**
 	 * set year to plot timeseries graph
 	 * 
@@ -108,15 +110,19 @@ public class AnalyzeResult {
 	 */
 	public double[] getHistogramData(int colNumber) {
 		double[] output = new double[numberofResults];
-		for (int i=0; i<keys.size(); i++){
+		for (int i = 0; i < keys.size(); i++) {
 			String month = keys.get(i);
 			ArrayList<Double[]> monthData = this.data.get(month);
-			for (int j=0; j<monthData.size(); j++){
+			for (int j = 0; j < monthData.size(); j++) {
 				Double[] temp = monthData.get(j);
 				output[j] = output[j] + temp[colNumber];
 			}
 		}
 		return output;
+	}
+	
+	public ArrayList<Integer> getMissing() {
+		return missing;
 	}
 
 	/**
@@ -225,7 +231,9 @@ public class AnalyzeResult {
 				numberofResults++;
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				missing.add(i);
+				System.out.println(this.source + this.idfName
+						+ i + "Meter.csv not found");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

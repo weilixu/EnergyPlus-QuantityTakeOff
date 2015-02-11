@@ -1,5 +1,6 @@
 package analyzer.sensitivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
@@ -13,7 +14,7 @@ public class SensitivityAnalysis {
 	// random variables generated
 	private final HashMap<String, double[]> randVars;
 	// array containing indexes where no meter.csv files were found
-	private final int[] missingResults;
+	private final ArrayList<Integer> missingResults;
 	// array containing all correlation
 	private double[] correlation;
 
@@ -30,7 +31,7 @@ public class SensitivityAnalysis {
 	 *                hashmap containing random variables generated
 	 */
 	public SensitivityAnalysis(String[] vn, double[] r,
-			HashMap<String, double[]> rv, int[] m) {
+			HashMap<String, double[]> rv, ArrayList<Integer> m) {
 		// TODO Auto-generated constructor stub
 		variableName = vn;
 		result = r;
@@ -67,13 +68,13 @@ public class SensitivityAnalysis {
 		if (missingResults != null) {
 			return args;
 		}
-		int newSize = args.length - missingResults.length;
+		int newSize = args.length - missingResults.size();
 		double[] noMissing = new double[newSize];
 		int idx = 0;
 		int j = 0;
 		for (int i = 0; i < args.length; i++) {
-			if (idx < missingResults.length
-					& missingResults[idx] == i) {
+			if (idx < missingResults.size()
+					& missingResults.get(idx) == i) {
 				idx++;
 			} else {
 				assert j < noMissing.length;
