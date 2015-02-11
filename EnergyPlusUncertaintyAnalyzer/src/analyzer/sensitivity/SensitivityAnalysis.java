@@ -5,10 +5,16 @@ import java.util.HashMap;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 
 public class SensitivityAnalysis {
+	// list of names that were used to define random variables
 	private final String[] variableName;
+	// result from energyplus meter.csv files. Each double[i] refers to
+	// consumption for simulation i
 	private final double[] result;
+	// random variables generated
 	private final HashMap<String, double[]> randVars;
+	// array containing indexes where no meter.csv files were found
 	private final int[] missingResults;
+	// array containing all correlation
 	private double[] correlation;
 
 	/**
@@ -31,6 +37,7 @@ public class SensitivityAnalysis {
 		randVars = rv;
 		missingResults = m;
 		computeCorrelation();
+		sortCorrelation();
 
 	}
 
@@ -75,6 +82,26 @@ public class SensitivityAnalysis {
 			}
 		}
 		return noMissing;
+	}
+
+	/**
+	 * sort correlation using insertion sort so that variables with highest
+	 * correlation is at front of array
+	 */
+	private void sortCorrelation() {
+		assert correlation.length == variableName.length;
+		for (int i = 0; i < correlation.length; i++) {
+			double tempCorrelation = correlation[i];
+			String tempVariable = variableName[i];
+			int j = i;
+			while (j > 0 & correlation[j - 1] < tempCorrelation) {
+				correlation[j] = correlation[j - 1];
+				variableName[j] = variableName[j - 1];
+				j = j - 1;
+			}
+			correlation[j] = tempCorrelation;
+			variableName[j] = tempVariable;
+		}
 	}
 
 	/**
