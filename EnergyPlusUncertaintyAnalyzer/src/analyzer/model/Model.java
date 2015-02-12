@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import org.jfree.chart.ChartPanel;
 
 import analyzer.distributions.DistributionType;
@@ -17,6 +19,10 @@ import analyzer.eplus.EnergyPlusFilesGenerator;
 import analyzer.eplus.IdfReader;
 import analyzer.eplus.RunEnergyPlus;
 import analyzer.graphs.GraphGenerator;
+import analyzer.lifecyclecost.DataObjects;
+import analyzer.lifecyclecost.FieldElement;
+import analyzer.lifecyclecost.LifeCycleCostModel;
+import analyzer.lifecyclecost.TemplateObject;
 import analyzer.listeners.DistGenerationListeners;
 import analyzer.listeners.FitDistListeners;
 import analyzer.listeners.GraphGenerationListener;
@@ -77,6 +83,11 @@ public class Model {
      * sensitivity analysis module
      */
     private SensitivityAnalysis sensitivity;
+    
+    /**
+     * Life cycle cost module
+     */
+    private LifeCycleCostModel lccModel;
 
     /*
      * A data structure to save generated random variables from the model. The
@@ -85,6 +96,8 @@ public class Model {
      */
     private static HashMap<String, double[]> randomVariableList = new HashMap<String, double[]>();
     private String distSummary;
+    //to record the add-on modules
+    private DataObjects currentDataSet;
 
     /*
      * Add all the listeners from GUI
@@ -106,6 +119,7 @@ public class Model {
 	idfData = new IdfReader();
 	run = new RunEnergyPlus();
 	generator = new RVGenerator();
+	lccModel = new LifeCycleCostModel();
 
 	makeDistModel = new MakeDistributionModel();
 	loadIDFListeners = new ArrayList<LoadIdfListeners>();
@@ -158,6 +172,25 @@ public class Model {
     public void addGraphGenerationListener(GraphGenerationListener g) {
 	graphListeners.add(g);
     }
+    
+    /**
+     * add the current data set into Idf
+     */
+    public void addCurrentDataSetToIdf(){
+	ArrayList<TemplateObject> objects = currentDataSet.getObjects();
+	for(TemplateObject object:objects){
+	    ArrayList<FieldElement> fields = object.getFieldList();
+	    String[] objectValues = new String[fields.size()];
+	    String[] objectDes = new String[fields.size()];
+	    for(int i=0; i<fields.size();i++){
+		objectValues[i] = fields.get(i).getValue();
+		objectDes[i] = fields.get(i).getDescription();
+	    }
+	    idfData.addNewEnergyPlusObject(object.getObject(), objectValues, objectDes);
+	    //notify any possible changes in the eplus database
+	onReadEplusFile();
+	}
+    }
 
     /**
      * get the size of the data structure.
@@ -175,7 +208,15 @@ public class Model {
     public HashMap<String, double[]> getData() {
 	return randomVariableList;
     }
-
+    
+    public DefaultMutableTreeNode getLCCCompleteTree(){
+	return lccModel.getCompleteTreeNode();
+    }
+    
+    public DataObjects getCopiedDataObject(DataObjects dataset){
+	return lccModel.makeCopyOfDataSet(dataset);
+    }
+    
     /**
      * set the simulation number for the model
      * 
@@ -193,6 +234,10 @@ public class Model {
     public void setVariable(String variable) {
 	variableName = variable;
 	generator.setVariableName(variableName);
+    }
+    
+    public void setCurrentDataset(DataObjects dataSet){
+	currentDataSet = dataSet;
     }
 
     public void initializeModel(File file) throws IOException {

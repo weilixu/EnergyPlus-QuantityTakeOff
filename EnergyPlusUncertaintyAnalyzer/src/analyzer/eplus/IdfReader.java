@@ -373,6 +373,17 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	    temp.put(elementCount, newObject);
 	    eplusMap.put(objectName, temp);
 	}
+	checkRandomVariable(objectName, elementCount, newObject);
+    }
+    
+    private void checkRandomVariable(String ob, String element, ArrayList<ValueNode> newObject){
+	for(ValueNode vn: newObject){
+	    if(vn.isCritical()){
+		variableList.add(vn.getAttribute());
+		String[] keyPair = {ob,element,vn.getDescription(),vn.getUnit()};
+		variableKeySets.add(keyPair);
+	    }
+	}
     }
 
     /**
@@ -536,7 +547,7 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	}
 	return tempMap;
     }
-
+    
     /**
      * IDF Writer class. This class writes the IDF out based on the reader's
      * data
@@ -592,7 +603,7 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 			for (int i = 0; i < nodeList.size(); i++) {
 			    ValueNode n = nodeList.get(i);
 			    // end statement needs to be end by ;
-			    if (n.isEndStatement()) {
+			    if (i==nodeList.size()-1) {
 				writer.write(n.getAttribute() + "; \n");
 			    } else {
 				writer.write(n.getAttribute() + ", \n");

@@ -2,8 +2,6 @@ package analyzer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -11,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -35,7 +32,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
     private final JPanel editorPanel;
     private final JSplitPane splitPane;
 
-    public RecommenderPanel(DefaultMutableTreeNode n) {
+    public RecommenderPanel(DefaultMutableTreeNode n){
 	node = n;
 	tree = new JTree(node);
 	tree.getSelectionModel().setSelectionMode(
@@ -48,7 +45,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
 	editorPanel = new JPanel(new BorderLayout());
 	editorPanel.setBackground(Color.WHITE);
 
-	ObjectProperty op = (ObjectProperty) node.getUserObject();
+	//ObjectProperty op = (ObjectProperty) node.getUserObject();
 
 //	infoText = new JTextArea(op.getObject());
 //	infoText.setLineWrap(true);

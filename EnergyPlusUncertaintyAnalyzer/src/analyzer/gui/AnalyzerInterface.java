@@ -70,8 +70,14 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private final JPanel inputPanel;
     private final JPanel simulationPanel;
 
+    // analysis panel set-up
     private final AnalysisPanel analysisPanel;
     private final JPanel analysisBottomPanel;
+
+    private final LifeCycleCostPanel lccPanel;
+    private final JPanel lccControlPanel;
+    private JButton addButton;
+    private final String ADD_TEXT = "Insert Data";
 
     /*
      * Eplus File
@@ -92,8 +98,12 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private JButton simulationButton;
     private JButton createIDFButton;
-    private JButton analysisButton;
-    private JButton variableButton;
+    private JButton variableToAnalysisButton;
+    private JButton analysisToVariableButton;
+    private JButton variableToLccButton;
+    private JButton lccToAnalysisButton;
+    private JButton analysisToLccButton;
+    private JButton lccToVariableButton;
     private int number_Variable;
 
     /*
@@ -119,7 +129,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	core.addModelDataListeners(this);
 	// add the reader to the interface and load the listener
 	core.addLoadIDFListeners(this);
-	
+
 	// build the frame
 	frame = new JFrame(DEFAULT_TITLE);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -153,12 +163,12 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	settingMenuBar = new JMenuBar();
 	JMenu setting = new JMenu(MENU_TITLE);
 	setting.setMnemonic(KeyEvent.VK_S);
-	
-	//set the configuration button
+
+	// set the configuration button
 	eplusConfig = new JMenuItem(MENU_CONFIG);
 	eplusConfig.setMnemonic(KeyEvent.VK_C);
 	eplusConfig.setToolTipText(CONFIG_TIP);
-	//retrieve the property file
+	// retrieve the property file
 	String[] config = AnalyzerUtils.getEplusConfig();
 	eplusDir = new JTextField(config[0]);
 	weatherFile = new JTextField(config[1]);
@@ -191,13 +201,13 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		    simulationNumber = Integer.parseInt(simulationText
 			    .getText());
 		    core.setSimulationNumber(simulationNumber);
-		    
+
 		    try {
 			// initialize the file directories
-			
+
 			File eplusFile = new File(idfDirText.getText());
 			core.initializeModel(eplusFile);
-			
+
 			// after read set the simulaiton number of the model
 			// disable the JTextfield for simulation directory and
 			// simulation number
@@ -245,6 +255,11 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	analysisPanel = new AnalysisPanel(core);
 	analysisPanel.setBackground(Color.WHITE);
 	analysisBottomPanel = initializeAnalysisBottomPanel();
+
+	// Initialize the LCC panel
+	lccPanel = new LifeCycleCostPanel(core);
+	lccPanel.setBackground(Color.WHITE);
+	lccControlPanel = initialzeLccControlPanel();
 
 	// add menubar
 	settingMenuBar.add(setting);
@@ -314,10 +329,9 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	createIDFButton = new JButton("Create...");
 	createIDFButton.setEnabled(false);
 
-	analysisButton = new JButton("Analyze Results");
-	//analysisButton.setEnabled(false);
-	analysisButton.addActionListener(new ActionListener() {
-
+	variableToAnalysisButton = new JButton("Analyze Results");
+	// analysisButton.setEnabled(false);
+	variableToAnalysisButton.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		innerPanel.removeAll();
@@ -335,18 +349,32 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationButton = new JButton("Simulate...");
 	simulationButton.setEnabled(false);
 	simulationButton.addActionListener(new SimulationActionListener(frame,
-		core, analysisButton));
+		core, variableToAnalysisButton));
+
+	variableToLccButton = new JButton("Cost Analysis");
+	variableToLccButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		innerPanel.removeAll();
+		innerPanel.add(lccPanel, BorderLayout.CENTER);
+		innerPanel.add(lccControlPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
 
 	tempPanel.add(createIDFButton);
 	tempPanel.add(simulationButton);
-	tempPanel.add(analysisButton);
+	tempPanel.add(variableToLccButton);
+	tempPanel.add(variableToAnalysisButton);
 	return tempPanel;
     }
 
     private JPanel initializeAnalysisBottomPanel() {
 	JPanel temp = new JPanel();
-	variableButton = new JButton("Variable Setting");
-	variableButton.addActionListener(new ActionListener() {
+	analysisToVariableButton = new JButton("Variable Setting");
+	analysisToVariableButton.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
@@ -357,7 +385,68 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 		innerPanel.repaint();
 	    }
 	});
-	temp.add(variableButton);
+
+	analysisToLccButton = new JButton("Cost Analysis");
+	analysisToLccButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		innerPanel.add(lccPanel, BorderLayout.CENTER);
+		innerPanel.add(lccControlPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	temp.add(analysisToVariableButton);
+	temp.add(analysisToLccButton);
+	return temp;
+    }
+
+    private JPanel initialzeLccControlPanel() {
+	JPanel temp = new JPanel();
+	addButton = new JButton(ADD_TEXT);
+	addButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		core.addCurrentDataSetToIdf();
+	    }
+	});
+	
+	lccToAnalysisButton = new JButton("Analyze Results");
+	lccToAnalysisButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		if (!analysisFlag) {
+		    analysisPanel.generateGraph();
+		    analysisFlag = true;
+		}
+		innerPanel.add(analysisPanel, BorderLayout.CENTER);
+		innerPanel.add(analysisBottomPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	
+	lccToVariableButton = new JButton("Variable Setting");
+	lccToVariableButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		innerPanel.add(variablePane, BorderLayout.CENTER);
+		innerPanel.add(simulationPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	
+	temp.add(addButton);
+	temp.add(lccToVariableButton);
+	temp.add(lccToAnalysisButton);
 	return temp;
     }
 

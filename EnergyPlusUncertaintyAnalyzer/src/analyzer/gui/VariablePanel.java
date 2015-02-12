@@ -21,7 +21,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import analyzer.distributions.MakeDistributionModel;
 import analyzer.model.Model;
 import analyzer.recommender.Recommender;
 
@@ -39,37 +38,44 @@ public class VariablePanel extends JPanel {
     // variable selection panel
     private JPanel selectPanel;
     // contains the text field specify the number of simulations
-    //private JPanel simulationPanel;
+    // private JPanel simulationPanel;
 
     // all about the JList
-    //private final String VARIABLE_LABEL = "Variables";
+    // private final String VARIABLE_LABEL = "Variables";
     private JList<String> variablesList;
     private DefaultListModel<String> listModel;
     private JScrollPane listScroll;
     private boolean[] enabledFlags;
-    
+
     // the data retrieve from the model
     private ArrayList<String> variableList;
     private ArrayList<String> variableDescription;
-    private ArrayList<String[]>variableKeySets;
+    private ArrayList<String[]> variableKeySets;
 
     public VariablePanel(Model m) {
 	model = m;
 	recommender = new Recommender();
 	fittingPanel = new JPanel();
 	fittingPanel.setLayout(new CardLayout());
-	//eplusFile = file;
-	//parentFile = eplusFile.getParentFile();
-	initSelectionPanel();
+	variableList = new ArrayList<String>();
+	variableKeySets = new ArrayList<String[]>();
+	enabledFlags = new boolean[0];
+	selectPanel = initSelectionPanel();
 	initPanel();
+	
+	listModel = new DefaultListModel<String>();
+	variablesList = new JList(listModel);
+	variablesList.setFont(new Font("Helvetica", Font.BOLD, 20));
+	variablesList.setCellRenderer(new DiabledItemListCellRenderer());
     }
 
     public void changeVariables(ArrayList<String> vl, ArrayList<String[]> vk) {
+
 	variableList = vl;
 	variableDescription = new ArrayList<String>();
 	variableKeySets = vk;
 
-	//set the variable description for display
+	// set the variable description for display
 	for (String[] sList : variableKeySets) {
 	    StringBuffer sb = new StringBuffer("SETTINGS FOR: ");
 	    sb.append(sList[0]);
@@ -78,29 +84,30 @@ public class VariablePanel extends JPanel {
 	    variableDescription.add(sb.toString());
 	}
 
-	
-	//set all the variables enabled
-	enabledFlags = new boolean[variableList.size()];
+	// set all the variables enabled
 	// adding tabbedpanes and buttons to the panel
-	for (int i = 0; i < variableList.size(); i++) {
-	    enabledFlags[i]=true;
-	    //variable name
-	    String s = variableList.get(i);
-	    //variable des;
-	    String des = variableDescription.get(i);
-	    //variable object
-	    String o = variableKeySets.get(i)[0];
-	    //variable field
-	    String f = variableKeySets.get(i)[2];
-	    //variable unit
-	    String u = variableKeySets.get(i)[3];
-	    
-	    JTabbedPane vbtnTP = fitPanel(s, des,o,f,u);
-	    fittingPanel.add(vbtnTP, s);
+	int startIndex = enabledFlags.length;
 
+	System.out.println("This is start: " + startIndex);
+	System.out.println("This is variableSize: " + variableList.size());
+
+	for (int i = startIndex; i < variableList.size(); i++) {
+	    // variable name
+	    String s = variableList.get(i);
+	    // variable des;
+	    String des = variableDescription.get(i);
+	    // variable object
+	    String o = variableKeySets.get(i)[0];
+	    // variable field
+	    String f = variableKeySets.get(i)[2];
+	    // variable unit
+	    String u = variableKeySets.get(i)[3];
+
+	    JTabbedPane vbtnTP = fitPanel(s, des, o, f, u);
+	    fittingPanel.add(vbtnTP, s);
+	    
 	    listModel.addElement(s);
 	    variablesList.addListSelectionListener(new ListSelectionListener() {
-
 		@Override
 		public void valueChanged(ListSelectionEvent evt) {
 		    CardLayout cardLayout = (CardLayout) (fittingPanel
@@ -113,14 +120,48 @@ public class VariablePanel extends JPanel {
 		}
 	    });
 	}
-	// tabbedpanels
-	add(fittingPanel, BorderLayout.CENTER);
-	// revalidate();
-	// repaint();
+	fittingPanel.revalidate();
+	fittingPanel.repaint();
+	
+	//beining condition
+	if (enabledFlags.length == 0){
+	    enabledFlags = copyEnabledFlag();
+	    // tabbedpanels
+	    add(fittingPanel, BorderLayout.CENTER);
 
-	listScroll = new JScrollPane(variablesList);
-	selectPanel.add(listScroll, BorderLayout.CENTER);
+	    listScroll = new JScrollPane(variablesList);
+	    selectPanel.add(listScroll, BorderLayout.CENTER);
+	//varaibleList updated condition
+	} else if(enabledFlags.length != variableList.size()){
+	    //selectPanel = initSelectionPanel();
+	    enabledFlags = copyEnabledFlag();
+	    add(fittingPanel, BorderLayout.CENTER);
+	    //listScroll.remove(variablesList);
+	    variablesList.revalidate();
+	    variablesList.repaint();
+	    //selectPanel.add(listScroll, BorderLayout.CENTER);
 
+	//variableList hasn't updated condition
+	}else {
+	    //selectPanel = initSelectionPanel();
+	    //listScroll = new JScrollPane(variablesList);
+	    //selectPanel.add(listScroll, BorderLayout.CENTER);
+	}
+	revalidate();
+	repaint();
+    }
+
+    private boolean[] copyEnabledFlag() {
+	boolean[] temp = new boolean[variableList.size()];
+	for (int i = 0; i < temp.length; i++) {
+	    temp[i] = true;
+	}
+	if (temp.length > enabledFlags.length) {
+	    for (int i = 0; i < enabledFlags.length; i++) {
+		temp[i] = enabledFlags[i];
+	    }
+	}
+	return temp;
     }
 
     private void initPanel() {
@@ -129,57 +170,60 @@ public class VariablePanel extends JPanel {
 	add(fittingPanel, BorderLayout.CENTER);
     }
 
-    private void initSelectionPanel() {	
-	selectPanel = new JPanel(new BorderLayout());
-	
-	TitledBorder title = BorderFactory.createTitledBorder(
-		BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Variables");
-	title.setTitleJustification(TitledBorder.RIGHT);
-	selectPanel.setBorder(title);
+    private JPanel initSelectionPanel() {
+	JPanel temp = new JPanel(new BorderLayout());
 
-	listModel = new DefaultListModel<String>();
-	variablesList = new JList(listModel);
-	variablesList.setFont(new Font("Times New Roman Bold", Font.ITALIC, 20));
-	variablesList.setCellRenderer(new DiabledItemListCellRenderer());
+	TitledBorder title = BorderFactory.createTitledBorder(
+		BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+		"Variables");
+	title.setTitleJustification(TitledBorder.RIGHT);
+	temp.setBorder(title);
+
+	return temp;
     }
 
     // a JTabbedPane to represents two fitting method
     // once one pane is selected and inputs is complete
     // user can hit the done button to process the data
     // a inputs checking mechanism is required to be complete in the future
-    private JTabbedPane fitPanel(String variableName, String setting, String object, String input,String unit) {
+    private JTabbedPane fitPanel(String variableName, String setting,
+	    String object, String input, String unit) {
 	JTabbedPane tp = new JTabbedPane();
-	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,setting));// index
-									     // 0
-	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, recommender,variableName,setting,object,input,unit));// index
-									       // 1
+	tp.addTab(FIT_DIST_TITLE, new FitDistPanel(tp, model, variableName,
+		setting));// index
+	// 0
+	tp.addTab(MAKE_DIST_TITLE, new MakeDistPanel(tp, model, recommender,
+		variableName, setting, object, input, unit));// index
+	// 1
 	return tp;
     }
-    
-    //change the state of the flag
-    public void changeFlagState(String variable){
+
+    // change the state of the flag
+    public void changeFlagState(String variable) {
 	int index = variableList.indexOf(variable);
-	if(enabledFlags[index]==true){
+	if (enabledFlags[index] == true) {
 	    enabledFlags[index] = false;
-	}else{
+	} else {
 	    enabledFlags[index] = true;
 	}
     }
-    
-    //cell renderer overriding
-    private class DiabledItemListCellRenderer extends DefaultListCellRenderer{
+
+    // cell renderer overriding
+    private class DiabledItemListCellRenderer extends DefaultListCellRenderer {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
-	    Component comp = super.getListCellRendererComponent(list, value, index, false, false);
+	public Component getListCellRendererComponent(JList list, Object value,
+		int index, boolean isSelected, boolean cellHasFocus) {
+	    Component comp = super.getListCellRendererComponent(list, value,
+		    index, false, false);
 	    JComponent jc = (JComponent) comp;
-	    if(enabledFlags[index]){
-		if(isSelected & cellHasFocus){
+	    if (enabledFlags[index]) {
+		if (isSelected & cellHasFocus) {
 		    comp.setForeground(Color.BLACK);
 		    comp.setBackground(Color.RED);
 		    jc.setBorder(BorderFactory.createLoweredBevelBorder());
-		}else{
+		} else {
 		    comp.setForeground(Color.BLACK);
 		    jc.setBorder(BorderFactory.createRaisedBevelBorder());
 		}

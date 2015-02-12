@@ -157,6 +157,9 @@ public class Recommender {
 		root.add(findChildren(child, field));
 	    }
 	}
+	if(root.getUserObject()==null){
+	    return node;
+	}
 	return root;
     }
     
