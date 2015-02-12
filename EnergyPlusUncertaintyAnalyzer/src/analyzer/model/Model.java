@@ -3,6 +3,7 @@ package analyzer.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,7 @@ import analyzer.listeners.GraphGenerationListener;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.MakeDistGraphGeneratorListener;
 import analyzer.listeners.ModelDataListener;
+import analyzer.sensitivity.SensitivityAnalysis;
 
 /**
  * Distribution model
@@ -66,7 +68,17 @@ public class Model {
      */
     private RunEnergyPlus run;
     
+    /**
+     * fit distribution generator
+     */
     private RVGenerator generator;
+    
+    /**
+     * sensitivity analysis module
+     */
+    private SensitivityAnalysis sensitivity;
+    
+    
     /*
      * A data structure to save generated random variables from the model. The
      * size of the double[] array is equal to the simulaitonNumber. String
@@ -210,6 +222,17 @@ public class Model {
 	}
     }
     
+    public void initializeSenstivityAnalysis(){
+	ArrayList<String> variableList = idfData.getVariableList();
+	String[] vn = new String[variableList.size()];
+	for(int i=0; i<variableList.size(); i++){
+	    vn[i] = variableList.get(i);
+	}
+	sensitivity = new SensitivityAnalysis(vn,graphs.getResults(), randomVariableList,graphs.getMissingList());
+	double[] results = sensitivity.getCorrelation();
+	System.out.println(Arrays.toString(results));
+    }
+    
     public void writeIdfFile(File targetFolder){
 	for(int i = 0; i<simulationNumber; i++){
 	    writingFile(idfData.cloneIdfData(),i, targetFolder);
@@ -328,6 +351,7 @@ public class Model {
 	graphs.setResults();
 	onUpdatedHistoGraphGenerated(graphs.getHistogramCharts());
 	onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
+	initializeSenstivityAnalysis();
     }
     
     private void initializedGraphGenerator(){

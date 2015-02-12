@@ -34,12 +34,14 @@ public class SensitivityAnalysis {
 			HashMap<String, double[]> rv, ArrayList<Integer> m) {
 		// TODO Auto-generated constructor stub
 		variableName = vn;
+		correlation = new double[variableName.length];
 		result = r;
 		randVars = rv;
 		missingResults = m;
 		computeCorrelation();
 		sortCorrelation();
 	}
+	
 
 	/**
 	 * compute correlation for each variable with respect to the result
@@ -51,6 +53,11 @@ public class SensitivityAnalysis {
 
 			SpearmansCorrelation sc = new SpearmansCorrelation();
 			assert rv.length == result.length;
+			
+			for(int j=0; j<result.length; j++){
+			    System.out.println(result[j]+" "+rv[j]);
+			}
+			
 			correlation[i] = sc.correlation(rv, result);
 		}
 	}
@@ -94,7 +101,7 @@ public class SensitivityAnalysis {
 			double tempCorrelation = correlation[i];
 			String tempVariable = variableName[i];
 			int j = i;
-			while (j > 0 & correlation[j - 1] < tempCorrelation) {
+			while (j > 0 && correlation[j - 1] < tempCorrelation) {
 				correlation[j] = correlation[j - 1];
 				variableName[j] = variableName[j - 1];
 				j = j - 1;

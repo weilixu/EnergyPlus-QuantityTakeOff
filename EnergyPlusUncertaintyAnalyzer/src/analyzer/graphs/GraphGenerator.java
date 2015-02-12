@@ -21,6 +21,9 @@ public class GraphGenerator {
      */
     private final File resultFolder;
     private final AnalyzeResult resultAnalyzer;
+    
+    
+    private double[] histoData;
 
     /*
      * set the parameters required for this graph generation
@@ -83,6 +86,14 @@ public class GraphGenerator {
 	isSized = s;
 	resultAnalyzer.setSized(isSized);
     }
+    
+    public double[] getResults(){
+	return histoData;
+    }
+    
+    public ArrayList<Integer> getMissingList(){
+	return resultAnalyzer.getMissing();
+    }
 
     /**
      * generate time series charts
@@ -109,7 +120,6 @@ public class GraphGenerator {
 	    }
 
 	    String currentVariable = resultAnalyzer.getVariable(i);
-	    System.out.println(currentVariable);
 	    String title = "Mean " + currentVariable + " with "
 		    + (CONFIDENCE_INTERVAL * 100) + "% CI";
 
@@ -127,12 +137,12 @@ public class GraphGenerator {
      */
     public List<ChartPanel> getHistogramCharts() {
 	for (int i = 0; i < numGraph; i++) {
-	    double[] data = resultAnalyzer.getHistogramData(i);
+	    histoData = resultAnalyzer.getHistogramData(i);
 
 	    String currentVariable = resultAnalyzer.getVariable(i);
 	    String title = "Distribution of " + currentVariable;
 
-	    PlotHistogram histogramGraph = new PlotHistogram(title, unit,data);
+	    PlotHistogram histogramGraph = new PlotHistogram(title, unit,histoData);
 	    histoCharts.add(histogramGraph.createPanel());
 	}
 	return histoCharts;
