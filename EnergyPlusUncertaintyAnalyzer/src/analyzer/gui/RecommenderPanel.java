@@ -110,6 +110,7 @@ public class RecommenderPanel extends JPanel implements TreeSelectionListener {
 //	if (current.getParent() == null) {
 //	    return sb.append("");
 //	}
+	
 	if(current == null){
 	    return sb.append("");
 	}

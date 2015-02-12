@@ -166,12 +166,8 @@ public class MakeDistPanel extends JPanel {
 	displayPanel = new MakeDistDisplayPanel(model, variableName, unit);
 	add(displayPanel, BorderLayout.CENTER);
 
-	try {
-	    recommendPanel = new RecommenderPanel(recommender.getPartialTree(
+	recommendPanel = new RecommenderPanel(recommender.getPartialTree(
 		    object, input));
-	} catch (NullPointerException e) {
-	    recommendPanel = new RecommenderPanel(recommender.getTree());
-	}
 	add(recommendPanel, BorderLayout.LINE_START);
     }
 

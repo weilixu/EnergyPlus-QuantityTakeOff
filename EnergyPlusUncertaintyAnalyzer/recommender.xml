@@ -951,25 +951,25 @@
             </service>
         </LPD>
         <fractionRadiant field="Fraction Radiant" unit="fraction" notes="split by luminaire category">
-            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.25;Lower: 0.37</distributionParameters>
                 <minimum>0.25</minimum>
                 <maximum>0.37</maximum>
             </recessedFluorescentNoLens>
-            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.22;Lower: 0.28</distributionParameters>
                 <minimum>0.22</minimum>
                 <maximum>0.28</maximum>
             </recessedFluorescentWithLens>
-            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.30;Lower: 0.40</distributionParameters>
                 <minimum>0.30</minimum>
                 <maximum>0.40</maximum>
             </downlightCompact>
-            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.10;Lower: 0.15</distributionParameters>
                 <minimum>0.10</minimum>
@@ -977,25 +977,25 @@
             </downlightIncandescent>
         </fractionRadiant>
         <fractionVisible field="Fraction Visible" unit="fraction" notes="split by luminaire category">
-            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <recessedFluorescentNoLens description="Recessed fluorescent luminair without lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.23;Lower: 0.31</distributionParameters>
                 <minimum>0.23</minimum>
                 <maximum>0.31</maximum>
             </recessedFluorescentNoLens>
-            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <recessedFluorescentWithLens description="Recessed fluorescent luminair with lens" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.39;Lower: 0.45</distributionParameters>
                 <minimum>0.39</minimum>
                 <maximum>0.45</maximum>
             </recessedFluorescentWithLens>
-            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <downlightCompact description="Downlight compact fluorescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.60;Lower: 0.70</distributionParameters>
                 <minimum>0.60</minimum>
                 <maximum>0.70</maximum>
             </downlightCompact>
-            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324.">
+            <downlightIncandescent description="Downlight incandescent luminaire" reference="Chantrasrisalai,C., Fisher,D.E. (2007). Lighting heat gain parameters: Experimental results (RP-1282). HVACR, 13(2), 305-324." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 0.85;Lower: 0.90</distributionParameters>
                 <minimum>0.85</minimum>
@@ -1004,14 +1004,14 @@
         </fractionVisible>
     </Lights>
     <ElectricEquipment object="ElectricEquipment">
-        <EPD field="Watts per Zone Floor Area" unit="W/m2">
-            <office description="Office equipemnt load factor" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+        <EPD field="Watts per Zone Floor Area" unit="W/m2" notes ="">
+            <office description="Office equipemnt load factor" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 4.7;Lower: 11.6</distributionParameters>
                 <minimum>4.7</minimum>
                 <maximum>11.6</maximum>
             </office>
-            <highlyAutomatedLab description="Highly automated laboratories" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc.">
+            <highlyAutomatedLab description="Highly automated laboratories" reference="ASHRAE Handbook.(2009). Fundamentals. Atlanta, GA: American Society of Heating, Refrigerating and Air-Conditioning Engineers, Inc." notes=" ">
                 <distributionName>Uniform</distributionName>
                 <distributionParameters>Upper: 50.0;Lower: 270.0</distributionParameters>
                 <minimum>50.0</minimum>
@@ -1019,6 +1019,28 @@
             </highlyAutomatedLab>
         </EPD>
     </ElectricEquipment>
+    <LifecyclecostParam object="LifeCycleCost:Parameters">
+        <DiscountRate field="Nominal Discount Rate" unit=" " notes=" ">
+            <usgov description="US Government Recommended Rates for 20+ year" reference="Circular A94 Appendix C (2014) Office of Management and Budget and NISTIR85-3273-29 Department of Commerce" notes="Minimum is based on DOE interest rate and Maximum is based on OMB interest rate">
+                <distributionName>Uniform</distributionName>
+                <distributionParameters>Upper: 3.4;Lower: 3.0</distributionParameters>
+                <minimum>3.0</minimum>
+                <maximum>3.4</maximum>
+            </usgov>
+            <creditrate description="US Corporate Non-Financials Yield by credit rating and maturity 2015 for 10+ year project" reference="BondDeskGroup LLC Yield Matrix" notes="minimum and maximum value is determined from data set">
+                <distributionName>Uniform</distributionName>
+                <distributionParameters>Upper: 6.90;Lower: 3.60</distributionParameters>
+                <minimum>3.60</minimum>
+                <maximum>6.90</maximum>
+            </creditrate>
+            <ustreasury description="US Department of The Treasury 2014 Treasury-20 Yr CMT" reference="U.S. Department of The Treasury" notes="minimum and maximum value is determined from data set">
+                <distributionName>Normal</distributionName>
+                <distributionParameters>Mean: 3.0726;Standard Deviation: 0.2819</distributionParameters>
+                <minimum>2.4</minimum>
+                <maximum>3.69</maximum>
+            </ustreasury>
+        </DiscountRate>
+    </LifecyclecostParam>
 </recommender>
 
 

@@ -98,6 +98,7 @@ public class Recommender {
 	Iterator<Element> iterator = children.iterator();
 	while (iterator.hasNext()) {
 	    Element otherLevel = iterator.next();
+	    //System.out.println(otherLevel.getName());
 	    DefaultMutableTreeNode otherNode = new DefaultMutableTreeNode();
 	    // passing the middle node, has only description
 	    if (otherLevel.getAttributes().size() == 1) {
@@ -107,6 +108,7 @@ public class Recommender {
 		buildOthers(otherLevel,otherNode);
 		// find the leaf node (not include distribution...)
 	    } else if (otherLevel.getAttributes().size() == 3) {
+
 		String description = otherLevel
 			.getAttributeValue("description");
 		String reference = otherLevel.getAttributeValue("reference");
@@ -117,7 +119,7 @@ public class Recommender {
 			.getChildText("distributionParameters");
 		String min = otherLevel.getChildText("minimum");
 		String max = otherLevel.getChildText("maximum");
-
+		
 		LeafProperty lp = new LeafProperty(description, reference,
 			notes, distributionName, distributionParam, min, max);
 		otherNode.setUserObject(lp);
@@ -173,8 +175,9 @@ public class Recommender {
 	    FieldProperty fp = (FieldProperty) temp.getUserObject();
 	    if(fp.getField().equals(field)){
 		children.setUserObject(fp);
-		for(int j=0; j<temp.getChildCount(); j++){
-		    children.add((DefaultMutableTreeNode)temp.getChildAt(j));
+		while(temp.getChildCount()>0){
+		    DefaultMutableTreeNode tempNode = (DefaultMutableTreeNode) temp.getChildAt(0);
+		    children.add(tempNode);
 		}
 	    }
 	}

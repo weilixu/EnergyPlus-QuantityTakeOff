@@ -45,7 +45,7 @@ public class LifeCycleCostPanel extends JPanel implements TreeSelectionListener 
     private final JScrollPane editorView;
 
     private final JSplitPane splitPane;
-    
+
     public LifeCycleCostPanel(Model m) {
 	super(new BorderLayout());
 	model = m;
@@ -115,6 +115,7 @@ public class LifeCycleCostPanel extends JPanel implements TreeSelectionListener 
 	    ArrayList<FieldElement> fields = object.getFieldList();
 	    String[] columnNames = { "Field", "Inputs", "Minimum", "Maximum" };
 	    Object[][] data = new Object[fields.size()][4];
+	    JTable table = null;
 	    if (object.getReference().equals("Template")) {
 		for (int i = 0; i < fields.size(); i++) {
 		    data[i][0] = fields.get(i).getDescription();
@@ -132,51 +133,21 @@ public class LifeCycleCostPanel extends JPanel implements TreeSelectionListener 
 			data[i][1] = fields.get(i).getType();
 		    }
 		}
+		table = createFalseEnabledTable(data, columnNames);
 	    } else {
 		for (int i = 0; i < fields.size(); i++) {
 		    data[i][0] = fields.get(i).getDescription();
 		    data[i][1] = fields.get(i).getValue();
 		}
+		table = createTrueEnabledTable(data, columnNames, dataSet,
+			fields);
 	    }
 
-	    JTable table = new JTable(data, columnNames) {
-		@Override
-		public TableCellEditor getCellEditor(int row, int column) {
-		    Object value = super.getValueAt(row, column);
-		    if (value != null) {
-			if (value instanceof JComboBox) {
-			    return new DefaultCellEditor((JComboBox) value);
-			}
-			return getDefaultEditor(value.getClass());
-		    }
-		    return super.getCellEditor(row, column);
-		}
-	    };
-
-	    table.getModel().addTableModelListener(new TableModelListener() {
-
-		@Override
-		public void tableChanged(TableModelEvent e) {
-		    // grab the changes
-		    int col = e.getColumn();
-		    int row = e.getLastRow();
-		    String value = (String) table.getValueAt(row, col);
-		    FieldElement temp = fields.get(row);
-		    temp.setValue(value);
-		    // update the current dataSet
-		    model.setCurrentDataset(dataSet);
-		}
-	    });
-
-	    table.getColumnModel().getColumn(1)
-		    .setCellRenderer(new DefaultTableCellRenderer());
-	    table.setAlignmentY(Component.TOP_ALIGNMENT);
 	    JScrollPane scrollPane = new JScrollPane(table);
-
 	    tempPanel.add(scrollPane, BorderLayout.CENTER);
+
 	    tablePanel.add(tempPanel);
 	    tablePanel.setBackground(Color.WHITE);
-
 	}
 
 	editorPanel.add(tablePanel, BorderLayout.CENTER);
@@ -185,4 +156,62 @@ public class LifeCycleCostPanel extends JPanel implements TreeSelectionListener 
 	editorPanel.repaint();
     }
 
+    private JTable createFalseEnabledTable(Object[][] data, String[] columnNames) {
+	JTable table = new JTable(data, columnNames) {
+	    @Override
+	    public TableCellEditor getCellEditor(int row, int column) {
+		Object value = super.getValueAt(row, column);
+		if (value != null) {
+		    if (value instanceof JComboBox) {
+			return new DefaultCellEditor((JComboBox) value);
+		    }
+		    return getDefaultEditor(value.getClass());
+		}
+		return super.getCellEditor(row, column);
+	    }
+	};
+
+	table.getColumnModel().getColumn(1)
+		.setCellRenderer(new DefaultTableCellRenderer());
+	table.setEnabled(false);
+	return table;
+    }
+
+    private JTable createTrueEnabledTable(Object[][] data,
+	    String[] columnNames, DataObjects dataSet,
+	    ArrayList<FieldElement> fields) {
+	JTable table = new JTable(data, columnNames) {
+	    @Override
+	    public TableCellEditor getCellEditor(int row, int column) {
+		Object value = super.getValueAt(row, column);
+		if (value != null) {
+		    if (value instanceof JComboBox) {
+			return new DefaultCellEditor((JComboBox) value);
+		    }
+		    return getDefaultEditor(value.getClass());
+		}
+		return super.getCellEditor(row, column);
+	    }
+	};
+
+	table.getModel().addTableModelListener(new TableModelListener() {
+
+	    @Override
+	    public void tableChanged(TableModelEvent e) {
+		// grab the changes
+		int col = e.getColumn();
+		int row = e.getLastRow();
+		String value = (String) table.getValueAt(row, col);
+		FieldElement temp = fields.get(row);
+		temp.setValue(value);
+		// update the current dataSet
+		model.setCurrentDataset(dataSet);
+	    }
+	});
+
+	table.getColumnModel().getColumn(1)
+		.setCellRenderer(new DefaultTableCellRenderer());
+	return table;
+
+    }
 }
