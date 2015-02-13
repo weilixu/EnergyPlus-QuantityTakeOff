@@ -22,7 +22,6 @@ public class Recommender {
     public Recommender() {
 	builder = new SAXBuilder();
 	recommendation = new File(FILE_NAME);
-	node = new DefaultMutableTreeNode("Recommender");
 
 	try {
 	    document = (Document) builder.build(recommendation);
@@ -36,6 +35,7 @@ public class Recommender {
      * Building the XML tree for the display purpose
      */
     private void recommenderBuilder() {
+	node = new DefaultMutableTreeNode("Recommender");
 	Element root = document.getRootElement();
 	builderHelper(root, node);
     }
@@ -142,7 +142,7 @@ public class Recommender {
      * retrieve a partial tree at object information level (2nd level)
      * 
      * @param object
-     * @param info
+     * @param infos
      * @return
      */
     public DefaultMutableTreeNode getPartialTree(String object, String field) {
@@ -159,8 +159,11 @@ public class Recommender {
 		root.add(findChildren(child, field));
 	    }
 	}
+	
+	recommenderBuilder();
+	
 	if(root.getUserObject()==null){
-	    return node;
+	    return new DefaultMutableTreeNode(new LeafProperty("None","","","","","",""));
 	}
 	return root;
     }

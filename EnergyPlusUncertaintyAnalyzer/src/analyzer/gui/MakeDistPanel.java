@@ -168,6 +168,7 @@ public class MakeDistPanel extends JPanel {
 
 	recommendPanel = new RecommenderPanel(recommender.getPartialTree(
 		    object, input));
+	
 	add(recommendPanel, BorderLayout.LINE_START);
     }
 

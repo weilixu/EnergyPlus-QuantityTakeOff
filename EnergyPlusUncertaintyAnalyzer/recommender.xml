@@ -1278,7 +1278,7 @@
                     <minimum>12</minimum>
                     <maximum>52</maximum>   
                 </ahu1>
-                </ahu2 description="Air handling unit, variable air volume" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                <ahu2 description="Air handling unit, variable air volume" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
                     <distributionName>Normal</distributionName>
                     <distributionParameters>Mean: 28;Standard Deviation: 12</distributionParameters>
                     <minimum>12</minimum>
@@ -1288,7 +1288,7 @@
                     <distributionName>Normal</distributionName>
                     <distributionParameters>Mean: 36;Standard Deviation: 24</distributionParameters>
                     <minimum>4</minimum>
-                    <maximum>65</maximum>   
+                    <maximum>65</maximum>
                 </fancoil>
                 <dx1 description="Packaged DX unit, rooftop" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
                     <distributionName>Normal</distributionName>

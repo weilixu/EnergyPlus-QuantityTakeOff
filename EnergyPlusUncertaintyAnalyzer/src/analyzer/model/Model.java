@@ -19,16 +19,20 @@ import analyzer.eplus.EnergyPlusFilesGenerator;
 import analyzer.eplus.IdfReader;
 import analyzer.eplus.RunEnergyPlus;
 import analyzer.graphs.GraphGenerator;
+import analyzer.htmlparser.BuildingAreaParser;
 import analyzer.lifecyclecost.DataObjects;
 import analyzer.lifecyclecost.FieldElement;
 import analyzer.lifecyclecost.LifeCycleCostModel;
 import analyzer.lifecyclecost.TemplateObject;
+import analyzer.lifecyclecost.squaremeterestimation.BuildingType;
+import analyzer.lifecyclecost.squaremeterestimation.SquareMeterModel;
 import analyzer.listeners.DistGenerationListeners;
 import analyzer.listeners.FitDistListeners;
 import analyzer.listeners.GraphGenerationListener;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.MakeDistGraphGeneratorListener;
 import analyzer.listeners.ModelDataListener;
+import analyzer.listeners.SquareMeterCostModelListener;
 import analyzer.sensitivity.SensitivityAnalysis;
 
 /**
@@ -41,6 +45,9 @@ public class Model {
     // Strings for the file names
     private final String DIST_NAME = "DIST_";
     private final String IMAGE_POST = ".jpg";
+    
+    //total cost simulation number
+    private static final int totalCostSimulationNumber=1000;
 
     private String variableName;
 
@@ -88,6 +95,17 @@ public class Model {
      * Life cycle cost module
      */
     private LifeCycleCostModel lccModel;
+    
+    /**
+     * Square meter cost estimation model
+     */
+    private SquareMeterModel squaremeterModel;
+    
+    /**
+     * Building area html parser
+     */
+    private BuildingAreaParser buildingArea;
+
 
     /*
      * A data structure to save generated random variables from the model. The
@@ -95,6 +113,8 @@ public class Model {
      * stands for the variableName
      */
     private static HashMap<String, double[]> randomVariableList = new HashMap<String, double[]>();
+    private HashMap<String, double[]> squareCostDataMap;
+
     private String distSummary;
     //to record the add-on modules
     private DataObjects currentDataSet;
@@ -114,12 +134,15 @@ public class Model {
     private List<MakeDistGraphGeneratorListener> mdGraphs;
     // listen to the graph generator
     private List<GraphGenerationListener> graphListeners;
+    // listen to the square meter generator
+    private List<SquareMeterCostModelListener> costModelListeners;
 
     public Model() {
 	idfData = new IdfReader();
 	run = new RunEnergyPlus();
 	generator = new RVGenerator();
 	lccModel = new LifeCycleCostModel();
+	squaremeterModel = new SquareMeterModel();
 
 	makeDistModel = new MakeDistributionModel();
 	loadIDFListeners = new ArrayList<LoadIdfListeners>();
@@ -128,6 +151,7 @@ public class Model {
 	fitDistListeners = new ArrayList<FitDistListeners>();
 	mdGraphs = new ArrayList<MakeDistGraphGeneratorListener>();
 	graphListeners = new ArrayList<GraphGenerationListener>();
+	costModelListeners = new ArrayList<SquareMeterCostModelListener>();
 
 	distSummary = "";
     }
@@ -171,6 +195,10 @@ public class Model {
      */
     public void addGraphGenerationListener(GraphGenerationListener g) {
 	graphListeners.add(g);
+    }
+    
+    public void addCostModelListener(SquareMeterCostModelListener ml){
+	costModelListeners.add(ml);
     }
     
     /**
@@ -352,6 +380,19 @@ public class Model {
 	onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
 	//initializeSenstivityAnalysis();
     }
+    
+    public void generateTotalCost(BuildingType t){
+	// initialize the html file
+	String resultPath = resultFile.getAbsoluteFile()+"//0Table.html";
+	File html = new File(resultPath);
+	buildingArea = new BuildingAreaParser(html);
+
+	squaremeterModel.setBuildingSize(buildingArea.getBuildingArea());
+	squaremeterModel.setSimulationNumber(totalCostSimulationNumber);
+	squaremeterModel.setBuildingType(t);
+	squareCostDataMap = squaremeterModel.generateSamples();
+	onUpdatedCostDataMap();
+    }
 
     /**
      * Below are all utility method that be called within this class for
@@ -475,6 +516,12 @@ public class Model {
     private void onUpdatedHistoGraphGenerated(List<ChartPanel> histoCharts) {
 	for (GraphGenerationListener g : graphListeners) {
 	    g.histogramGraphGenerated(histoCharts);
+	}
+    }
+    
+    private void onUpdatedCostDataMap(){
+	for(SquareMeterCostModelListener ml: costModelListeners){
+	    ml.costInfoUpdated(squareCostDataMap);
 	}
     }
 

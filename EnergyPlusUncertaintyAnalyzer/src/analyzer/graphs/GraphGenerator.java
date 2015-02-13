@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import analyzer.htmlparser.BuildingAreaParser;
 import analyzer.listeners.GraphGenerationListener;
 
 import org.jfree.chart.ChartPanel;
@@ -39,6 +40,7 @@ public class GraphGenerator {
     public GraphGenerator(File rf, int num, String y) {
 	// take in variables
 	resultFolder = rf;
+	
 	numSimulation = num;
 
 	// set-up the resultAnalyzer model
