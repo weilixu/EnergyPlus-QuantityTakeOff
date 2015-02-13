@@ -1041,6 +1041,270 @@
             </ustreasury>
         </DiscountRate>
     </LifecyclecostParam>
+    <Lifecyclerecur object="LifeCycleCost:RecurringCosts">
+        <cost field="Cost" unit="$/m2" notes="Use this values for caution since the unit is in $/m2">
+            <office description="Office">
+                <general description="General Office" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.9;Standard Deviation: 6.4</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>75.9</maximum>
+                </general>
+                <area1 description="0m2 to 10,000m2" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.05;Standard Deviation: 2.49</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>11.59</maximum>
+                </area1>
+                <area2 description="10,000m2 to 23,000m2" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 6.46;Standard Deviation: 10.29</distributionParameters>
+                    <minimum>0.91</minimum>
+                    <maximum>75.86</maximum>
+                </area2>
+                <area3 description="23,000m2 to 46,000m2" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.4;Standard Deviation: 2.00</distributionParameters>
+                    <minimum>1.25</minimum>
+                    <maximum>10.01</maximum>
+                </area3>
+                <area4 description="46,000m2 to 93,000m2" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 3.5;Standard Deviation: 2.71</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>10.65</maximum>
+                </area4>
+                <year1 description="1969 and earlier" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 5.25;Standard Deviation: 3.62</distributionParameters>
+                    <minimum>0.75</minimum>
+                    <maximum>15.45</maximum> 
+                </year1>
+                <year2 description="1970 to 1979" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.09;Standard Deviation: 3.02</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>11.16</maximum> 
+                </year2>
+                <year3 description="1980 to 1989" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 5.27;Standard Deviation: 7.97</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>75.86</maximum> 
+                </year3>
+                <year4 description="1990 to 1999" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.15;Standard Deviation: 2.38</distributionParameters>
+                    <minimum>0.65</minimum>
+                    <maximum>9.81</maximum> 
+                </year4>
+                <year5 description="2000 to 2007" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 3.75;Standard Deviation: 4.04</distributionParameters>
+                    <minimum>1.04</minimum>
+                    <maximum>11.79</maximum> 
+                </year5>
+                <height1 description="2 or less" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 3.76;Standard Deviation: 2.57</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>11.6</maximum> 
+                </height1>
+                <height2 description="3 to 5" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 7.18;Standard Deviation: 14.16</distributionParameters>
+                    <minimum>1.18</minimum>
+                    <maximum>75.86</maximum> 
+                </height2>
+                <height3 description="6 to 10" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.73;Standard Deviation: 2.52</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>11.79</maximum> 
+                </height3>
+                <height4 description="11 to 20" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 5.20;Standard Deviation: 2.91</distributionParameters>
+                    <minimum>1.66</minimum>
+                    <maximum>15.46</maximum> 
+                </height4>
+                <height5 description="20 or more" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 3.79;Standard Deviation: 2.22</distributionParameters>
+                    <minimum>1.04</minimum>
+                    <maximum>10.66</maximum> 
+                </height5>
+                <bomaa description="BOMA Class A" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 5.38;Standard Deviation: 7.47</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>75.86</maximum> 
+                </bomaa>
+                <bomab description="BOMA Class B" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.54;Standard Deviation: 2.12</distributionParameters>
+                    <minimum>1.25</minimum>
+                    <maximum>9.80</maximum> 
+                </bomab>
+                <bomac description="BOMA Class C" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 6.92;Standard Deviation: 7.42</distributionParameters>
+                    <minimum>2.12</minimum>
+                    <maximum>15.46</maximum> 
+                </bomac>
+                <location1 description="Downtown" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 4.82;Standard Deviation: 3.34</distributionParameters>
+                    <minimum>0.91</minimum>
+                    <maximum>15.45</maximum> 
+                </location1>
+                <location2 description="Suburban" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 5.38;Standard Deviation: 7.50</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>75.86</maximum> 
+                </location2>
+            </office>
+            <retail description="Retail">
+                <general description="General Retail" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 1.21;Standard Deviation: 1.18</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>4.4</maximum>
+                </general>
+                <area1 description="0m2 to 10,000m2" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 1.16;Standard Deviation: 1.19</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>4.4</maximum>
+                </area1>
+                <year1 description="1969 and earlier" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 1.36;Standard Deviation: 0.38</distributionParameters>
+                    <minimum>1.12</minimum>
+                    <maximum>1.94</maximum> 
+                </year1>
+                <year2 description="1970 to 1979" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 0.97;Standard Deviation: 0.88</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>1.72</maximum> 
+                </year2>
+                <year3 description="1980 to 1989" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 1.3;Standard Deviation: 0.17</distributionParameters>
+                    <minimum>1.18</minimum>
+                    <maximum>1.42</maximum> 
+                </year3>
+                <year4 description="1990 to 1999" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 1.79;Standard Deviation: 1.90</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>4.4</maximum> 
+                </year4>
+                <year5 description="2000 to 2007" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 0.04;Standard Deviation: 0.05</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>0.07</maximum> 
+                </year5>
+                <height1 description="2 or less" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 1.22;Standard Deviation: 1.10</distributionParameters>
+                    <minimum>0.0</minimum>
+                    <maximum>4.4</maximum> 
+                </height1>
+            </retail>
+        </cost>
+    </Lifecyclerecur>
+    <Lifecyclenonrecur object="LifeCycleCost:NonrecurringCost">
+        <yearfromstart field="Years from Start" unit="Year" notes="0 to 100">
+            <cooling description="Cooling Equipment">
+                <chiller1 description="Chiller, centrifugal" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 25;Standard Deviation: 7</distributionParameters>
+                    <minimum>7</minimum>
+                    <maximum>42</maximum>                    
+                </chiller1>
+                <dist description="District Cooling" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 36;Standard Deviation: 22</distributionParameters>
+                    <minimum>20</minimum>
+                    <maximum>52</maximum>  
+                </dist>
+                <hx description="Heat exchanger, ground water, aquifers" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 32;Standard Deviation: 28</distributionParameters>
+                    <minimum>8</minimum>
+                    <maximum>88</maximum>  
+                </hx>
+                <hx2 description="Heat exchanger, vertical bore" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 27;Standard Deviation: 14</distributionParameters>
+                    <minimum>4</minimum>
+                    <maximum>69</maximum>  
+                </hx2>
+                <other description="Other cooling equipment" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 20;Standard Deviation: 5</distributionParameters>
+                    <minimum>16</minimum>
+                    <maximum>25</maximum>                   
+                </other>
+            </cooling>
+            <heating description="Heating Equipment">
+                <boiler1 description="Boiler, steel water-tube, forced draft, hot water" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 22;Standard Deviation: 9</distributionParameters>
+                    <minimum>10</minimum>
+                    <maximum>33</maximum>                      
+                </boiler1>
+                <boiler1 description="Boiler, steel water-tube, natural draft, hot water" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 18;Standard Deviation: 5</distributionParameters>
+                    <minimum>11</minimum>
+                    <maximum>23</maximum>                      
+                </boiler1>
+                <other description="Other heating equipment" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 23;Standard Deviation: 8</distributionParameters>
+                    <minimum>16</minimum>
+                    <maximum>34</maximum>                   
+                </other>
+            </heating>
+            <airdist description="Air Distribution">
+                <ahu1 description="Air handling unit, constant volume" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 35;Standard Deviation: 20</distributionParameters>
+                    <minimum>12</minimum>
+                    <maximum>52</maximum>   
+                </ahu1>
+                </ahu2 description="Air handling unit, variable air volume" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 28;Standard Deviation: 12</distributionParameters>
+                    <minimum>12</minimum>
+                    <maximum>64</maximum>   
+                </ahu2>
+                <fancoil description="Fan coil Unit" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 36;Standard Deviation: 24</distributionParameters>
+                    <minimum>4</minimum>
+                    <maximum>65</maximum>   
+                </fancoil>
+                <dx1 description="Packaged DX unit, rooftop" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 21;Standard Deviation: 5</distributionParameters>
+                    <minimum>14</minimum>
+                    <maximum>27</maximum>   
+                </dx1>
+                <other description="Other air distribution equipment" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
+                    <distributionName>Normal</distributionName>
+                    <distributionParameters>Mean: 20;Standard Deviation: 6</distributionParameters>
+                    <minimum>16</minimum>
+                    <maximum>25</maximum>   
+                </other>
+            </airdist>
+        </yearfromstart>
+    </Lifecyclenonrecur>
 </recommender>
 
 
