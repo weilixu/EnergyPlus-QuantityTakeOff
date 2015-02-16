@@ -19,11 +19,15 @@ public final class AnalyzerUtils {
     private static final String EPLUS_DIR = "eplusconfig.directory";
     private static final String EPLUS_WEA = "eplusconfig.weather";
     private static final String EPLUS_PROC = "eplusconfig.processors";
+    private static final String EPLUS_FILE_DIR= "eplusconfig.filedir";
+    private static final String EPLUS_SIM="eplusconfig.simulation";
     
     
     private static String eplusDir = null;
     private static String eplusWea = null;
     private static String eplusProc = null;
+    private static String eplusFile = null;
+    private static String eplusSim = null;
     
     private static Properties eplusProps;
     
@@ -35,6 +39,8 @@ public final class AnalyzerUtils {
 	String tempDir = eplusDir;
 	String tempWea = eplusWea;
 	String tempProc = eplusProc;
+	String tempFile = eplusFile;
+	String tempSim = eplusSim;
 	try{
 	    eplusProps = new Properties();
 	    FileInputStream eplusIn = new FileInputStream(CONFIG_PROPERTIES);
@@ -45,11 +51,15 @@ public final class AnalyzerUtils {
 	    eplusDir = eplusProps.getProperty(EPLUS_DIR);
 	    eplusWea = eplusProps.getProperty(EPLUS_WEA);
 	    eplusProc = eplusProps.getProperty(EPLUS_PROC);
+	    eplusFile = eplusProps.getProperty(EPLUS_FILE_DIR);
+	    eplusSim = eplusProps.getProperty(EPLUS_SIM);
 	    
 	}catch(Exception e){
 	    eplusDir = tempDir;
 	    eplusWea = tempWea;
 	    eplusProc = tempProc;
+	    eplusFile = tempFile;
+	    eplusSim = tempSim;
 	}
     }
     
@@ -70,6 +80,22 @@ public final class AnalyzerUtils {
 	eplusProps.setProperty(EPLUS_PROC, proc);
     }
     
+    public static String getEplusFileDir(){
+	return eplusFile;
+    }
+    
+    public static void setEplusFileDir(String dir){
+	eplusProps.setProperty(EPLUS_FILE_DIR, dir);
+    }
+    
+    public static String getEplusSimulation(){
+	return eplusSim;
+    }
+    
+    public static void setEplusSimulation(String sim){
+	eplusProps.setProperty(EPLUS_SIM, sim);
+    }
+    
     public static void writeProperties(){
 	File file = new File("eplusconfig.properties");
 	FileOutputStream fOut;
@@ -83,5 +109,4 @@ public final class AnalyzerUtils {
 	    e.printStackTrace();
 	}
     }
-
 }

@@ -31,7 +31,7 @@ import analyzer.model.Model;
 public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	ModelDataListener {
 
-    private final String DEFAULT_TITLE = "EnergyPlus Uncertainty Analyzer";
+    private final String DEFAULT_TITLE = "EnergyPlus Uncertainty Analyzer Beta Version";
 
     /*
      * All the models
@@ -198,15 +198,21 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    public void actionPerformed(ActionEvent event) {
 		Integer simulationNumber = null;
 		try {
-		    simulationNumber = Integer.parseInt(simulationText
-			    .getText());
+		    //get the simulation number
+		    String text = simulationText.getText();
+		    simulationNumber = Integer.parseInt(text);
+		    //sets the property file
+		    AnalyzerUtils.setEplusSimulation(text);
+		    
 		    core.setSimulationNumber(simulationNumber);
 
 		    try {
 			// initialize the file directories
-
-			File eplusFile = new File(idfDirText.getText());
+			String filePath = idfDirText.getText();
+			File eplusFile = new File(filePath);
 			core.initializeModel(eplusFile);
+			//write it back to property file
+			AnalyzerUtils.setEplusFileDir(filePath);
 
 			// after read set the simulaiton number of the model
 			// disable the JTextfield for simulation directory and
@@ -218,6 +224,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 					core, createIDFButton));
 			simulationText.setEnabled(false);
 			idfDirText.setEnabled(false);
+			//write back to property file
+			AnalyzerUtils.writeProperties();
 		    } catch (IOException e) {
 			showErrorDialog(frame, "Cannot Load Idf File",
 				"Please check your directory!");
@@ -301,7 +309,9 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private JPanel initInputPanel() {
 	JPanel tempPanel = new JPanel();
-	simulationText = new JTextField("Number of Simulation (>=1)");
+	String simulation = AnalyzerUtils.getEplusSimulation();
+	simulationText = new JTextField(simulation);
+	
 	simulationText.setPreferredSize(new Dimension(250, 25));
 	simulationText.setBorder(BorderFactory.createLoweredBevelBorder());
 	// center the text
@@ -309,7 +319,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	simulationText.setToolTipText(SIM_TIP);
 
 	idfDirLabel = new JLabel("File: ");
-	idfDirText = new JTextField("Enter EnergyPlus Directory Here:");
+	String dir = AnalyzerUtils.getEplusFileDir();
+	idfDirText = new JTextField(dir);
 	idfDirText.setPreferredSize(new Dimension(250, 25));
 	idfDirText.setBorder(BorderFactory.createLoweredBevelBorder());
 	idfDirText.setToolTipText(DIR_TIP);

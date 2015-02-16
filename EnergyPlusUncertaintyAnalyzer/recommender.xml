@@ -1221,84 +1221,84 @@
         <yearfromstart field="Years from Start" unit="Year" notes="0 to 100">
             <cooling description="Cooling Equipment">
                 <chiller1 description="Chiller, centrifugal" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 25;Standard Deviation: 7</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 42;Lower: 7</distributionParameters>
                     <minimum>7</minimum>
                     <maximum>42</maximum>                    
                 </chiller1>
                 <dist description="District Cooling" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 36;Standard Deviation: 22</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 52;Lower: 20</distributionParameters>
                     <minimum>20</minimum>
                     <maximum>52</maximum>  
                 </dist>
                 <hx description="Heat exchanger, ground water, aquifers" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 32;Standard Deviation: 28</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 88;Lower: 8</distributionParameters>
                     <minimum>8</minimum>
                     <maximum>88</maximum>  
                 </hx>
                 <hx2 description="Heat exchanger, vertical bore" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 27;Standard Deviation: 14</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 69;Lower: 4</distributionParameters>
                     <minimum>4</minimum>
                     <maximum>69</maximum>  
                 </hx2>
                 <other description="Other cooling equipment" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 20;Standard Deviation: 5</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 25;Lower: 16</distributionParameters>
                     <minimum>16</minimum>
                     <maximum>25</maximum>                   
                 </other>
             </cooling>
             <heating description="Heating Equipment">
                 <boiler1 description="Boiler, steel water-tube, forced draft, hot water" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 22;Standard Deviation: 9</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 33;Lower: 10</distributionParameters>
                     <minimum>10</minimum>
                     <maximum>33</maximum>                      
                 </boiler1>
                 <boiler1 description="Boiler, steel water-tube, natural draft, hot water" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 18;Standard Deviation: 5</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 23;Lower: 11</distributionParameters>
                     <minimum>11</minimum>
                     <maximum>23</maximum>                      
                 </boiler1>
                 <other description="Other heating equipment" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 23;Standard Deviation: 8</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 34;Lower: 16</distributionParameters>
                     <minimum>16</minimum>
                     <maximum>34</maximum>                   
                 </other>
             </heating>
             <airdist description="Air Distribution">
                 <ahu1 description="Air handling unit, constant volume" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 35;Standard Deviation: 20</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 52;Lower: 12</distributionParameters>
                     <minimum>12</minimum>
                     <maximum>52</maximum>   
                 </ahu1>
                 <ahu2 description="Air handling unit, variable air volume" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 28;Standard Deviation: 12</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 64;Lower: 12</distributionParameters>
                     <minimum>12</minimum>
-                    <maximum>64</maximum>   
+                    <maximum>64</maximum>
                 </ahu2>
                 <fancoil description="Fan coil Unit" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 36;Standard Deviation: 24</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 65;Lower: 4</distributionParameters>
                     <minimum>4</minimum>
                     <maximum>65</maximum>
                 </fancoil>
                 <dx1 description="Packaged DX unit, rooftop" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 21;Standard Deviation: 5</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 27;Lower: 14</distributionParameters>
                     <minimum>14</minimum>
                     <maximum>27</maximum>   
                 </dx1>
                 <other description="Other air distribution equipment" reference="ASHRAE Owning and Operating Cost Database" notes="Minimum and maximum is determined from data set (up to Feb. 2015)">
-                    <distributionName>Normal</distributionName>
-                    <distributionParameters>Mean: 20;Standard Deviation: 6</distributionParameters>
+                    <distributionName>Uniform Discrete</distributionName>
+                    <distributionParameters>Upper: 25;Lower: 16</distributionParameters>
                     <minimum>16</minimum>
                     <maximum>25</maximum>   
                 </other>
