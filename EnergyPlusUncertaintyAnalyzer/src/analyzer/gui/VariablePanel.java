@@ -7,6 +7,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -74,6 +76,8 @@ public class VariablePanel extends JPanel {
 	variableList = vl;
 	variableDescription = new ArrayList<String>();
 	variableKeySets = vk;
+	
+	ArrayList<String> editedList = removeDuplicatesFromList(variableList);
 
 	// set the variable description for display
 	for (String[] sList : variableKeySets) {
@@ -91,9 +95,9 @@ public class VariablePanel extends JPanel {
 	System.out.println("This is start: " + startIndex);
 	System.out.println("This is variableSize: " + variableList.size());
 
-	for (int i = startIndex; i < variableList.size(); i++) {
+	for (int i = startIndex; i < editedList.size(); i++) {
 	    // variable name
-	    String s = variableList.get(i);
+	    String s = editedList.get(i);
 	    // variable des;
 	    String des = variableDescription.get(i);
 	    // variable object
@@ -132,7 +136,7 @@ public class VariablePanel extends JPanel {
 	    listScroll = new JScrollPane(variablesList);
 	    selectPanel.add(listScroll, BorderLayout.CENTER);
 	//varaibleList updated condition
-	} else if(enabledFlags.length != variableList.size()){
+	} else if(enabledFlags.length != editedList.size()){
 	    //selectPanel = initSelectionPanel();
 	    enabledFlags = copyEnabledFlag();
 	    add(fittingPanel, BorderLayout.CENTER);
@@ -196,6 +200,18 @@ public class VariablePanel extends JPanel {
 		variableName, setting, object, input, unit));// index
 	// 1
 	return tp;
+    }
+    
+    private ArrayList<String> removeDuplicatesFromList(ArrayList<String> list){
+	Set<String> tempSet = new HashSet<String>();
+	ArrayList<String> tempList =new ArrayList<String>();
+	for(String s: list){
+	    if(!tempSet.contains(s)){
+		tempList.add(s);
+	    }
+	    tempSet.add(s);
+	}
+	return tempList;
     }
 
     // change the state of the flag
