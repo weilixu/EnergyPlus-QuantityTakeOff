@@ -77,7 +77,7 @@ public class VariablePanel extends JPanel {
 	variableDescription = new ArrayList<String>();
 	variableKeySets = vk;
 	
-	ArrayList<String> editedList = removeDuplicatesFromList(variableList);
+	removeDuplicatesFromList(vl, vk);
 
 	// set the variable description for display
 	for (String[] sList : variableKeySets) {
@@ -95,9 +95,9 @@ public class VariablePanel extends JPanel {
 	System.out.println("This is start: " + startIndex);
 	System.out.println("This is variableSize: " + variableList.size());
 
-	for (int i = startIndex; i < editedList.size(); i++) {
+	for (int i = startIndex; i < variableList.size(); i++) {
 	    // variable name
-	    String s = editedList.get(i);
+	    String s = variableList.get(i);
 	    // variable des;
 	    String des = variableDescription.get(i);
 	    // variable object
@@ -136,7 +136,7 @@ public class VariablePanel extends JPanel {
 	    listScroll = new JScrollPane(variablesList);
 	    selectPanel.add(listScroll, BorderLayout.CENTER);
 	//varaibleList updated condition
-	} else if(enabledFlags.length != editedList.size()){
+	} else if(enabledFlags.length != variableList.size()){
 	    //selectPanel = initSelectionPanel();
 	    enabledFlags = copyEnabledFlag();
 	    add(fittingPanel, BorderLayout.CENTER);
@@ -202,16 +202,20 @@ public class VariablePanel extends JPanel {
 	return tp;
     }
     
-    private ArrayList<String> removeDuplicatesFromList(ArrayList<String> list){
+    private void removeDuplicatesFromList(ArrayList<String> list, ArrayList<String[]> keySets){
+	
 	Set<String> tempSet = new HashSet<String>();
 	ArrayList<String> tempList =new ArrayList<String>();
-	for(String s: list){
-	    if(!tempSet.contains(s)){
-		tempList.add(s);
+	ArrayList<String[]> keySetList = new ArrayList<String[]>();
+	for(int i=0; i<list.size(); i++){
+	    if(!tempSet.contains(list.get(i))){
+		tempList.add(list.get(i));
+		keySetList.add(keySets.get(i));
 	    }
-	    tempSet.add(s);
+	    tempSet.add(list.get(i));
 	}
-	return tempList;
+	variableList = tempList;
+	variableKeySets = keySetList;
     }
 
     // change the state of the flag
