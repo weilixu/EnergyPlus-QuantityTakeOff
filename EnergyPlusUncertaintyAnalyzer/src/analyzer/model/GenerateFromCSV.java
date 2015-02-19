@@ -29,6 +29,9 @@ public class GenerateFromCSV {
 	}
 
 	/**
+	 * generate random variables by fitting each column of data to fitdist
+	 * and write to csv titled "RV"+filename each column of random variable
+	 * in csv file is in same order as original dataset provided
 	 * 
 	 * @param numRV
 	 *                number of random variables to generate
@@ -130,7 +133,7 @@ public class GenerateFromCSV {
 		}
 	}
 
-	//example usage
+	// example usage
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String myDirectory = "/Users/Adrian/Dropbox/IBPSA 2015/Practical approach uncertainty analysis/matlab_code/editedForJava/";
