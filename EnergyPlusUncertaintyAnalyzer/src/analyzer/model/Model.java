@@ -346,8 +346,9 @@ public class Model {
     public void fitData(double[] data, String sortby, String dataType,
 	    String lower, String upper) {
 	generator.setVariableName(variableName);
+	Double simNumber = simulationNumber/1.0;
 	double[] samples = generator.fitData(parentFile.getAbsolutePath(),
-		data, simulationNumber, sortby, dataType, lower, upper);
+		data, simNumber, sortby, dataType, lower, upper);
 	distSummary = generator.getDistSummary(); // convert to String
 	// updates gui
 	onDistributionGenerated();

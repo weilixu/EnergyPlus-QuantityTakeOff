@@ -1,27 +1,30 @@
 package analyzer.model;
 
+import java.util.Arrays;
+import java.util.Random;
+
 import allfitdist.FitDist;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 
 public class RVGenerator {
-    
+
     // Strings for the file names
     private final String DIST_NAME = "DIST_";
     private final String IMAGE_POST = ".jpg";
-    
+
     private String distSummary;
     private String variableName;
-    
-    public RVGenerator(){
+
+    public RVGenerator() {
 	distSummary = "";
     }
-    
-    public void setVariableName(String variable){
+
+    public void setVariableName(String variable) {
 	variableName = variable;
     }
-    
+
     /**
      * 
      * @param source
@@ -48,8 +51,8 @@ public class RVGenerator {
      *            truncated tor
      * @return
      */
-    public double[] fitData(String path, double[] data, int simNumber,String sortby, String dataType,
-	    String lower, String upper) {
+    public double[] fitData(String path, double[] data, Double simNumber,
+	    String sortby, String dataType, String lower, String upper) {
 	FitDist fitDistr = null;
 	Object[] fitDistInputs = new Object[8];
 	fitDistInputs[0] = path;
@@ -60,10 +63,11 @@ public class RVGenerator {
 	fitDistInputs[5] = dataType;
 	fitDistInputs[6] = Double.parseDouble(lower);
 	fitDistInputs[7] = Double.parseDouble(upper);
-	
-	System.out.println(path+" "+fitDistInputs[1]+" "+simNumber+" "+sortby+" "+dataType+" "+fitDistInputs[6]+" "+fitDistInputs[7]);
-	
-	
+
+	System.out.println(path + " " + fitDistInputs[1] + " " + simNumber
+		+ " " + sortby + " " + dataType + " " + fitDistInputs[6] + " "
+		+ fitDistInputs[7]);
+
 	Object[] fitDistResult = null;
 	try {
 	    fitDistr = new FitDist();
@@ -79,18 +83,11 @@ public class RVGenerator {
 
 	return rndVars.getDoubleData();
     }
-    
-    
-    
-    
-    
-    
-    public String getDistSummary(){
+
+    public String getDistSummary() {
 	return distSummary;
     }
-    
-    
-    
+
     private void editDistSummary() {
 	String[] distString = null;
 	if (distSummary != null) {
@@ -105,6 +102,24 @@ public class RVGenerator {
 	    }
 	}
 	distSummary = temp.toString();
+    }
+
+    public static void main(String[] args) {
+	RVGenerator generator = new RVGenerator();
+
+	Random randomNormal = new Random();
+	int n = 1000;
+	double[] data = new double[n];
+	for (int i = 0; i < n; i++) {
+	    data[i] = randomNormal.nextGaussian();
+	}
+
+	generator.setVariableName("test");
+	double[] results = generator.fitData(
+		"C:\\Users\\Weili\\Desktop\\New folder", data, 50.0, "BIC",
+		"CONTINUOUS", "-20.0", "20.0");
+	System.out.println(Arrays.toString(results));
+
     }
 
 }
