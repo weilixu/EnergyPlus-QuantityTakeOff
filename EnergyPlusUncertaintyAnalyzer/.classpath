@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.4.1-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/allfitdist.jar"/>
 	<classpathentry kind="lib" path="lib/jdom-2.0.5-contrib.jar"/>
 	<classpathentry kind="lib" path="lib/jdom-2.0.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/jdom-2.0.5-junit.jar"/>
@@ -20,6 +19,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/EnergyPlusUncertaintyAnalyzer/lib/jsoup-1.8.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/allfitdist.jar"/>
 	<classpathentry kind="lib" path="lib/csvfitdist.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

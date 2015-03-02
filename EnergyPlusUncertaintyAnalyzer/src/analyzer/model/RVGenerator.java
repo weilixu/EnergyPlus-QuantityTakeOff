@@ -104,22 +104,22 @@ public class RVGenerator {
 	distSummary = temp.toString();
     }
 
-    public static void main(String[] args) {
-	RVGenerator generator = new RVGenerator();
-
-	Random randomNormal = new Random();
-	int n = 1000;
-	double[] data = new double[n];
-	for (int i = 0; i < n; i++) {
-	    data[i] = randomNormal.nextGaussian();
-	}
-
-	generator.setVariableName("test");
-	double[] results = generator.fitData(
-		"C:\\Users\\Weili\\Desktop\\New folder", data, 50.0, "BIC",
-		"CONTINUOUS", "-20.0", "20.0");
-	System.out.println(Arrays.toString(results));
-
-    }
+//    public static void main(String[] args) {
+//	RVGenerator generator = new RVGenerator();
+//
+//	Random randomNormal = new Random();
+//	int n = 1000;
+//	double[] data = new double[n];
+//	for (int i = 0; i < n; i++) {
+//	    data[i] = randomNormal.nextGaussian();
+//	}
+//
+//	generator.setVariableName("test");
+//	double[] results = generator.fitData(
+//		"C:\\Users\\Weili\\Desktop\\New folder", data, 50.0, "BIC",
+//		"CONTINUOUS", "-20.0", "20.0");
+//	System.out.println(Arrays.toString(results));
+//
+//    }
 
 }
