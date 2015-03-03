@@ -291,7 +291,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 
     @Override
     public void modelDataUpdate(int size) {
-	if (size == number_Variable) {
+	if (size == variablePane.getVariableListSize()) {
 	    createIDFButton.setEnabled(true);
 	    simulationButton.setEnabled(true);
 	}

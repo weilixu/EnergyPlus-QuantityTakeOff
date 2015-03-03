@@ -70,6 +70,10 @@ public class VariablePanel extends JPanel {
 	variablesList.setFont(new Font("Helvetica", Font.BOLD, 20));
 	variablesList.setCellRenderer(new DiabledItemListCellRenderer());
     }
+    
+    public int getVariableListSize(){
+	return variableList.size();
+    }
 
     public void changeVariables(ArrayList<String> vl, ArrayList<String[]> vk) {
 

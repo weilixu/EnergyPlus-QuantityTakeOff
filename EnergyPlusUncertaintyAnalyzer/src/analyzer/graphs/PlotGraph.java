@@ -7,9 +7,13 @@ import java.util.Calendar;
 
 
 
+
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
@@ -26,6 +30,12 @@ public class PlotGraph {
 		XYDataset dataset = createDataset(mean, lower, upper, month,
 				numMonths, year);
 		JFreeChart jChart = createChart(dataset);
+		
+		XYPlot xyPlot=(XYPlot)jChart.getPlot();
+		NumberAxis range = (NumberAxis)xyPlot.getRangeAxis();
+		range.setLowerBound(0);
+		
+		
 		chart = new ChartPanel(jChart);
 		chart.setPreferredSize(new Dimension(560, 370));
 		chart.setMouseZoomable(true, false);
@@ -44,6 +54,11 @@ public class PlotGraph {
 
 		Calendar cal = Calendar.getInstance();
 		Month current = null;
+		
+		//year threshold set to 1000
+		if(year<=1000){
+		    year = cal.get(Calendar.YEAR);
+		}
 
 		try {
 			cal.setTime(new SimpleDateFormat("MMM").parse(month));
@@ -68,6 +83,7 @@ public class PlotGraph {
 		allDataSets.addSeries(series);
 		allDataSets.addSeries(tsLower);
 		allDataSets.addSeries(tsUpper);
+		
 		return allDataSets;
 	}
 
@@ -76,5 +92,4 @@ public class PlotGraph {
 				"Time [Month]", "Energy [kWh]",
 				dataset, true, false, false);
 	}
-
 }

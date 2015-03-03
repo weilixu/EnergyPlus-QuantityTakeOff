@@ -102,7 +102,7 @@ public class GraphGenerator {
      */
     public List<ChartPanel> getTimeSeriesCharts() {
 	String startMonth = resultAnalyzer.getKey(0);
-
+	
 	for (int i = 0; i < numGraph; i++) {
 	    double[] averages = new double[numMonths];
 	    double[] lowerCI = new double[numMonths];
