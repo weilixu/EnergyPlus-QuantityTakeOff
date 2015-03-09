@@ -64,9 +64,9 @@ public class RVGenerator {
 	fitDistInputs[6] = Double.parseDouble(lower);
 	fitDistInputs[7] = Double.parseDouble(upper);
 
-	System.out.println(path + " " + fitDistInputs[1] + " " + simNumber
-		+ " " + sortby + " " + dataType + " " + fitDistInputs[6] + " "
-		+ fitDistInputs[7]);
+//	System.out.println(path + " " + fitDistInputs[1] + " " + simNumber
+//		+ " " + sortby + " " + dataType + " " + fitDistInputs[6] + " "
+//		+ fitDistInputs[7]);
 
 	Object[] fitDistResult = null;
 	try {

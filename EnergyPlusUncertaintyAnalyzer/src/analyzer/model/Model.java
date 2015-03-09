@@ -445,6 +445,9 @@ public class Model {
     /**
      * Listeners
      */
+    /*
+     * Listener updates the distribution graph
+     */
     private void onDistributionGenerated() {
 	for (DistGenerationListeners dgl : distGeneListeners) {
 	    if (dgl.getVariable().equals(variableName)) {
@@ -458,7 +461,10 @@ public class Model {
 	    }
 	}
     }
-
+    
+    /*
+     * Listener updates the fit distribution summary
+     */
     private void onFitResultsUpdates() {
 	for (FitDistListeners fdl : fitDistListeners) {
 	    if (fdl.getVariable().equals(variableName)) {
@@ -466,13 +472,19 @@ public class Model {
 	    }
 	}
     }
-
+    
+    /*
+     * Listener udpates the create/simulate button status
+     */
     private void onDataUpdates() {
 	for (ModelDataListener m : dataListeners) {
 	    m.modelDataUpdate(randomVariableList.size());
 	}
     }
-
+    
+    /*
+     * Listener udpates the variable list
+     */
     private void onVariableEnabled() {
 	for (ModelDataListener m : dataListeners) {
 	    m.variableEnabled(variableName);

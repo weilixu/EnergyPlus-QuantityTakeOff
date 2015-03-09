@@ -1,6 +1,7 @@
 package analyzer.model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,20 +13,24 @@ import com.mathworks.toolbox.javabuilder.MWException;
 import csvfitdist.CsvFitDist;
 
 public class GenerateFromCSV {
-	private final String directory;
-	private final String filename;
-	private final String fullFileName;
+	private String directory;
+	private String filename;
+	private String fullFileName;
 	private ArrayList<String[]> listProcessed;
 	private int numVars;
 
-	public GenerateFromCSV(String d, String f) {
-		// TODO Auto-generated constructor stub
-		directory = d;
-		filename = f;
-		fullFileName = directory + filename;
+	public GenerateFromCSV() {
+//		directory = d;
+//		filename = f;
+//		fullFileName = directory + filename;
 		listProcessed = new ArrayList<String[]>();
 		numVars = 0;
-
+	}
+	
+	public void setFile(File f){
+	    directory = f.getParent();
+	    filename = f.getName();
+	    fullFileName = f.getAbsolutePath();
 	}
 
 	/**
@@ -52,7 +57,7 @@ public class GenerateFromCSV {
 		try {
 			fitCsv = new CsvFitDist();
 			fitCsv.csvfitdist(inputs);
-
+			
 		} catch (MWException e) {
 			e.printStackTrace();
 		}
@@ -79,10 +84,8 @@ public class GenerateFromCSV {
 			fillWithNaN(list);
 			writeCSV();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -128,19 +131,17 @@ public class GenerateFromCSV {
 			w.flush();
 			w.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	// example usage
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String myDirectory = "/Users/Adrian/Dropbox/IBPSA 2015/Practical approach uncertainty analysis/matlab_code/editedForJava/";
-		String myFilename = "testcsvfitdist.csv";
-		GenerateFromCSV p = new GenerateFromCSV(myDirectory, myFilename);
-		p.modifyData();
-		p.generateRV(1000, "BIC", "CONTINUOUS");
-
-	}
+//
+//	public static void main(String[] args) {
+//		String myDirectory = "/Users/Adrian/Dropbox/IBPSA 2015/Practical approach uncertainty analysis/matlab_code/editedForJava/";
+//		String myFilename = "testcsvfitdist.csv";
+//		GenerateFromCSV p = new GenerateFromCSV(myDirectory, myFilename);
+//		p.modifyData();
+//		p.generateRV(1000, "BIC", "CONTINUOUS");
+//
+//	}
 }
