@@ -181,7 +181,7 @@ public class GenerateFromCSV {
 	// example usage
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String myDirectory = "/Users/Adrian/Dropbox/IBPSA 2015/Practical approach uncertainty analysis/matlab_code/editedForJava/";
+		String myDirectory = "C:\\Users\\Weili\\Desktop\\New folder\\";
 		String myFilename = "testcsvfitdist.csv";
 		GenerateFromCSV p = new GenerateFromCSV(myDirectory,
 				myFilename, 1000, "BIC", "CONTINUOUS");
