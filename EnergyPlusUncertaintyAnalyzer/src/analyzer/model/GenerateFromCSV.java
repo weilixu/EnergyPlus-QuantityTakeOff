@@ -1,36 +1,58 @@
 package analyzer.model;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import com.mathworks.toolbox.javabuilder.MWException;
+import com.mathworks.toolbox.javabuilder.*;
 
 import csvfitdist.CsvFitDist;
 
 public class GenerateFromCSV {
-	private String directory;
-	private String filename;
-	private String fullFileName;
+	private final String directory;
+	private final String filename;
+	private final String fullFileName;
 	private ArrayList<String[]> listProcessed;
 	private int numVars;
+	private int numRV;
+	private double[][] data;
+	private String[] distSummaryArr;
 
-	public GenerateFromCSV() {
-//		directory = d;
-//		filename = f;
-//		fullFileName = directory + filename;
+	public GenerateFromCSV(String d, String f, int n, String sortby,
+			String dataType) {
+		// TODO Auto-generated constructor stub
+		directory = d;
+		filename = f;
+		fullFileName = directory + filename;
 		listProcessed = new ArrayList<String[]>();
 		numVars = 0;
+		numRV = n;
+		modifyData();
+		data = new double[numVars][numRV];
+		distSummaryArr = new String[numVars];
+		generateRV(sortby, dataType);
+
 	}
 	
-	public void setFile(File f){
-	    directory = f.getParent();
-	    filename = f.getName();
-	    fullFileName = f.getAbsolutePath();
+
+	/**
+	 * 
+	 * @return 2-d array containing random variables
+	 */
+	public double[][] getData() {
+		return data;
+	}
+
+	/**
+	 * 
+	 * @return 1-d array containing each distribution description
+	 */
+	public String[] getDistSummary() {
+		return distSummaryArr;
 	}
 
 	/**
@@ -45,7 +67,7 @@ public class GenerateFromCSV {
 	 * @param dataType
 	 *                "CONTINUOUS" or "DISCRETE"
 	 */
-	public void generateRV(int numRV, String sortby, String dataType) {
+	public void generateRV(String sortby, String dataType) {
 		CsvFitDist fitCsv = null;
 		Object[] inputs = new Object[5];
 		inputs[0] = directory;
@@ -54,10 +76,28 @@ public class GenerateFromCSV {
 		inputs[3] = sortby; // sortby
 		inputs[4] = dataType; // dataType
 
+		Object[] fitCSVResult = null;
+
 		try {
 			fitCsv = new CsvFitDist();
-			fitCsv.csvfitdist(inputs);
-			
+			fitCSVResult = fitCsv.csvfitdist(1, inputs);
+			// System.out.println(fitCSVResult[0].getClass().getName());
+			MWStructArray mwarr = (MWStructArray) fitCSVResult[0];
+
+			for (int i = 0; i < numVars; i++) {
+				// MWStructArray.getField is a 1-based offset
+				// array
+				distSummaryArr[i] = mwarr.getField("summary",
+						i + 1).toString();
+				MWNumericArray mwnumarr = (MWNumericArray) mwarr
+						.getField("data", i + 1);
+				data[i] = mwnumarr.getDoubleData();
+//				System.out.println(distSummaryArr[i]);
+//				System.out.println(Arrays.toString(data[i]));
+
+			}
+
+
 		} catch (MWException e) {
 			e.printStackTrace();
 		}
@@ -66,7 +106,7 @@ public class GenerateFromCSV {
 	/**
 	 * fills empty cells with NaN and overwrites csv file
 	 */
-	public void modifyData() {
+	private void modifyData() {
 		try {
 			FileReader file = new FileReader(fullFileName);
 			BufferedReader br = new BufferedReader(file);
@@ -84,8 +124,10 @@ public class GenerateFromCSV {
 			fillWithNaN(list);
 			writeCSV();
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -131,17 +173,27 @@ public class GenerateFromCSV {
 			w.flush();
 			w.close();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-//
-//	public static void main(String[] args) {
-//		String myDirectory = "/Users/Adrian/Dropbox/IBPSA 2015/Practical approach uncertainty analysis/matlab_code/editedForJava/";
-//		String myFilename = "testcsvfitdist.csv";
-//		GenerateFromCSV p = new GenerateFromCSV(myDirectory, myFilename);
-//		p.modifyData();
-//		p.generateRV(1000, "BIC", "CONTINUOUS");
-//
-//	}
+	// example usage
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String myDirectory = "/Users/Adrian/Dropbox/IBPSA 2015/Practical approach uncertainty analysis/matlab_code/editedForJava/";
+		String myFilename = "testcsvfitdist.csv";
+		GenerateFromCSV p = new GenerateFromCSV(myDirectory,
+				myFilename, 1000, "BIC", "CONTINUOUS");
+		double[][] myData = p.getData();
+		String[] distSummaryList = p.getDistSummary();
+		for (int i=0; i<myData.length; i++) {
+			double[] currData = myData[i];
+			String distSummary = distSummaryList[i];
+			System.out.println(Arrays.toString(currData));
+			System.out.println(distSummary);
+		}
+		
+
+	}
 }
