@@ -125,6 +125,28 @@ public class GenerateFromCSV {
 		} catch (MWException e) {
 			e.printStackTrace();
 		}
+		editSummaries();
+	}
+	
+	/**
+	 * Editing the format of the summary
+	 */
+	private void editSummaries(){
+	    String[] editedDistSummary = new String[distSummaryArr.length];
+	    for(int j=0; j<distSummaryArr.length; j++){
+		String[] distString = distSummaryArr[j].split("   ");
+		
+		StringBuffer temp = new StringBuffer();
+		for(int i = 0; i<distString.length; i++){
+		    if(!distString[i].isEmpty()){
+			temp.append(distString[i].trim());
+			temp.append("\n");
+		    }
+		}
+		editedDistSummary[j] = temp.toString();
+	    }
+	    distSummaryArr = editedDistSummary;
+	    
 	}
 
 	/**
