@@ -20,6 +20,7 @@ import analyzer.eplus.IdfReader;
 import analyzer.eplus.RunEnergyPlus;
 import analyzer.graphs.GraphGenerator;
 import analyzer.htmlparser.BuildingAreaParser;
+import analyzer.lang.AnalyzerException;
 import analyzer.lifecyclecost.DataObjects;
 import analyzer.lifecyclecost.FieldElement;
 import analyzer.lifecyclecost.LifeCycleCostModel;
@@ -367,7 +368,8 @@ public class Model {
     /**
      * This method is used for mutli-RV generation
      */
-    public void fitData(File file, String sortby, String dataType) {
+    public void fitData(File file, String sortby, String dataType)
+	    throws AnalyzerException {
 	// set the file
 	multiGenerator.setFileDirectory(file);
 	// generate random variable
@@ -376,16 +378,21 @@ public class Model {
 	double[][] data = multiGenerator.getData();
 	String[] headerList = multiGenerator.getHeaderList();
 	String[] distSummary = multiGenerator.getDistSummary();
-	
+
+	if (headerList.length != distSummary.length
+		&& headerList.length != data.length) {
+	    throw new AnalyzerException("CSV Data Format Error: The number of variables does not match the number of data columns");
+	}
+
 	// updates gui
 	onDistributionGenerated(headerList);
-	onFitResultsUpdates(headerList,distSummary);
+	onFitResultsUpdates(headerList, distSummary);
 	onVariableEnabled(headerList);
-	
-	for(int i=0; i<headerList.length; i++){
+
+	for (int i = 0; i < headerList.length; i++) {
 	    randomVariableList.put(headerList[i], data[i]);
 	}
-	
+
 	onDataUpdates();
     }
 
@@ -495,7 +502,8 @@ public class Model {
 
     private void onDistributionGenerated(String[] variables) {
 	// does the matlab generates images under same directory?
-	// this method assumes all the generated graphs is under the same folder as idf file
+	// this method assumes all the generated graphs is under the same folder
+	// as idf file
 	for (DistGenerationListeners dgl : distGeneListeners) {
 	    for (String v : variables) {
 		if (dgl.getVariable().equals(v)) {
@@ -520,11 +528,11 @@ public class Model {
 	    }
 	}
     }
-    
-    private void onFitResultsUpdates(String[] variables,String[] distSummaries){
-	for(FitDistListeners fdl:fitDistListeners){
-	    for(int i=0; i<variables.length; i++){
-		if(fdl.getVariable().equals(variables[i])){
+
+    private void onFitResultsUpdates(String[] variables, String[] distSummaries) {
+	for (FitDistListeners fdl : fitDistListeners) {
+	    for (int i = 0; i < variables.length; i++) {
+		if (fdl.getVariable().equals(variables[i])) {
 		    fdl.fitDataGenerated(distSummaries[i]);
 		}
 	    }
@@ -539,7 +547,6 @@ public class Model {
 	    m.modelDataUpdate(randomVariableList.size());
 	}
     }
-    
 
     /*
      * Listener udpates the variable list
@@ -549,10 +556,10 @@ public class Model {
 	    m.variableEnabled(variableName);
 	}
     }
-    
-    private void onVariableEnabled(String[] variables){
-	for(ModelDataListener m: dataListeners){
-	    for(String v: variables){
+
+    private void onVariableEnabled(String[] variables) {
+	for (ModelDataListener m : dataListeners) {
+	    for (String v : variables) {
 		m.variableEnabled(v);
 	    }
 	}

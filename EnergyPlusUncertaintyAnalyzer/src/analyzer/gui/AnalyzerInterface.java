@@ -461,12 +461,6 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	return temp;
     }
 
-    // for info showing
-    private static void showInfoDialog(Component c, String title, String msg) {
-	JOptionPane.showMessageDialog(c, msg, title,
-		JOptionPane.INFORMATION_MESSAGE);
-    }
-
     // for error info
     private static void showErrorDialog(Component c, String title, String msg) {
 	JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);

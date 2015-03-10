@@ -14,7 +14,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -22,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import analyzer.lang.AnalyzerException;
 import analyzer.listeners.FitDistListeners;
 import analyzer.model.Model;
 import analyzer.readcsv.ReadCSV;
@@ -241,9 +244,13 @@ public class FitDistPanel extends JPanel implements FitDistListeners {
 		if (!file.isFile()) {
 		    csvText.setText("This is not a valid directory!!");
 		} else {
-		    model.fitData(file,
-			    (String) sortCriteriaCombo.getSelectedItem(),
-			    (String) distTypeCombo.getSelectedItem());
+		    try {
+			model.fitData(file,
+				(String) sortCriteriaCombo.getSelectedItem(),
+				(String) distTypeCombo.getSelectedItem());
+		    }catch(AnalyzerException evt){
+			showErrorDialog(new JFrame(),evt.getMessage(),"Multi-Fitting Error");
+		    }
 		}
 
 	    }
@@ -299,5 +306,10 @@ public class FitDistPanel extends JPanel implements FitDistListeners {
     @Override
     public String getVariable() {
 	return variable;
+    }
+    
+    // for error info
+    private static void showErrorDialog(Component c, String title, String msg) {
+	JOptionPane.showMessageDialog(c, msg, title, JOptionPane.ERROR_MESSAGE);
     }
 }
