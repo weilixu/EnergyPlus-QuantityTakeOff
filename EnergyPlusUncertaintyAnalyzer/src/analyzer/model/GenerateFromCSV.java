@@ -1,6 +1,7 @@
 package analyzer.model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,31 +14,38 @@ import com.mathworks.toolbox.javabuilder.*;
 import csvfitdist.CsvFitDist;
 
 public class GenerateFromCSV {
-	private final String directory;
-	private final String filename;
-	private final String fullFileName;
+	// file directory related data
+	private String directory;
+	private String filename;
+	private String fullFileName;
+	// meta-data
+	private String[] headerList;
 	private ArrayList<String[]> listProcessed;
 	private int numVars;
-	private int numRV;
+	// data
 	private double[][] data;
 	private String[] distSummaryArr;
 
-	public GenerateFromCSV(String d, String f, int n, String sortby,
-			String dataType) {
-		// TODO Auto-generated constructor stub
-		directory = d;
-		filename = f;
-		fullFileName = directory + filename;
+	public GenerateFromCSV() {
 		listProcessed = new ArrayList<String[]>();
 		numVars = 0;
-		numRV = n;
-		modifyData();
-		data = new double[numVars][numRV];
-		distSummaryArr = new String[numVars];
-		generateRV(sortby, dataType);
+		// modifyData();
+		// data = new double[numVars][numRV];
+		// distSummaryArr = new String[numVars];
+		// generateRV(sortby, dataType);
 
 	}
-	
+
+	/**
+	 * initialize the file directory
+	 * 
+	 * @param eplusFile
+	 */
+	public void setFileDirectory(File eplusFile) {
+		directory = eplusFile.getParentFile().getAbsolutePath();
+		filename = eplusFile.getName();
+		fullFileName = eplusFile.getAbsolutePath();
+	}
 
 	/**
 	 * 
@@ -56,6 +64,15 @@ public class GenerateFromCSV {
 	}
 
 	/**
+	 * Get the list of header that processed by the multi-variable function
+	 * 
+	 * @return
+	 */
+	public String[] getHeaderList() {
+		return headerList;
+	}
+
+	/**
 	 * generate random variables by fitting each column of data to fitdist
 	 * and write to csv titled "RV"+filename each column of random variable
 	 * in csv file is in same order as original dataset provided
@@ -67,17 +84,25 @@ public class GenerateFromCSV {
 	 * @param dataType
 	 *                "CONTINUOUS" or "DISCRETE"
 	 */
-	public void generateRV(String sortby, String dataType) {
+	public void generateRV(int simulationNumber, String sortby,
+			String dataType) {
+		// pre-process the data
+		modifyData();
 		CsvFitDist fitCsv = null;
 		Object[] inputs = new Object[5];
 		inputs[0] = directory;
 		inputs[1] = filename;
-		inputs[2] = numRV; // number of random variables to generate
+		inputs[2] = simulationNumber; // number of random variables to
+						// generate
 		inputs[3] = sortby; // sortby
 		inputs[4] = dataType; // dataType
 
 		Object[] fitCSVResult = null;
-
+		
+		//initialize data 2-d array & distribution summary array
+		data = new double[numVars][simulationNumber];
+		distSummaryArr = new String[numVars];
+		
 		try {
 			fitCsv = new CsvFitDist();
 			fitCSVResult = fitCsv.csvfitdist(1, inputs);
@@ -92,11 +117,10 @@ public class GenerateFromCSV {
 				MWNumericArray mwnumarr = (MWNumericArray) mwarr
 						.getField("data", i + 1);
 				data[i] = mwnumarr.getDoubleData();
-//				System.out.println(distSummaryArr[i]);
-//				System.out.println(Arrays.toString(data[i]));
+				// System.out.println(distSummaryArr[i]);
+				// System.out.println(Arrays.toString(data[i]));
 
 			}
-
 
 		} catch (MWException e) {
 			e.printStackTrace();
@@ -113,21 +137,25 @@ public class GenerateFromCSV {
 			ArrayList<String[]> list = new ArrayList<String[]>();
 			String line = "";
 			String splitBy = ",";
+			// get header
+			headerList = br.readLine().split(splitBy);
+			numVars = headerList.length;
+			
 			while ((line = br.readLine()) != null) {
 				String[] tempLine = line.split(splitBy);
-				if (tempLine.length > numVars) {
-					numVars = tempLine.length;
-				}
+				// if (tempLine.length > numVars) {
+				// numVars = tempLine.length;
+				// }
 				list.add(tempLine);
 			}
+
 			br.close();
 			fillWithNaN(list);
 			writeCSV();
+			// System.out.println(Arrays.toString(headerList));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -173,27 +201,25 @@ public class GenerateFromCSV {
 			w.flush();
 			w.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	// example usage
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String myDirectory = "C:\\Users\\Weili\\Desktop\\New folder\\";
-		String myFilename = "testcsvfitdist.csv";
-		GenerateFromCSV p = new GenerateFromCSV(myDirectory,
-				myFilename, 1000, "BIC", "CONTINUOUS");
-		double[][] myData = p.getData();
-		String[] distSummaryList = p.getDistSummary();
-		for (int i=0; i<myData.length; i++) {
-			double[] currData = myData[i];
-			String distSummary = distSummaryList[i];
-			System.out.println(Arrays.toString(currData));
-			System.out.println(distSummary);
-		}
-		
-
-	}
+	// public static void main(String[] args) {
+	// String myDirectory = "C:\\Users\\Weili\\Desktop\\New folder\\";
+	// String myFilename = "testcsvfitdist.csv";
+	// GenerateFromCSV p = new GenerateFromCSV(myDirectory,
+	// myFilename, 1000, "BIC", "CONTINUOUS");
+	// double[][] myData = p.getData();
+	// String[] distSummaryList = p.getDistSummary();
+	// for (int i=0; i<myData.length; i++) {
+	// double[] currData = myData[i];
+	// String distSummary = distSummaryList[i];
+	// System.out.println(Arrays.toString(currData));
+	// System.out.println(distSummary);
+	// }
+	//
+	//
+	// }
 }

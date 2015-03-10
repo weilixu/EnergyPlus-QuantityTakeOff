@@ -45,9 +45,9 @@ public class Model {
     // Strings for the file names
     private final String DIST_NAME = "DIST_";
     private final String IMAGE_POST = ".jpg";
-    
-    //total cost simulation number
-    private static final int totalCostSimulationNumber=1000;
+
+    // total cost simulation number
+    private static final int totalCostSimulationNumber = 1000;
 
     private String variableName;
 
@@ -87,25 +87,29 @@ public class Model {
     private RVGenerator generator;
 
     /**
+     * fit multiple variable distribution
+     */
+    private GenerateFromCSV multiGenerator;
+
+    /**
      * sensitivity analysis module
      */
     private SensitivityAnalysis sensitivity;
-    
+
     /**
      * Life cycle cost module
      */
     private LifeCycleCostModel lccModel;
-    
+
     /**
      * Square meter cost estimation model
      */
     private SquareMeterModel squaremeterModel;
-    
+
     /**
      * Building area html parser
      */
     private BuildingAreaParser buildingArea;
-
 
     /*
      * A data structure to save generated random variables from the model. The
@@ -116,7 +120,7 @@ public class Model {
     private HashMap<String, double[]> squareCostDataMap;
 
     private String distSummary;
-    //to record the add-on modules
+    // to record the add-on modules
     private DataObjects currentDataSet;
 
     /*
@@ -141,6 +145,7 @@ public class Model {
 	idfData = new IdfReader();
 	run = new RunEnergyPlus();
 	generator = new RVGenerator();
+	multiGenerator = new GenerateFromCSV();
 	lccModel = new LifeCycleCostModel();
 	squaremeterModel = new SquareMeterModel();
 
@@ -196,27 +201,28 @@ public class Model {
     public void addGraphGenerationListener(GraphGenerationListener g) {
 	graphListeners.add(g);
     }
-    
-    public void addCostModelListener(SquareMeterCostModelListener ml){
+
+    public void addCostModelListener(SquareMeterCostModelListener ml) {
 	costModelListeners.add(ml);
     }
-    
+
     /**
      * add the current data set into Idf
      */
-    public void addCurrentDataSetToIdf(){
+    public void addCurrentDataSetToIdf() {
 	ArrayList<TemplateObject> objects = currentDataSet.getObjects();
-	for(TemplateObject object:objects){
+	for (TemplateObject object : objects) {
 	    ArrayList<FieldElement> fields = object.getFieldList();
 	    String[] objectValues = new String[fields.size()];
 	    String[] objectDes = new String[fields.size()];
-	    for(int i=0; i<fields.size();i++){
+	    for (int i = 0; i < fields.size(); i++) {
 		objectValues[i] = fields.get(i).getValue();
 		objectDes[i] = fields.get(i).getDescription();
 	    }
-	    idfData.addNewEnergyPlusObject(object.getObject(), objectValues, objectDes);
-	    //notify any possible changes in the eplus database
-	onReadEplusFile();
+	    idfData.addNewEnergyPlusObject(object.getObject(), objectValues,
+		    objectDes);
+	    // notify any possible changes in the eplus database
+	    onReadEplusFile();
 	}
     }
 
@@ -236,15 +242,15 @@ public class Model {
     public HashMap<String, double[]> getData() {
 	return randomVariableList;
     }
-    
-    public DefaultMutableTreeNode getLCCCompleteTree(){
+
+    public DefaultMutableTreeNode getLCCCompleteTree() {
 	return lccModel.getCompleteTreeNode();
     }
-    
-    public DataObjects getCopiedDataObject(DataObjects dataset){
+
+    public DataObjects getCopiedDataObject(DataObjects dataset) {
 	return lccModel.makeCopyOfDataSet(dataset);
     }
-    
+
     /**
      * set the simulation number for the model
      * 
@@ -263,8 +269,8 @@ public class Model {
 	variableName = variable;
 	generator.setVariableName(variableName);
     }
-    
-    public void setCurrentDataset(DataObjects dataSet){
+
+    public void setCurrentDataset(DataObjects dataSet) {
 	currentDataSet = dataSet;
     }
 
@@ -346,7 +352,7 @@ public class Model {
     public void fitData(double[] data, String sortby, String dataType,
 	    String lower, String upper) {
 	generator.setVariableName(variableName);
-	Double simNumber = simulationNumber/1.0;
+	Double simNumber = simulationNumber / 1.0;
 	double[] samples = generator.fitData(parentFile.getAbsolutePath(),
 		data, simNumber, sortby, dataType, lower, upper);
 	distSummary = generator.getDistSummary(); // convert to String
@@ -355,6 +361,31 @@ public class Model {
 	onFitResultsUpdates();
 	onVariableEnabled();
 	randomVariableList.put(variableName, samples);
+	onDataUpdates();
+    }
+
+    /**
+     * This method is used for mutli-RV generation
+     */
+    public void fitData(File file, String sortby, String dataType) {
+	// set the file
+	multiGenerator.setFileDirectory(file);
+	// generate random variable
+	multiGenerator.generateRV(simulationNumber, sortby, dataType);
+
+	double[][] data = multiGenerator.getData();
+	String[] headerList = multiGenerator.getHeaderList();
+	String[] distSummary = multiGenerator.getDistSummary();
+	
+	// updates gui
+	onDistributionGenerated(headerList);
+	onFitResultsUpdates(headerList,distSummary);
+	onVariableEnabled(headerList);
+	
+	for(int i=0; i<headerList.length; i++){
+	    randomVariableList.put(headerList[i], data[i]);
+	}
+	
 	onDataUpdates();
     }
 
@@ -379,12 +410,12 @@ public class Model {
 	graphs.setResults();
 	onUpdatedHistoGraphGenerated(graphs.getHistogramCharts());
 	onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
-	//initializeSenstivityAnalysis();
+	// initializeSenstivityAnalysis();
     }
-    
-    public void generateTotalCost(BuildingType t){
+
+    public void generateTotalCost(BuildingType t) {
 	// initialize the html file
-	String resultPath = resultFile.getAbsoluteFile()+"//0Table.html";
+	String resultPath = resultFile.getAbsoluteFile() + "//0Table.html";
 	File html = new File(resultPath);
 	buildingArea = new BuildingAreaParser(html);
 
@@ -461,7 +492,24 @@ public class Model {
 	    }
 	}
     }
-    
+
+    private void onDistributionGenerated(String[] variables) {
+	// does the matlab generates images under same directory?
+	// this method assumes all the generated graphs is under the same folder as idf file
+	for (DistGenerationListeners dgl : distGeneListeners) {
+	    for (String v : variables) {
+		if (dgl.getVariable().equals(v)) {
+		    StringBuffer sb = new StringBuffer();
+		    sb.append(parentFile.getAbsolutePath());
+		    sb.append("\\");
+		    sb.append(v);
+		    sb.append(IMAGE_POST);
+		    dgl.loadDistImage(sb.toString());
+		}
+	    }
+	}
+    }
+
     /*
      * Listener updates the fit distribution summary
      */
@@ -473,6 +521,16 @@ public class Model {
 	}
     }
     
+    private void onFitResultsUpdates(String[] variables,String[] distSummaries){
+	for(FitDistListeners fdl:fitDistListeners){
+	    for(int i=0; i<variables.length; i++){
+		if(fdl.getVariable().equals(variables[i])){
+		    fdl.fitDataGenerated(distSummaries[i]);
+		}
+	    }
+	}
+    }
+
     /*
      * Listener udpates the create/simulate button status
      */
@@ -482,12 +540,21 @@ public class Model {
 	}
     }
     
+
     /*
      * Listener udpates the variable list
      */
     private void onVariableEnabled() {
 	for (ModelDataListener m : dataListeners) {
 	    m.variableEnabled(variableName);
+	}
+    }
+    
+    private void onVariableEnabled(String[] variables){
+	for(ModelDataListener m: dataListeners){
+	    for(String v: variables){
+		m.variableEnabled(v);
+	    }
 	}
     }
 
@@ -531,9 +598,9 @@ public class Model {
 	    g.histogramGraphGenerated(histoCharts);
 	}
     }
-    
-    private void onUpdatedCostDataMap(){
-	for(SquareMeterCostModelListener ml: costModelListeners){
+
+    private void onUpdatedCostDataMap() {
+	for (SquareMeterCostModelListener ml : costModelListeners) {
 	    ml.costInfoUpdated(squareCostDataMap);
 	}
     }

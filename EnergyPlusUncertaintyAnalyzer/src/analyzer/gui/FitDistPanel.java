@@ -26,7 +26,7 @@ import analyzer.listeners.FitDistListeners;
 import analyzer.model.Model;
 import analyzer.readcsv.ReadCSV;
 
-public class FitDistPanel extends JPanel implements FitDistListeners{
+public class FitDistPanel extends JPanel implements FitDistListeners {
 
     private final Model model;
     private final ReadCSV reader;
@@ -65,16 +65,17 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
      * specification
      */
     private final JLabel sortCriteriaLabel;
-    private final JComboBox sortCriteriaCombo;
+    private final JComboBox<String> sortCriteriaCombo;
     private final JLabel distTypeLabel;
-    private final JComboBox distTypeCombo;
+    private final JComboBox<String> distTypeCombo;
     private final JLabel lowerLabel;
     private final JTextField lowerText;
     private final JLabel upperLabel;
     private final JTextField upperText;
     private final JTextField csvText;
     private final JButton loadButton;
-    
+    private final JButton loadMultipleButton;
+
     /*
      * Setting the TextArea for display the fitted results
      */
@@ -114,9 +115,9 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 	settingPanel.add(sortCriteriaLabel);
 
 	// set sorting criteria combo box
-	String[] sortingList = { "NLogL","BIC", "AIC","AICc"};
+	String[] sortingList = { "NLogL", "BIC", "AIC", "AICc" };
 	// set the default sorting criteria to BIC
-	sortCriteriaCombo = new JComboBox(sortingList);
+	sortCriteriaCombo = new JComboBox<String>(sortingList);
 	sortCriteriaCombo.setSelectedIndex(0);
 	sortCriteriaCombo.setToolTipText(SORT_TIP);
 	sortCriteriaCombo.addActionListener(new ActionListener() {
@@ -136,7 +137,7 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 
 	// set the distribution type combo box
 	String[] distTypeList = { "Continuous", "Discrete" };
-	distTypeCombo = new JComboBox(distTypeList);
+	distTypeCombo = new JComboBox<String>(distTypeList);
 	// set the default distribution type to continuous distribution
 	distTypeCombo.setSelectedIndex(0);
 	distTypeCombo.setToolTipText(DIST_TIP);
@@ -191,9 +192,9 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 		doneButton.setEnabled(false);
 		model.setVariable(variable);
 		model.fitData(reader.getData(),
-			(String)sortCriteriaCombo.getSelectedItem(),
-			(String)distTypeCombo.getSelectedItem(), lowerText.getText(),
-			upperText.getText());
+			(String) sortCriteriaCombo.getSelectedItem(),
+			(String) distTypeCombo.getSelectedItem(),
+			lowerText.getText(), upperText.getText());
 		// 2. disable another tab
 		doneButton.setEnabled(true);
 		parentPanel.setEnabledAt(1, false);
@@ -203,7 +204,7 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 
 	// csv loading text field and button
 	csvText = new JTextField("Enter Your Data File Directory Here:");
-	csvText.setPreferredSize(new Dimension(250,25));
+	csvText.setPreferredSize(new Dimension(250, 25));
 	csvText.setBorder(BorderFactory.createLoweredBevelBorder());
 	loadButton = new JButton("Load");
 	loadButton.addActionListener(new ActionListener() {
@@ -217,8 +218,8 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 		    try {
 			// 2. load the csv file
 			reader.readData(filePath);
-			
-			//set the lower and upper text field default value
+
+			// set the lower and upper text field default value
 			lowerText.setText(reader.getMinimum().toString());
 			upperText.setText(reader.getMaximum().toString());
 
@@ -230,9 +231,28 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 	    }
 	});
 
+	loadMultipleButton = new JButton("Load Multiple");
+	loadMultipleButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		String filePath = csvText.getText();
+		File file = new File(filePath);
+		if (!file.isFile()) {
+		    csvText.setText("This is not a valid directory!!");
+		} else {
+		    model.fitData(file,
+			    (String) sortCriteriaCombo.getSelectedItem(),
+			    (String) distTypeCombo.getSelectedItem());
+		}
+
+	    }
+	});
+
 	loadPanel.add(csvText);
 	loadPanel.add(loadButton);
 	loadPanel.add(doneButton);
+	loadPanel.add(loadMultipleButton);
 
 	refreshButton = new JButton(REFRESH_TEXT);
 	refreshButton.addActionListener(new ActionListener() {
@@ -253,17 +273,18 @@ public class FitDistPanel extends JPanel implements FitDistListeners{
 
 	// add loadpanel to fitpanel
 	fitPanel.add(loadPanel, BorderLayout.NORTH);
-	
-	//JTextArea set-up for the dist results display
+
+	// JTextArea set-up for the dist results display
 	fittedResults = new JTextArea();
-	TitledBorder textAreaTitle = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),
-		TEXT_TITLE);
+	TitledBorder textAreaTitle = BorderFactory.createTitledBorder(
+		BorderFactory.createLineBorder(Color.black), TEXT_TITLE);
 	fittedResults.setBorder(textAreaTitle);
-	fittedResults.setFont(new Font("Apple Casual",Font.LAYOUT_LEFT_TO_RIGHT,14));
+	fittedResults.setFont(new Font("Apple Casual",
+		Font.LAYOUT_LEFT_TO_RIGHT, 14));
 	fittedResults.setEnabled(false);
 	fittedResults.setDisabledTextColor(Color.BLACK);
 
-	this.add(fittedResults,BorderLayout.LINE_START);
+	this.add(fittedResults, BorderLayout.LINE_START);
 
 	// set-up the display panel
 	displayPanel = new ImageDisplayPanel(model, variable);
