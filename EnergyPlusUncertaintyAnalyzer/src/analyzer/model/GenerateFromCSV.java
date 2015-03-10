@@ -92,7 +92,7 @@ public class GenerateFromCSV {
 		Object[] inputs = new Object[5];
 		inputs[0] = directory;
 		inputs[1] = filename;
-		inputs[2] = simulationNumber; // number of random variables to
+		inputs[2] = simulationNumber/1.0; // number of random variables to
 						// generate
 		inputs[3] = sortby; // sortby
 		inputs[4] = dataType; // dataType
