@@ -204,7 +204,7 @@ public class GenerateFromCSV {
 	private void writeCSV() {
 
 		try {
-			FileWriter w = new FileWriter(directory + filename,
+			FileWriter w = new FileWriter(directory +"\\Output_"+ filename,
 					false);
 
 			for (int i = 0; i < listProcessed.size(); i++) {
