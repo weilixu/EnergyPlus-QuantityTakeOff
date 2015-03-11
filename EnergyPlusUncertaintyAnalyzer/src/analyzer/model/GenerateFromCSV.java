@@ -204,9 +204,16 @@ public class GenerateFromCSV {
 	private void writeCSV() {
 
 		try {
-			FileWriter w = new FileWriter(directory +"\\Output_"+ filename,
+			FileWriter w = new FileWriter(directory +"\\"+ filename,
 					false);
-
+			//write header first
+			for(int j = 0; j<headerList.length; j++){
+			    w.append(headerList[j]);
+			    w.append(",");
+			}
+			w.append("\n");
+			
+			//write data
 			for (int i = 0; i < listProcessed.size(); i++) {
 				String[] temp = listProcessed.get(i);
 				for (int j = 0; j < temp.length; j++) {
