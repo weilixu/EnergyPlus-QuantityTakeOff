@@ -245,11 +245,14 @@ public class FitDistPanel extends JPanel implements FitDistListeners {
 		    csvText.setText("This is not a valid directory!!");
 		} else {
 		    try {
+			loadMultipleButton.setEnabled(false);
 			model.fitData(file,
 				(String) sortCriteriaCombo.getSelectedItem(),
 				(String) distTypeCombo.getSelectedItem());
+			loadMultipleButton.setEnabled(true);
 		    }catch(AnalyzerException evt){
 			showErrorDialog(new JFrame(),evt.getMessage(),"Multi-Fitting Error");
+			loadMultipleButton.setEnabled(true);
 		    }
 		}
 

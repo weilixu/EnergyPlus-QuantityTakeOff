@@ -2,6 +2,9 @@ package analyzer.distributions;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
@@ -46,6 +49,7 @@ public class TruncatedNormalDistribution extends NormalDistribution implements T
     
     public double[] lhs(int num){
 	double[] data = new double[num];
+	List<Integer> segmentIndex = createIndexes(num);
 	double segmentSize = 1.0/num;
 	double segmentMin = segmentSize;
 	double pointValue = lhSample(segmentMin, segmentSize);
@@ -60,7 +64,7 @@ public class TruncatedNormalDistribution extends NormalDistribution implements T
 	    }else{
 		//record the sample
 		data[counter] = pointValue;
-		segmentMin = counter*segmentSize;//move to next segment
+		segmentMin = segmentIndex.get(counter)*segmentSize;//move to next segment
 		pointValue = lhSample(segmentMin,segmentSize);//sample again
 		counter++;//increase the counter
 		locker = 0;//reset the stalling indicator
@@ -81,6 +85,19 @@ public class TruncatedNormalDistribution extends NormalDistribution implements T
 	return data;
     }
     
+    private List<Integer> createIndexes(int num){
+	//create an arraylist contains all the indexes
+	List<Integer> indexes = new ArrayList<Integer>();
+	for(int i=0; i<num; i++){
+	    indexes.add(i);
+	}
+	//shuffle the indexes
+	Collections.shuffle(indexes);
+	
+	return indexes;
+    }
+    
+    //sample from the inverse CDF
     private double lhSample(double min, double size){
 	    double point = min+(Math.random()*size);
 	    //System.out.println(point);
@@ -89,8 +106,8 @@ public class TruncatedNormalDistribution extends NormalDistribution implements T
     
     public static void main(String[] args){
 	TruncatedNormalDistribution test = new TruncatedNormalDistribution(0,1,-3,3);
-	double[] data = test.lhs(100);
-	double[] monteCarlo = test.truncatedSample(100);
+	double[] data = test.lhs(500);
+	double[] monteCarlo = test.truncatedSample(500);
 	try{
 	    FileWriter writer = new FileWriter("C:\\Users\\Weili\\Desktop\\New folder\\tests.csv");
 	    for(int i=0; i<data.length; i++){
