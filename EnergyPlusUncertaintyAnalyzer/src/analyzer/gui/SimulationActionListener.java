@@ -55,6 +55,7 @@ public class SimulationActionListener implements ActionListener{
 	    AnalyzerUtils.setEplusDirectory(eplusDir.getText());
 	    AnalyzerUtils.setEplusWeather(weatherFile.getText());
 	    AnalyzerUtils.setEplusProcessor(numberProc.getText());
+	    AnalyzerUtils.writeProperties();
 	    try {
 		model.startSimulation(eplusDir.getText(),weatherFile.getText(),numberProc.getText());
 		analysisButton.setEnabled(true);
