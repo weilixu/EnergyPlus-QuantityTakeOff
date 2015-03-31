@@ -54,7 +54,7 @@ public class MakeDistPanel extends JPanel {
     // text
     private final String LOWER_TEXT = "0";
     private final String LOWER_TIP = "lower bound where the generated random variables will be truncated to";
-    private final String UPPER_TEXT = "1";
+    private final String UPPER_TEXT = "+infiniti";
     private final String UPPER_TIP = "upper bound where the generated random variables will be truncated to";
     private final String LOWER_LABEL_TEXT = "Lower";
     private final String UPPER_LABEL_TEXT = "Upper";
@@ -356,11 +356,18 @@ public class MakeDistPanel extends JPanel {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		double[] distrParm = new double[4];
+		Double upperBound = null;
+
+		try{
+		    upperBound = Double.parseDouble(upperText.getText());
+		}catch(NumberFormatException nn){
+		    upperBound = Double.MAX_VALUE;
+		}
 		try {
 		    done.setEnabled(false);
 		    distrParm[0] = Double.parseDouble(field.getText());
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
-		    distrParm[3] = Double.parseDouble(upperText.getText());
+		    distrParm[3] = upperBound;
 		    model.setDistributionType((DistributionType) selectBox
 			    .getSelectedItem());
 		    model.setVariable(variableName);
@@ -394,11 +401,17 @@ public class MakeDistPanel extends JPanel {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		double[] distrParm = new double[4];
+		Double upperBound = null;
+		try{
+		    upperBound = Double.parseDouble(upperText.getText());
+		}catch(NumberFormatException nn){
+		    upperBound = Double.MAX_VALUE;
+		}
 		try {
 		    distrParm[0] = Double.parseDouble(field1.getText());
 		    distrParm[1] = Double.parseDouble(field2.getText());
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
-		    distrParm[3] = Double.parseDouble(upperText.getText());
+		    distrParm[3] = upperBound;
 		    model.setDistributionType((DistributionType) selectBox
 			    .getSelectedItem());
 		    model.setVariable(variableName);
