@@ -294,6 +294,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	if (size == variablePane.getVariableListSize()) {
 	    createIDFButton.setEnabled(true);
 	    simulationButton.setEnabled(true);
+	    core.exportInputs();
 	}
     }
 

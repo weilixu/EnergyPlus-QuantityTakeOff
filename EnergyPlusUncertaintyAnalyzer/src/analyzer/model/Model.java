@@ -1,6 +1,7 @@
 package analyzer.model;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -431,6 +432,33 @@ public class Model {
 	squaremeterModel.setBuildingType(t);
 	squareCostDataMap = squaremeterModel.generateSamples();
 	onUpdatedCostDataMap();
+    }
+    
+    /**
+     * export the inputs to a csv file. The exported file will be saved under parent folder
+     * This method should be called after the random variable map filled with data.
+     */
+    public void exportInputs(){
+	try{
+	    FileWriter writer = new FileWriter(parentFile.getAbsoluteFile()+"\\inputs.csv");
+	    
+	    Set<String> variableList = randomVariableList.keySet();
+	    Iterator<String> variableIterator = variableList.iterator();
+	    while(variableIterator.hasNext()){
+		String variable = variableIterator.next();
+		writer.append(variable);
+		double[] inputList = randomVariableList.get(variable);
+		for(double d: inputList){
+		    writer.append(",");
+		    writer.append(""+d);
+		}
+		writer.append("\n");
+	    }
+	    writer.flush();
+	    writer.close();
+	}catch(IOException e){
+	    e.printStackTrace();
+	}
     }
 
     /**
