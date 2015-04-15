@@ -2,7 +2,11 @@ package analyzer.listeners;
 
 import java.util.List;
 
+import javax.swing.JPanel;
+
 import org.jfree.chart.ChartPanel;
+
+import de.erichseifert.gral.ui.InteractivePanel;
 
 /**
  * graph generation listener listens the <link>GraphGenerator<link> and get the
@@ -26,5 +30,11 @@ public interface GraphGenerationListener {
      * @param charts
      */
     public void histogramGraphGenerated(List<ChartPanel> charts);
+    
+    /**
+     * updates the gui with the generated box plots
+     * @param charts
+     */
+    public void boxPlotGraphGenerated(List<InteractivePanel> charts);
 
 }

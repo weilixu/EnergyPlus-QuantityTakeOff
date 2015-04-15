@@ -21,5 +21,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/allfitdist.jar"/>
 	<classpathentry kind="lib" path="lib/csvfitdist.jar"/>
+	<classpathentry kind="lib" path="lib/gral-core-0.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

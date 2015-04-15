@@ -2,6 +2,7 @@ package analyzer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartPanel;
 
+import de.erichseifert.gral.ui.InteractivePanel;
 import analyzer.graphs.PlotHistogram;
 import analyzer.lifecyclecost.squaremeterestimation.BuildingType;
 import analyzer.listeners.GraphGenerationListener;
@@ -143,5 +145,18 @@ public class AnalysisPanel extends JTabbedPane implements
 	histoGramPanel.add(histogramGraph.createPanel());
 	histoGramPanel.revalidate();
 	histoGramPanel.repaint();
+    }
+
+    @Override
+    public void boxPlotGraphGenerated(List<InteractivePanel> charts) {
+	timeSeriesPanel.removeAll();
+	Iterator<InteractivePanel> iterator = charts.iterator();
+	while (iterator.hasNext()) {
+	    JPanel tempChart = iterator.next();
+	    tempChart.setBorder(BorderFactory.createLineBorder(Color.black));
+	    timeSeriesPanel.add(tempChart);
+	}
+	timeSeriesPanel.revalidate();
+	timeSeriesPanel.repaint();
     }
 }

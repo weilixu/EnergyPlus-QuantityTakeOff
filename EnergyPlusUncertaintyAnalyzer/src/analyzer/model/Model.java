@@ -10,10 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jfree.chart.ChartPanel;
 
+import de.erichseifert.gral.ui.InteractivePanel;
 import analyzer.distributions.DistributionType;
 import analyzer.distributions.MakeDistributionModel;
 import analyzer.eplus.EnergyPlusFilesGenerator;
@@ -417,8 +419,9 @@ public class Model {
     public void generateGraphs() {
 	graphs.setResults();
 	onUpdatedHistoGraphGenerated(graphs.getHistogramCharts());
-	onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
+	//onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
 	// initializeSenstivityAnalysis();
+	onUpdateBoxPlotGenerated(graphs.getBoxandWhiskerCharts());
     }
 
     public void generateTotalCost(BuildingType t) {
@@ -613,6 +616,12 @@ public class Model {
 	for (LoadIdfListeners l : loadIDFListeners) {
 	    l.loadedEnergyPlusFile(idfData.getVariableList(),
 		    idfData.getVaraibleKeySets());
+	}
+    }
+    
+    private void onUpdateBoxPlotGenerated(List<InteractivePanel> boxCharts){
+	for(GraphGenerationListener g: graphListeners){
+	    g.boxPlotGraphGenerated(boxCharts);
 	}
     }
 

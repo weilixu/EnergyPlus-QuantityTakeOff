@@ -3,13 +3,18 @@ package analyzer.graphs;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JPanel;
 
 import analyzer.htmlparser.BuildingAreaParser;
 import analyzer.listeners.GraphGenerationListener;
 
 import org.jfree.chart.ChartPanel;
+
+import de.erichseifert.gral.ui.InteractivePanel;
 
 public class GraphGenerator {
 
@@ -36,6 +41,7 @@ public class GraphGenerator {
 
     private List<ChartPanel> timeCharts; // time series graphs
     private List<ChartPanel> histoCharts; // histogram graphs
+    private List<InteractivePanel> boxCharts;
 
     public GraphGenerator(File rf, int num, String y) {
 	// take in variables
@@ -56,6 +62,7 @@ public class GraphGenerator {
 	// initialize the two graph data
 	timeCharts = new ArrayList<ChartPanel>();
 	histoCharts = new ArrayList<ChartPanel>();
+	boxCharts = new ArrayList<InteractivePanel>();
 
 	// initialize the GUI listener
     }
@@ -95,6 +102,27 @@ public class GraphGenerator {
     
     public ArrayList<Integer> getMissingList(){
 	return resultAnalyzer.getMissing();
+    }
+    
+    public List<InteractivePanel> getBoxandWhiskerCharts(){
+	for(int i=0; i<numGraph; i++){
+	    Double[][] boxData = new Double[numMonths][numSimulation];
+	    String[] axisTick = new String[numMonths];
+	    for(int j=0; j<numMonths; j++){
+		String currentKey = resultAnalyzer.getKey(j);
+		axisTick[j] = currentKey;
+		double[] temp = resultAnalyzer.getData(currentKey, i);
+		for(int k=0; k<temp.length; k++){
+		    boxData[j][k] = temp[k];
+		}
+	    }
+	    String title = resultAnalyzer.getVariable(i);
+	    BoxPlotGraph graph = new BoxPlotGraph(title,numMonths, year);
+	    graph.addRows(axisTick, boxData);
+	    boxCharts.add(graph.getChart());
+	    
+	}
+	return boxCharts;
     }
 
     /**
