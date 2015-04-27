@@ -12,6 +12,7 @@ public enum DistributionType {
     UNIFORMC("Uniform Distribution","Continuous"),
     UNIFORMD("Uniform Distribution","Discrete"),
     WEIBULL("Weibull Distribution","Continuous"),
+    TRIANGULAR("Triangular Distribution","Continuous"),
     EXPON("Exponential Distribution","Continuous");
     
     private String type;

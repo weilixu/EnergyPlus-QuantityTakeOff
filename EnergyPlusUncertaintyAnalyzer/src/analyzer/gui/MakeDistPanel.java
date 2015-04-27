@@ -62,6 +62,7 @@ public class MakeDistPanel extends JPanel {
 
     // elements
     private final String M = "mu";
+    private final String D = "mode";
     private final String L = "lambda";
     private final String B = "b";
     private final String A = "a";
@@ -153,6 +154,7 @@ public class MakeDistPanel extends JPanel {
 	distInputPanel.add(setNormal(), DistributionType.NORMAL.toString());
 	distInputPanel.add(setUniformC(), DistributionType.UNIFORMC.toString());
 	distInputPanel.add(setUniformD(), DistributionType.UNIFORMD.toString());
+	distInputPanel.add(setTriangular(), DistributionType.TRIANGULAR.toString());
 	distInputPanel.add(setWeibull(), DistributionType.WEIBULL.toString());
 
 	// add all the inputs to the selection panel
@@ -328,6 +330,25 @@ public class MakeDistPanel extends JPanel {
 	uniformPanel.add(setRefreshButton());
 	return uniformPanel;
     }
+    
+    private JPanel setTriangular(){
+	JPanel triangularPanel = new JPanel();
+	JTextField aText = new JTextField(LO);
+	aText.setToolTipText("lower - Lower parameter");
+	JTextField bText = new JTextField(UP);
+	bText.setToolTipText("upper - Upper parameter");
+	JTextField cText = new JTextField(D);
+	cText.setToolTipText("mode - peak parameter");
+	aText.setPreferredSize(new Dimension(150, 25));
+	bText.setPreferredSize(new Dimension(150, 25));
+	cText.setPreferredSize(new Dimension(150, 25));
+	triangularPanel.add(aText);
+	triangularPanel.add(bText);
+	triangularPanel.add(cText);
+	triangularPanel.add(setTriangularButton(aText,cText,bText));
+	triangularPanel.add(setRefreshButton());
+	return triangularPanel;
+    }
 
     private JPanel setWeibull() {
 	JPanel weibullPanel = new JPanel();
@@ -412,6 +433,37 @@ public class MakeDistPanel extends JPanel {
 		    distrParm[1] = Double.parseDouble(field2.getText());
 		    distrParm[2] = Double.parseDouble(lowerText.getText());
 		    distrParm[3] = upperBound;
+		    model.setDistributionType((DistributionType) selectBox
+			    .getSelectedItem());
+		    model.setVariable(variableName);
+		    // disable the selection
+		    model.generateRV(distrParm);
+		    // disable the other tab
+		    done.setEnabled(true);
+		    selectBox.setEnabled(false);
+		    parentPane.setEnabledAt(0, false);
+		} catch (NumberFormatException ne) {
+		    done.setEnabled(true);
+		    showErrorDialog(new JFrame(), "Error Found in input",
+			    "Enter Integer or Double values! e.g (100)");
+		}
+	    }
+	});
+	return done;
+    }
+    
+    private JButton setTriangularButton(JTextField a, JTextField b, JTextField c){
+	JButton done = new JButton("Done");
+	done.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		double[] distrParm = new double[4];
+		try {
+		    distrParm[0] = Double.parseDouble(a.getText());
+		    distrParm[1] = Double.parseDouble(b.getText());
+		    distrParm[2] = Double.parseDouble(c.getText());;
+		    distrParm[3] = 0.0;
 		    model.setDistributionType((DistributionType) selectBox
 			    .getSelectedItem());
 		    model.setVariable(variableName);

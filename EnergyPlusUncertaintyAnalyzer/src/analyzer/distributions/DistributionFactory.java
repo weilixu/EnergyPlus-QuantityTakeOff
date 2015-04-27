@@ -66,6 +66,8 @@ public class DistributionFactory {
 	    return new TruncatedUniformIntegerDistribution(firstParam, secondParam);
 	case WEIBULL:
 	    return new TruncatedWeibullDistribution(firstParam, secondParam, lowerParam, higherParam);
+	case TRIANGULAR:
+	    return new TruncatedTriangleDistribution(firstParam, secondParam, lowerParam);
 	case EXPON:
 	    return new TruncatedExponentialDistribution(firstParam, lowerParam, higherParam);
 	}
