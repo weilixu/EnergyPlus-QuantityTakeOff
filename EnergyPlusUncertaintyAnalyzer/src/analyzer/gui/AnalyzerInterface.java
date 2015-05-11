@@ -43,6 +43,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private final String MENU_TITLE = "Setting";
     private final String MENU_EXIT = "Exit";
+    private final String MENU_OPTI = "Optimization";
     private final String MENU_LOAD = "Load IDF";
     private final String MENU_CONFIG = "Configuration";
     // private final String MENU_SWITCH = "Data Analysis";
@@ -52,6 +53,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
      */
     private final JMenuItem loadMenus;
     private final JMenuItem eplusConfig;
+    private final JMenuItem optimizationMenuItem;
+
 
     /*
      * initial set-up variables
@@ -66,6 +69,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private final JPanel outerPanel;
     private final JPanel innerPanel;
     private final VariablePanel variablePane;
+    private final OptimizationPanel optimizationPane;
     // contains the text field specify the number of simulations
     private final JPanel inputPanel;
     private final JPanel simulationPanel;
@@ -163,7 +167,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	settingMenuBar = new JMenuBar();
 	JMenu setting = new JMenu(MENU_TITLE);
 	setting.setMnemonic(KeyEvent.VK_S);
-
+	
 	// set the configuration button
 	eplusConfig = new JMenuItem(MENU_CONFIG);
 	eplusConfig.setMnemonic(KeyEvent.VK_C);
@@ -244,6 +248,26 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	setting.add(loadMenus);
+	
+	/*
+	 * Set up optimization settings
+	 */
+	optimizationPane = new OptimizationPanel(core);
+	optimizationMenuItem = new JMenuItem(MENU_OPTI);
+	optimizationMenuItem.setMnemonic(KeyEvent.VK_O);
+	optimizationMenuItem.setEnabled(false);
+	optimizationMenuItem.addActionListener(new ActionListener(){
+
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		BorderLayout layout = (BorderLayout) innerPanel.getLayout();
+		innerPanel.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+		innerPanel.add(optimizationPane, BorderLayout.CENTER);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	setting.add(optimizationMenuItem);
 
 	// add the separator to divide the data inputs and frame function
 	setting.addSeparator();
@@ -294,6 +318,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	if (size == variablePane.getVariableListSize()) {
 	    createIDFButton.setEnabled(true);
 	    simulationButton.setEnabled(true);
+	    optimizationMenuItem.setEnabled(true);
 	    core.exportInputs();
 	}
     }

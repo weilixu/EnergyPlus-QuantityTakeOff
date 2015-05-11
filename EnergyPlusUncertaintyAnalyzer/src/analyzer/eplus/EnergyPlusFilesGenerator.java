@@ -6,7 +6,7 @@ public interface EnergyPlusFilesGenerator {
      * 
      * @param fileID
      */
-    public void WriteIdf(String path, String fileID);
+    public String WriteIdf(String path, String fileID);
 
     /**
      * clone the current idf data

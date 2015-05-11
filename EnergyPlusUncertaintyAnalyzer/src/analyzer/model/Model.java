@@ -13,6 +13,18 @@ import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import jmetal.core.Algorithm;
+import jmetal.core.Operator;
+import jmetal.core.Problem;
+import jmetal.core.SolutionSet;
+import jmetal.metaheuristics.singleObjective.geneticAlgorithm.pgGA;
+import jmetal.operators.crossover.CrossoverFactory;
+import jmetal.operators.mutation.MutationFactory;
+import jmetal.operators.selection.SelectionFactory;
+import jmetal.util.JMException;
+import jmetal.util.parallel.IParallelEvaluator;
+import jmetal.util.parallel.MultithreadedEvaluator;
+
 import org.jfree.chart.ChartPanel;
 
 import de.erichseifert.gral.ui.InteractivePanel;
@@ -21,9 +33,11 @@ import analyzer.distributions.MakeDistributionModel;
 import analyzer.eplus.EnergyPlusFilesGenerator;
 import analyzer.eplus.IdfReader;
 import analyzer.eplus.RunEnergyPlus;
+import analyzer.eplus.RunEnergyPlusOptimization;
 import analyzer.graphs.GraphGenerator;
 import analyzer.htmlparser.BuildingAreaParser;
 import analyzer.lang.AnalyzerException;
+import analyzer.lang.AnalyzerUtils;
 import analyzer.lifecyclecost.DataObjects;
 import analyzer.lifecyclecost.FieldElement;
 import analyzer.lifecyclecost.LifeCycleCostModel;
@@ -37,6 +51,7 @@ import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.MakeDistGraphGeneratorListener;
 import analyzer.listeners.ModelDataListener;
 import analyzer.listeners.SquareMeterCostModelListener;
+import analyzer.optimization.singleobjective.EUI;
 import analyzer.sensitivity.SensitivityAnalysis;
 
 /**
@@ -57,6 +72,9 @@ public class Model {
 
     // record the number of the simulation to determine the size of data
     private int simulationNumber;
+
+    // record the optimization count
+    private static int simulationCount = 0;
 
     /*
      * Folders
@@ -84,6 +102,11 @@ public class Model {
      * <link>RunEnergyPlus<link>
      */
     private RunEnergyPlus run;
+
+    /**
+     * <link>RunEnergyPlusOptimization<link>
+     */
+    private RunEnergyPlusOptimization runOP;
 
     /**
      * fit distribution generator
@@ -148,6 +171,7 @@ public class Model {
     public Model() {
 	idfData = new IdfReader();
 	run = new RunEnergyPlus();
+	runOP = new RunEnergyPlusOptimization();
 	generator = new RVGenerator();
 	multiGenerator = new GenerateFromCSV();
 	lccModel = new LifeCycleCostModel();
@@ -384,7 +408,8 @@ public class Model {
 
 	if (headerList.length != distSummary.length
 		&& headerList.length != data.length) {
-	    throw new AnalyzerException("CSV Data Format Error: The number of variables does not match the number of data columns");
+	    throw new AnalyzerException(
+		    "CSV Data Format Error: The number of variables does not match the number of data columns");
 	}
 
 	// updates gui
@@ -419,7 +444,7 @@ public class Model {
     public void generateGraphs() {
 	graphs.setResults();
 	onUpdatedHistoGraphGenerated(graphs.getHistogramCharts());
-	//onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
+	// onUpdatedTimeSeriesGraphGenerated(graphs.getTimeSeriesCharts());
 	// initializeSenstivityAnalysis();
 	onUpdateBoxPlotGenerated(graphs.getBoxandWhiskerCharts());
     }
@@ -436,32 +461,122 @@ public class Model {
 	squareCostDataMap = squaremeterModel.generateSamples();
 	onUpdatedCostDataMap();
     }
-    
+
     /**
-     * export the inputs to a csv file. The exported file will be saved under parent folder
-     * This method should be called after the random variable map filled with data.
+     * export the inputs to a csv file. The exported file will be saved under
+     * parent folder This method should be called after the random variable map
+     * filled with data.
      */
-    public void exportInputs(){
-	try{
-	    FileWriter writer = new FileWriter(parentFile.getAbsoluteFile()+"\\inputs.csv");
-	    
+    public void exportInputs() {
+	try {
+	    FileWriter writer = new FileWriter(parentFile.getAbsoluteFile()
+		    + "\\inputs.csv");
+
 	    Set<String> variableList = randomVariableList.keySet();
 	    Iterator<String> variableIterator = variableList.iterator();
-	    while(variableIterator.hasNext()){
+	    while (variableIterator.hasNext()) {
 		String variable = variableIterator.next();
 		writer.append(variable);
 		double[] inputList = randomVariableList.get(variable);
-		for(double d: inputList){
+		for (double d : inputList) {
 		    writer.append(",");
-		    writer.append(""+d);
+		    writer.append("" + d);
 		}
 		writer.append("\n");
 	    }
 	    writer.flush();
 	    writer.close();
-	}catch(IOException e){
+	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    /*
+     * OPTIMIZATION RELATED FUNCTIONS
+     */
+
+    public void singleObjectiveOptimization() throws JMException,
+	    ClassNotFoundException {
+	Problem problem = new EUI(randomVariableList, this);
+	int threads = 4;
+	IParallelEvaluator parallelEvaluator = new MultithreadedEvaluator(
+		threads);
+
+	Algorithm algorithm = new pgGA(problem, parallelEvaluator); // Generational
+								    // GA
+	/* Algorithm parameters */
+	algorithm.setInputParameter("populationSize", 4);
+	algorithm.setInputParameter("maxEvaluations", 10);
+
+	int bits = 512;
+
+	HashMap<String, Double> parameters; // Operator parameter
+	// Mutation and Crossover for Binary codification
+	parameters = new HashMap<String, Double>();
+	parameters.put("probability", 0.9);
+	Operator crossover = CrossoverFactory.getCrossoverOperator(
+		"SBXCrossover", parameters);
+
+	parameters = new HashMap<String, Double>();
+	parameters.put("probability", 1.0 / bits);
+	Operator mutation = MutationFactory.getMutationOperator(
+		"PolynomialMutation", parameters);
+
+	/* Selection Operator */
+	parameters = null;
+	Operator selection = SelectionFactory.getSelectionOperator(
+		"BinaryTournament", parameters);
+
+	/* Add the operators to the algorithm */
+	algorithm.addOperator("crossover", crossover);
+	algorithm.addOperator("mutation", mutation);
+	algorithm.addOperator("selection", selection);
+
+	/* Execute the Algorithm */
+	long initTime = System.currentTimeMillis();
+	SolutionSet population = algorithm.execute();
+	long estimatedTime = System.currentTimeMillis() - initTime;
+	System.out.println("Total execution time: " + estimatedTime);
+
+	/* Log messages */
+	System.out.println("Objectives values have been writen to file FUN");
+	population.printObjectivesToFile("FUN");
+	System.out.println("Variables values have been writen to file VAR");
+	population.printVariablesToFile("VAR");
+    }
+
+    public double singleEvaluation(Double[] decisionVariables,
+	    String[] variableName) throws IOException {
+	String[] config = AnalyzerUtils.getEplusConfig();
+	String folderName = "";
+	String eplusFileName = "";
+	File folder;
+	String count;
+	synchronized (this) {
+	    System.out.println(simulationCount);
+	    simulationCount++;
+	    folderName = resultFile.getAbsolutePath() + "\\" + simulationCount;
+	    folder = new File(folderName);
+	    folder.mkdir();
+	    eplusFileName = folder.getAbsolutePath() + "\\" + simulationCount
+		    + ".idf";
+	    count = ""+simulationCount;
+	}
+	
+	EnergyPlusFilesGenerator data = idfData.cloneIdfData();
+	for (int i = 0; i < variableName.length; i++) {
+	    Double value = decisionVariables[i];
+	    data.modifySpecialCharactor(variableName[i], value.toString());
+	}
+	data.WriteIdf(folder.getAbsolutePath(), count);
+	
+	runOP.setFolder(folder);
+	runOP.createBatchFile();
+	runOP.setEnergyPlusDirectory(config[0]);
+	runOP.setWeatherFile(config[1]);
+
+	double value = runOP.runSimulation(eplusFileName);
+	return value;
     }
 
     /**
@@ -618,9 +733,9 @@ public class Model {
 		    idfData.getVaraibleKeySets());
 	}
     }
-    
-    private void onUpdateBoxPlotGenerated(List<InteractivePanel> boxCharts){
-	for(GraphGenerationListener g: graphListeners){
+
+    private void onUpdateBoxPlotGenerated(List<InteractivePanel> boxCharts) {
+	for (GraphGenerationListener g : graphListeners) {
 	    g.boxPlotGraphGenerated(boxCharts);
 	}
     }

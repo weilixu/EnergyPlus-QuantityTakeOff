@@ -508,13 +508,15 @@ public class IdfReader implements EnergyPlusFilesGenerator {
     }
 
     @Override
-    public void WriteIdf(String path, String fileID) {
+    public String WriteIdf(String path, String fileID) {
+	String eplusPath = path + "\\"+ fileID+".idf";
 	IdfWriter writer = new IdfWriter(eplusMap, path + "\\", fileID);
 	try {
 	    writer.writeIdf();
 	} catch (IOException e) {
 	    // do something!
 	}
+	return eplusPath;
     }
 
     @Override
