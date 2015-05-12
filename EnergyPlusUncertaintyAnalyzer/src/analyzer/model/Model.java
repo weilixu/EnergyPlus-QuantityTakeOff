@@ -495,8 +495,8 @@ public class Model {
 	Algorithm algorithm = new pgGA(problem, parallelEvaluator); // Generational
 								    // GA
 	/* Algorithm parameters */
-	algorithm.setInputParameter("populationSize", 4);
-	algorithm.setInputParameter("maxEvaluations", 10);
+	algorithm.setInputParameter("populationSize", threads);
+	algorithm.setInputParameter("maxEvaluations", 100);
 
 	int bits = 512;
 

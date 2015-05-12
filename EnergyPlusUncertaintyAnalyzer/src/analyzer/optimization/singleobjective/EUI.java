@@ -34,7 +34,7 @@ public class EUI extends Problem{
     
     public EUI(HashMap<String, double[]> randomVariableList, IdfReader data, File folder){
 	numberOfVariables_=randomVariableList.size();
-	numberOfObjectives_=1;
+	numberOfObjectives_=1;//this is a single objective optimization
 	numberOfConstraints_=0;
 	problemName_ = "Building EUI Optimization";
 	this.data = data;
