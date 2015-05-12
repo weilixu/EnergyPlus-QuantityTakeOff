@@ -9,47 +9,68 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 import analyzer.htmlparser.EnergyPlusHTMLParser;
+import analyzer.lang.AnalyzerUtils;
+import jmetal.core.Variable;
+import jmetal.util.JMException;
 
 public class RunEnergyPlusOptimization {
     private static final String EPLUSBAT = "RunEplus.bat";
 
     private File folder;
+    private File eplusFolder;
+    private Integer simulationCount;
+
+    private Variable[] decisionData;
+    private String[] VariableName;
+
+    private EnergyPlusHTMLParser parser;
+    private final IdfReader idfData;
+    private File weaFile;
 
     private String energyplus_dir;
-    private String weather_file;
-    private File eplusBatFile;
-    
-    private EnergyPlusHTMLParser parser;
+    private String weather_dir;
 
-    public RunEnergyPlusOptimization() {
+    public RunEnergyPlusOptimization(IdfReader reader,
+	    Variable[] decisionVariable, String[] variableNames) {
+	idfData = reader;
+	decisionData = decisionVariable;
+	VariableName = variableNames;
 
+	String[] config = AnalyzerUtils.getEplusConfig();
+	energyplus_dir = config[0];
+	weather_dir = config[1];
+
+    }
+
+    public void setSimulationTime(Integer simulationTime) {
+	simulationCount = simulationTime;
     }
 
     public void setFolder(File f) {
 	folder = f;
     }
 
-    // setter method to set the energyplus directory. This input must be
-    // specified before the simulation
-    public void setEnergyPlusDirectory(String ed) {
-	energyplus_dir = ed;
-    }
-
-    // setter method to set the weather file. If not specified, default weather
-    // file will be used
-    public void setWeatherFile(String wf) {
-	weather_file = wf;
-    }
-
-    public double runSimulation(String pathToIdf) throws IOException {
-	File wea = new File(weather_file);
-	File weatherFile = copyWeatherFile(wea);
-	String[] commandline = { eplusBatFile.getAbsolutePath(),
-		pathToIdf.substring(0, pathToIdf.indexOf(".")),
-		weatherFile.getName() };
+    public double runSimulation() throws IOException, JMException {
+	eplusFolder = new File(folder.getAbsolutePath() + "\\"
+		+ simulationCount.toString());
+	eplusFolder.mkdir();
+	File weatherFile = new File(energyplus_dir + "WeatherData\\"
+		+ weather_dir + ".epw");
+	weaFile = copyWeatherFile(weatherFile);
+	File eplusBatFile = createBatchFile();
+	createFile(idfData.cloneIdfData());
+	File energyPlusFile = new File(folder.getAbsolutePath() + "\\"
+		+ simulationCount.toString()+"\\"+simulationCount.toString()+".idf");
+	System.out.println(energyPlusFile.getAbsolutePath());
 	
+	String[] commandline = {
+		eplusBatFile.getAbsolutePath(),
+		energyPlusFile.getAbsolutePath().substring(0,
+			energyPlusFile.getAbsolutePath().indexOf(".")),
+		"weather"};
+
 	try {
-	    Process p = Runtime.getRuntime().exec(commandline, null, folder);
+	    Process p = Runtime.getRuntime().exec(commandline, null, eplusFolder);
 	    ThreadedInputStream errStr = new ThreadedInputStream(
 		    p.getErrorStream());
 	    errStr.start();
@@ -68,8 +89,8 @@ public class RunEnergyPlusOptimization {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-	
-	File[] fileList = folder.listFiles();
+
+	File[] fileList = eplusFolder.listFiles();
 	for (File f : fileList) {
 	    if (f.getAbsolutePath().contains(".html")) {
 		parser = new EnergyPlusHTMLParser(f);
@@ -80,10 +101,21 @@ public class RunEnergyPlusOptimization {
 	return Double.MAX_VALUE;
     }
 
+    private void createFile(EnergyPlusFilesGenerator data) throws IOException,
+	    JMException {
+	for (int i = 0; i < VariableName.length; i++) {
+	    Double value = decisionData[i].getValue();
+	    data.modifySpecialCharactor(VariableName[i], value.toString());
+	}
+	data.WriteIdf(eplusFolder.getAbsolutePath(), simulationCount.toString());
+    }
+
     private File copyWeatherFile(File weatherFile) throws IOException {
-	BufferedReader br = new BufferedReader(new FileReader("E:\\01_Software\\EnergyPlusV8-2-0\\WeatherData\\USA_PA_Pittsburgh-Allegheny.County.AP.725205_TMY3.epw"));
+	BufferedReader br = new BufferedReader(
+		new FileReader(
+			weatherFile));
 	StringBuilder sb = new StringBuilder();
-	File file = new File(folder.getAbsolutePath() + "\\" + "weather.epw");
+	File file = new File(eplusFolder.getAbsolutePath() + "\\" + "weather.epw");
 
 	try {
 	    String line = br.readLine();
@@ -109,9 +141,10 @@ public class RunEnergyPlusOptimization {
 	return file;
     }
 
-    public void createBatchFile() throws IOException {
+    public File createBatchFile() throws IOException {
 	String keyWord = "SET maindir=";
-	File file = new File(folder.getAbsolutePath() + "\\" + EPLUSBAT);
+	String weaWord = "set weather_path=";
+	File file = new File(eplusFolder.getAbsolutePath() + "\\" + EPLUSBAT);
 	file.createNewFile();
 
 	// reading file and write to the new file
@@ -126,6 +159,9 @@ public class RunEnergyPlusOptimization {
 		if (line.contains(keyWord)) {
 		    sb.append(keyWord);
 		    sb.append(energyplus_dir);
+		}else if (line.contains(weaWord)) {
+		    sb.append(weaWord);
+		    sb.append(eplusFolder.getAbsolutePath() + "\\");
 		} else {
 		    sb.append(line);
 		}
@@ -145,7 +181,7 @@ public class RunEnergyPlusOptimization {
 	    // close the file
 	    br.close();
 	}
-	eplusBatFile = file;
+	return file;
     }
 
     class ThreadedInputStream extends Thread {

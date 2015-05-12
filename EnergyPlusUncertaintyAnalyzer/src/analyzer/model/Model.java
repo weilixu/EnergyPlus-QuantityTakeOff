@@ -73,9 +73,6 @@ public class Model {
     // record the number of the simulation to determine the size of data
     private int simulationNumber;
 
-    // record the optimization count
-    private static int simulationCount = 0;
-
     /*
      * Folders
      */
@@ -102,11 +99,6 @@ public class Model {
      * <link>RunEnergyPlus<link>
      */
     private RunEnergyPlus run;
-
-    /**
-     * <link>RunEnergyPlusOptimization<link>
-     */
-    private RunEnergyPlusOptimization runOP;
 
     /**
      * fit distribution generator
@@ -171,7 +163,6 @@ public class Model {
     public Model() {
 	idfData = new IdfReader();
 	run = new RunEnergyPlus();
-	runOP = new RunEnergyPlusOptimization();
 	generator = new RVGenerator();
 	multiGenerator = new GenerateFromCSV();
 	lccModel = new LifeCycleCostModel();
@@ -494,10 +485,9 @@ public class Model {
     /*
      * OPTIMIZATION RELATED FUNCTIONS
      */
-
     public void singleObjectiveOptimization() throws JMException,
 	    ClassNotFoundException {
-	Problem problem = new EUI(randomVariableList, this);
+	Problem problem = new EUI(randomVariableList, idfData,resultFile);
 	int threads = 4;
 	IParallelEvaluator parallelEvaluator = new MultithreadedEvaluator(
 		threads);
@@ -543,40 +533,6 @@ public class Model {
 	population.printObjectivesToFile("FUN");
 	System.out.println("Variables values have been writen to file VAR");
 	population.printVariablesToFile("VAR");
-    }
-
-    public double singleEvaluation(Double[] decisionVariables,
-	    String[] variableName) throws IOException {
-	String[] config = AnalyzerUtils.getEplusConfig();
-	String folderName = "";
-	String eplusFileName = "";
-	File folder;
-	String count;
-	synchronized (this) {
-	    System.out.println(simulationCount);
-	    simulationCount++;
-	    folderName = resultFile.getAbsolutePath() + "\\" + simulationCount;
-	    folder = new File(folderName);
-	    folder.mkdir();
-	    eplusFileName = folder.getAbsolutePath() + "\\" + simulationCount
-		    + ".idf";
-	    count = ""+simulationCount;
-	}
-	
-	EnergyPlusFilesGenerator data = idfData.cloneIdfData();
-	for (int i = 0; i < variableName.length; i++) {
-	    Double value = decisionVariables[i];
-	    data.modifySpecialCharactor(variableName[i], value.toString());
-	}
-	data.WriteIdf(folder.getAbsolutePath(), count);
-	
-	runOP.setFolder(folder);
-	runOP.createBatchFile();
-	runOP.setEnergyPlusDirectory(config[0]);
-	runOP.setWeatherFile(config[1]);
-
-	double value = runOP.runSimulation(eplusFileName);
-	return value;
     }
 
     /**

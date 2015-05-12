@@ -1,10 +1,13 @@
 package analyzer.optimization.singleobjective;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import analyzer.eplus.IdfReader;
+import analyzer.eplus.RunEnergyPlusOptimization;
 import analyzer.model.Model;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -25,14 +28,17 @@ import jmetal.util.JMException;
  */
 public class EUI extends Problem{
     private String[] VariableName;
-    private Model model;
+    private static Integer simulationCount = 0;
+    private final IdfReader data;
+    private File analyzeFolder;
     
-    public EUI(HashMap<String, double[]> randomVariableList, Model analyzeModel){
+    public EUI(HashMap<String, double[]> randomVariableList, IdfReader data, File folder){
 	numberOfVariables_=randomVariableList.size();
 	numberOfObjectives_=1;
 	numberOfConstraints_=0;
 	problemName_ = "Building EUI Optimization";
-	model = analyzeModel;
+	this.data = data;
+	analyzeFolder = folder;
 	
 	VariableName = new String[numberOfVariables_];
 	upperLimit_ = new double[numberOfVariables_];
@@ -55,12 +61,16 @@ public class EUI extends Problem{
     @Override
     public void evaluate(Solution solution) throws JMException {
 	Variable[] decisionVariables = solution.getDecisionVariables();
-	Double[] variables = new Double[decisionVariables.length];
-	for(int i=0; i<decisionVariables.length; i++){
-	    variables[i] = decisionVariables[i].getValue();
+	RunEnergyPlusOptimization optimization = new RunEnergyPlusOptimization(data,decisionVariables,VariableName);
+	optimization.setFolder(analyzeFolder);
+	
+	synchronized(this){
+	    simulationCount++;
+	    optimization.setSimulationTime(simulationCount);
 	}
+	
 	try {
-	    solution.setObjective(0, model.singleEvaluation(variables, VariableName));
+	    solution.setObjective(0, optimization.runSimulation());
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
