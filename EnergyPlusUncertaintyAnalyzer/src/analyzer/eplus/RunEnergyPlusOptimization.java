@@ -51,18 +51,23 @@ public class RunEnergyPlusOptimization {
     }
 
     public double runSimulation() throws IOException, JMException {
+	//create the energyplus folder
 	eplusFolder = new File(folder.getAbsolutePath() + "\\"
 		+ simulationCount.toString());
 	eplusFolder.mkdir();
+	//create a copy of weather file
 	File weatherFile = new File(energyplus_dir + "WeatherData\\"
 		+ weather_dir + ".epw");
 	weaFile = copyWeatherFile(weatherFile);
+	//create a batch file to run the simulation
 	File eplusBatFile = createBatchFile();
+	//create the idf file under the created energyplus folder
 	createFile(idfData.cloneIdfData());
+	//make it in a folder
 	File energyPlusFile = new File(folder.getAbsolutePath() + "\\"
 		+ simulationCount.toString()+"\\"+simulationCount.toString()+".idf");
 	System.out.println(energyPlusFile.getAbsolutePath());
-	
+	//commandline: eplus batch file directory energyplus file (without postfix) and weather file name (without postfix)
 	String[] commandline = {
 		eplusBatFile.getAbsolutePath(),
 		energyPlusFile.getAbsolutePath().substring(0,
@@ -70,6 +75,7 @@ public class RunEnergyPlusOptimization {
 		"weather"};
 
 	try {
+	    //run the simulation
 	    Process p = Runtime.getRuntime().exec(commandline, null, eplusFolder);
 	    ThreadedInputStream errStr = new ThreadedInputStream(
 		    p.getErrorStream());
@@ -81,6 +87,7 @@ public class RunEnergyPlusOptimization {
 
 	    errStr.join();
 	    outStr.join();
+	    //finished simulation, delete the file
 	    eplusBatFile.delete();
 
 	} catch (IOException e) {
@@ -89,7 +96,8 @@ public class RunEnergyPlusOptimization {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-
+	
+	//get the output from HTML
 	File[] fileList = eplusFolder.listFiles();
 	for (File f : fileList) {
 	    if (f.getAbsolutePath().contains(".html")) {
@@ -98,9 +106,13 @@ public class RunEnergyPlusOptimization {
 		return eui;
 	    }
 	}
+	//return the EUI (fitness value)
 	return Double.MAX_VALUE;
     }
-
+    
+    /*
+     * Create a new EnergyPlus file with special character replaced
+     */
     private void createFile(EnergyPlusFilesGenerator data) throws IOException,
 	    JMException {
 	for (int i = 0; i < VariableName.length; i++) {
@@ -109,7 +121,10 @@ public class RunEnergyPlusOptimization {
 	}
 	data.WriteIdf(eplusFolder.getAbsolutePath(), simulationCount.toString());
     }
-
+    
+    /*
+     * copy weather file into a directory
+     */
     private File copyWeatherFile(File weatherFile) throws IOException {
 	BufferedReader br = new BufferedReader(
 		new FileReader(
@@ -140,7 +155,10 @@ public class RunEnergyPlusOptimization {
 	}
 	return file;
     }
-
+    
+    /*
+     * Create a batch file in the directory
+     */
     public File createBatchFile() throws IOException {
 	String keyWord = "SET maindir=";
 	String weaWord = "set weather_path=";
