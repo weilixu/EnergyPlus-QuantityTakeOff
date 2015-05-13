@@ -488,7 +488,7 @@ public class Model {
     public void singleObjectiveOptimization() throws JMException,
 	    ClassNotFoundException {
 	Problem problem = new EUI(randomVariableList, idfData,resultFile);
-	int threads = 4;
+	int threads = Integer.parseInt(AnalyzerUtils.getEplusConfig()[2]);
 	IParallelEvaluator parallelEvaluator = new MultithreadedEvaluator(
 		threads);
 

@@ -44,6 +44,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private final String MENU_TITLE = "Setting";
     private final String MENU_EXIT = "Exit";
     private final String MENU_OPTI = "Optimization";
+    private final String MENU_UNCERT = "Uncertainty";
     private final String MENU_LOAD = "Load IDF";
     private final String MENU_CONFIG = "Configuration";
     // private final String MENU_SWITCH = "Data Analysis";
@@ -54,6 +55,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private final JMenuItem loadMenus;
     private final JMenuItem eplusConfig;
     private final JMenuItem optimizationMenuItem;
+    private final JMenuItem uncertaintyMenuItem;
 
 
     /*
@@ -268,6 +270,21 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	setting.add(optimizationMenuItem);
+	
+	uncertaintyMenuItem = new JMenuItem(MENU_UNCERT);
+	uncertaintyMenuItem.setMnemonic(KeyEvent.VK_U);
+	uncertaintyMenuItem.setEnabled(true);
+	uncertaintyMenuItem.addActionListener(new ActionListener(){
+
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		BorderLayout layout = (BorderLayout) innerPanel.getLayout();
+		innerPanel.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+		innerPanel.add(variablePane, BorderLayout.CENTER);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    } 
+	});
 
 	// add the separator to divide the data inputs and frame function
 	setting.addSeparator();
