@@ -14,7 +14,12 @@ public class Analyzer{
 	    @Override
 	    public void run() {
 		Model m = new Model();
-		AnalyzerInterface gui = new AnalyzerInterface(m);
+		try {
+		    AnalyzerInterface gui = new AnalyzerInterface(m);
+		} catch (Exception e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
 	    }
 	});
     }

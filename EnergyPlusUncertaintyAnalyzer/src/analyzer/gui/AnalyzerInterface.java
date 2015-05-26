@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
+import eplus.EnergyPlusModel;
+import uncertainty.gui.UncertaintyPanel;
 import analyzer.lang.AnalyzerUtils;
 import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.ModelDataListener;
@@ -110,6 +112,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private JButton lccToAnalysisButton;
     private JButton analysisToLccButton;
     private JButton lccToVariableButton;
+    private JButton lccToQtoButton;
     private int number_Variable;
 
     /*
@@ -129,7 +132,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private final JTextField numberProc;
     private final String CONFIG_TIP = "Simulation Configuration. Click Okay to customize your settings";
 
-    public AnalyzerInterface(Model c) {
+    public AnalyzerInterface(Model c) throws Exception {
 	// assign the model to the interface
 	core = c;
 	core.addModelDataListeners(this);
@@ -485,6 +488,24 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	
+	lccToQtoButton = new JButton("QTO");
+	lccToQtoButton.addActionListener(new ActionListener(){
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		JPanel qtoBudgetPanel = null;
+		try {
+		    qtoBudgetPanel = new UncertaintyPanel(new EnergyPlusModel(core.getEnergyPlusFile()));
+		} catch (Exception e1) {
+		    // TODO Auto-generated catch block
+		    e1.printStackTrace();
+		}
+		innerPanel.add(qtoBudgetPanel,BorderLayout.CENTER);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	
 	lccToVariableButton = new JButton("Variable Setting");
 	lccToVariableButton.addActionListener(new ActionListener() {
 
@@ -498,8 +519,23 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	
+	analysisToLccButton = new JButton("Cost Analysis");
+	analysisToLccButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		innerPanel.removeAll();
+		innerPanel.add(lccPanel, BorderLayout.CENTER);
+		innerPanel.add(lccControlPanel, BorderLayout.PAGE_END);
+		innerPanel.revalidate();
+		innerPanel.repaint();
+	    }
+	});
+	
 	temp.add(addButton);
 	temp.add(lccToVariableButton);
+	temp.add(lccToQtoButton);
+	temp.add(analysisToLccButton);
 	temp.add(lccToAnalysisButton);
 	return temp;
     }

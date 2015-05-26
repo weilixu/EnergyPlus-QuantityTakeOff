@@ -269,6 +269,10 @@ public class Model {
     public DataObjects getCopiedDataObject(DataObjects dataset) {
 	return lccModel.makeCopyOfDataSet(dataset);
     }
+    
+    public File getEnergyPlusFile(){
+	return eplusFile;
+    }
 
     /**
      * set the simulation number for the model

@@ -1,0 +1,107 @@
+<masterformat>
+	<material>
+		<concrete tag = "030000" description = "Concrete" type = "concrete">
+			<cast_in_place tag = "033000" description = "Cast-In-Place Concrete" type = "concrete">
+				<concrete_in_place tage = "033053.40" description = "Cast In Place" type = "concrete">
+					<cast_wall tag = "033050.404200" description = "Cast In Place Wall" type = "concrete"/>
+					<cast_slab tag = "033050.404650" description = "Cast In Place Slab On Grade" type = "concrete"/>
+				</concrete_in_place>
+			</cast_in_place>
+		</concrete>
+		<masonry tag = "040000" description = "Masonry" type = "masonry">
+			<clay_masonry tag = "042100" description = "Clay Unit Masonry" type = "masonry">
+				<brick_masonry tag = "042113" description = "Brick Masonry" type = "masonry">
+					<venner tag = "042113.13" description = "Brick Veneer Masonry" type = "masonry"/>
+					<thin_veneer tag = "042113.14" description = "Thin Brick Veneer" type = "masonry"/>
+				</brick_masonry>
+			</clay_masonry>
+		</masonry>
+		<wood tag = "060000" description = "Wood" type = "wood">
+			<sheathing tag = "061600" description = "Sheathing" type = "wood">
+				<woodpanel tag = "061636" description = "Wood Panel Product Sheathing" type = "wood"/>
+			</sheathing>
+		</wood>
+		<thermal_moisture tag = "070000" description = "Thermal Moisture Protection" type = "thermal moisture protection">
+			<thermal_insulation tag = "072100" description = "Thermal Insulation" type = "thermal moisture protection"/>
+			<shingles tag="073100" description = "Shingles and Shakes" type = "thermal moisture protection">
+				<asphaltshingles tag="073113" description = "Asphalt Shingles" type = "thermal moisture protection"/>
+			</shingles>
+			<rooftile tag = "073200" description = "Roof Tiles" type = "thermal moisture protection">
+				<claytile tag="073213" description = "Clay Tiles" type = "thermal moisture protection"/>
+			</rooftile>	
+		</thermal_moisture>
+		<finishes tag = "090000" description = "Finishes" type = "finishes">
+			<plaster tag="092100" description = "Plaster and Gypsum Board Assemblies" type = "finishes">
+				<gypsumboard tag = "092116" description = "Gypsum Board Assemblies" type = "finishes"/>
+			</plaster>
+			<woodflooring tag = "096400" description = "Wood Flooring" type = "finishes"/>
+			<carpeting tag = "096800" description = "Carpeting" type = "finishes"/>
+		</finishes>
+	</material>
+	<openings>
+		<metalwindow tag = "085100" description = "Metal Windows" type = "openings">
+			<aluminum tag = "085113" description = "Aluminum Windows" type = "openings"/>
+		</metalwindow>
+		<woodwindow tag = "085200" description = "Wood Windows" type = "openings">
+			<plainwood tag="085210" description = "Plain Wood Windows" type = "openings"/>
+		</woodwindow>
+		<plasticwindow tag="085300" description = "Plastic Windows" type ="openings">
+			<vinylwindows tag="085313" description = "Vinyl Windows" type = "openings"/>
+		</plasticwindow>
+	</openings>
+	<fan>
+		<axial tag="233413" description = "Axial HVAC Fans" type = "Fan">
+			<axial_flow tag = "233413" description = "Axial Flow HVAC Fans" type = "Fan"/>
+		</axial>
+		<blower tag="233414" description = "Blower HVAC Fans" type = "Fan">
+			<blower_ceiling tag="233414.102500" description = "Blower type HVAC ceiling fans" type = "Fan"/>
+			<blower_set tag = "233414.102500" description = "Blower type HVAC utility set" type = "Fan"/>
+		</blower>
+		<centrifugal tag="233416" description = "Centrifugal HVAC Fans" type="Centrifugal">
+			<centrifugal_booster tag="233416.100200" description = "Centrifugal type HVAC supply or exhaust booster" type = "Fan"/>
+			<centrifugal_set tag = "233416.103500" description = "Centrifugal type HVAC utility set" type = "Fan"/>
+			<centrifugal_roof tag = "233416.107000" description = "Centrifugal type HVAC Roof exhaust" type="Fan"/>
+			<centrifugal_wall tag="233416.108500" description = "Centrifugal type HVAC Wall exhaust" type="Fan"/>
+		</centrifugal>
+	</fan>
+	<condenserunit>
+		<package tag="236213" description = "Packaged Air-Cooled Refrigerant Compressor and Condenser Units" type="CondenserUnit">
+			<package_air tag="236213.10" description = "Packaged Air-Cooled Refrigerant Condensing Units" type = "CondenserUnit"/>
+		</package>
+		<aircoolchiller tag="236313" description="Air-Cooled Refrigerant Condensers" type="CondenserUnit">
+			<condenser tag="236313.10" description="Air-Cooled Refrigerant Condensers" type="CondenserUnit"/>
+		</aircoolchiller>
+	</condenserunit>
+	<unitaryhvac>
+		<packagedterminal tag="238113" description = "Packaged Terminal Air-Conditioners" type = "UnitaryHVAC">
+			<packagedaircon tag = "238113.10" description = "Packaged Cabinet type air-conditioners" type = "UnitaryHVAC"/>
+		</packagedterminal>
+		<airsourceheatpump tag = "238143" description = "Air-Source Unitary Heat Pumps" type="UnitaryHVAC">
+			<airsourceheatpump tag = "238143.10" description = "Air-Source Heat Pumps" type = "UnitaryHVAC"/>
+		</airsourceheatpump>
+	</unitaryhvac>
+	<pump>
+		<hydronic tag="232123" description = "Hydronic Pumps" type = "Pump">
+			<centrifugal tag="232123.13" description = "In-Line Centrifugal Hydronic Pumps" type="Pump"/>
+		</hydronic>
+	</pump>
+	<convectionunit>
+		<fancoil tag="238219" description="Fan Coil Units" type="Convection Heating and Cooling Units">
+			<fancoilac tag="238219.10" description="Fan Coil Air Conditioning" type="Convection Heating and Cooling Units"/>
+		</fancoil>
+	</convectionunit>
+	<lights>
+		<interiorlighting tag="265100" description="Interior Lighting" type="Electrical">
+			<fluorescent tag="265113.500100" description="Interior Lighting Fixture" type="Electrical"/>
+			<led tag="265113.55" description="LED" type = "Electrical"/>
+		</interiorlighting>
+		<exteriorlighting tag ="265600" description = "Exterior Lighting" type = "Electrical">
+			<arealight tag="265623" description = "Area Lighting" type = "Electrical">
+				<exteriorfixture tag="265623.10" description = "Exterior Fixture" type="Electrical"/>
+			</arealight>
+		</exteriorlighting>
+	</lights>
+</masterformat>
+
+
+
