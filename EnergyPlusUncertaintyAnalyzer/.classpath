@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="lib/csvfitdist.jar"/>
 	<classpathentry kind="lib" path="lib/gral-core-0.10.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal4.5.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/MasterFormat"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

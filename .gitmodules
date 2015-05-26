@@ -1,0 +1,3 @@
+[submodule "CostStandard"]
+	path = CostStandard
+	url = http://github.com/weilixu/CostStandard
