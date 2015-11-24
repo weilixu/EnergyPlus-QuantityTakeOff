@@ -28,6 +28,7 @@ import jmetal.util.parallel.MultithreadedEvaluator;
 import org.jfree.chart.ChartPanel;
 
 import de.erichseifert.gral.ui.InteractivePanel;
+import eplus.EnergyPlusModel;
 import analyzer.distributions.DistributionType;
 import analyzer.distributions.MakeDistributionModel;
 import analyzer.eplus.EnergyPlusFilesGenerator;
@@ -130,12 +131,18 @@ public class Model {
      */
     private BuildingAreaParser buildingArea;
 
+    /**
+     * EnergyPlus model for cost estimation
+     */
+    private EnergyPlusModel eplusModel;
+
     /*
      * A data structure to save generated random variables from the model. The
      * size of the double[] array is equal to the simulaitonNumber. String
      * stands for the variableName
      */
     private static HashMap<String, double[]> randomVariableList = new HashMap<String, double[]>();
+    private static HashMap<String, double[]> budgetCostMap = new HashMap<String, double[]>();
     private HashMap<String, double[]> squareCostDataMap;
 
     private String distSummary;
@@ -240,9 +247,9 @@ public class Model {
 	    }
 	    idfData.addNewEnergyPlusObject(object.getObject(), objectValues,
 		    objectDes);
-	    // notify any possible changes in the eplus database
-	    onReadEplusFile();
 	}
+	// notify any possible changes in the eplus database
+	onReadEplusFile();
     }
 
     /**
@@ -269,9 +276,13 @@ public class Model {
     public DataObjects getCopiedDataObject(DataObjects dataset) {
 	return lccModel.makeCopyOfDataSet(dataset);
     }
-    
-    public File getEnergyPlusFile(){
+
+    public File getEnergyPlusFile() {
 	return eplusFile;
+    }
+
+    public EnergyPlusModel getEnergyPlusCostModel() {
+	return eplusModel;
     }
 
     /**
@@ -301,9 +312,21 @@ public class Model {
 	eplusFile = file;
 	parentFile = eplusFile.getParentFile();
 	resultFile = createResultsFolder();
+	eplusModel = new EnergyPlusModel(eplusFile);
 	run.setFolder(resultFile);
 	initializedIdfData();
 	initializedGraphGenerator();
+    }
+
+    public void calculateUncertainBudget() {
+	double[] budgetList = new double[simulationNumber];
+	int index = 0;
+	for (int i = 0; i < simulationNumber; i++) {
+	    budgetList[i] = eplusModel.calculateBudget();
+	    index++;
+	}
+	System.out.println(index);
+	budgetCostMap.put("Budget", budgetList);
     }
 
     /**
@@ -466,13 +489,15 @@ public class Model {
 	try {
 	    FileWriter writer = new FileWriter(parentFile.getAbsoluteFile()
 		    + "\\inputs.csv");
-
-	    Set<String> variableList = randomVariableList.keySet();
+	    HashMap<String, double[]> allMap = new HashMap<String, double[]>();
+	    allMap.putAll(randomVariableList);
+	    allMap.putAll(budgetCostMap);
+	    Set<String> variableList = allMap.keySet();
 	    Iterator<String> variableIterator = variableList.iterator();
 	    while (variableIterator.hasNext()) {
 		String variable = variableIterator.next();
 		writer.append(variable);
-		double[] inputList = randomVariableList.get(variable);
+		double[] inputList = allMap.get(variable);
 		for (double d : inputList) {
 		    writer.append(",");
 		    writer.append("" + d);
@@ -491,7 +516,7 @@ public class Model {
      */
     public void singleObjectiveOptimization() throws JMException,
 	    ClassNotFoundException {
-	Problem problem = new EUI(randomVariableList, idfData,resultFile);
+	Problem problem = new EUI(randomVariableList, idfData, resultFile);
 	int threads = Integer.parseInt(AnalyzerUtils.getEplusConfig()[2]);
 	IParallelEvaluator parallelEvaluator = new MultithreadedEvaluator(
 		threads);

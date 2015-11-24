@@ -561,46 +561,6 @@
 				<field description = "Repeat Period Years" type = "Integer" minimum="0" maximum="100">1</field>
 				<field description = "Repeat Period Months" type = "Integer" minimum="0" maximum="1200">0</field>
 				<field description = "Annual escalation rate" type = "Integer" minimum="-0.3" maximum="0.3">0</field>
-			</object>			
-			<object description = "LifeCycleCost:NonrecurringCost" reference = "TypicalLCC">
-				<field description = "Name" type = "String">Phase One Investment</field>
-				<field description = "Category" type = "String">Construction</field>
-				<field description = "Cost" type = "Integer" minimum="" maximum="">51500</field>
-				<field description = "Start of Costs" type = "String">BasePeriod</field>
-				<field description = "Years from Start" type = "Integer" minimum="0" maximum="100">0</field>
-				<field description = "Months from Start" type = "Integer" minimum="0" maximum="1200">0</field>
-			</object>
-			<object description = "LifeCycleCost:NonrecurringCost" reference = "TypicalLCC">
-				<field description = "Name" type = "String">Phase Two Investment</field>
-				<field description = "Category" type = "String">Construction</field>
-				<field description = "Cost" type = "Integer" minimum="" maximum="">51500</field>
-				<field description = "Start of Costs" type = "String">BasePeriod</field>
-				<field description = "Years from Start" type = "Integer" minimum="0" maximum="100">1</field>
-				<field description = "Months from Start" type = "Integer" minimum="0" maximum="1200">0</field>
-			</object>
-			<object description = "LifeCycleCost:NonrecurringCost" reference = "TypicalLCC">
-				<field description = "Name" type = "String">FanReplacement</field>
-				<field description = "Category" type = "String">OtherCapital</field>
-				<field description = "Cost" type = "Integer" minimum="" maximum="">12000</field>
-				<field description = "Start of Costs" type = "String">BasePeriod</field>
-				<field description = "Years from Start" type = "Integer" minimum="0" maximum="100">13</field>
-				<field description = "Months from Start" type = "Integer" minimum="0" maximum="1200">0</field>
-			</object>
-			<object description = "LifeCycleCost:NonrecurringCost" reference = "TypicalLCC">
-				<field description = "Name" type = "String">PlantReplacement</field>
-				<field description = "Category" type = "String">OtherCapital</field>
-				<field description = "Cost" type = "Integer" minimum="" maximum="">60000</field>
-				<field description = "Start of Costs" type = "String">BasePeriod</field>
-				<field description = "Years from Start" type = "Integer" minimum="0" maximum="100">16</field>
-				<field description = "Months from Start" type = "Integer" minimum="0" maximum="1200">0</field>
-			</object>
-			<object description = "LifeCycleCost:NonrecurringCost" reference = "TypicalLCC">
-				<field description = "Name" type = "String">ResidualValue</field>
-				<field description = "Category" type = "String">Salvage</field>
-				<field description = "Cost" type = "Integer" minimum="" maximum="">-20000</field>
-				<field description = "Start of Costs" type = "String">BasePeriod</field>
-				<field description = "Years from Start" type = "Integer" minimum="0" maximum="100">21</field>
-				<field description = "Months from Start" type = "Integer" minimum="0" maximum="1200">0</field>
 			</object>
 			<object description = "LifeCycleCost:UsePriceEscalation" reference = "2014NISTIR85">
 				<field description = "Name" type = "String">Electricity Price Indices</field>

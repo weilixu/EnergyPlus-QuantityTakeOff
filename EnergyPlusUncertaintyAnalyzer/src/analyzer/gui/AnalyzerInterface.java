@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -23,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
-import eplus.EnergyPlusModel;
 import uncertainty.gui.UncertaintyPanel;
 import analyzer.lang.AnalyzerUtils;
 import analyzer.listeners.LoadIdfListeners;
@@ -77,6 +75,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     // contains the text field specify the number of simulations
     private final JPanel inputPanel;
     private final JPanel simulationPanel;
+    private JPanel qtoBudgetPanel;
 
     // analysis panel set-up
     private final AnalysisPanel analysisPanel;
@@ -113,6 +112,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     private JButton analysisToLccButton;
     private JButton lccToVariableButton;
     private JButton lccToQtoButton;
+    private JButton budgetButton;
     private int number_Variable;
 
     /*
@@ -227,7 +227,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			// disable the JTextfield for simulation directory and
 			// simulation number
 			// also add the actionlistener to the create IDFButton
-
+			qtoBudgetPanel = new UncertaintyPanel(core.getEnergyPlusCostModel());
 			createIDFButton
 				.addActionListener(new CreateActionListener(
 					core, createIDFButton));
@@ -235,7 +235,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 			idfDirText.setEnabled(false);
 			//write back to property file
 			AnalyzerUtils.writeProperties();
-		    } catch (IOException e) {
+		    } catch (Exception e) {
 			showErrorDialog(frame, "Cannot Load Idf File",
 				"Please check your directory!");
 		    }
@@ -312,6 +312,8 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	lccPanel = new LifeCycleCostPanel(core);
 	lccPanel.setBackground(Color.WHITE);
 	lccControlPanel = initialzeLccControlPanel();
+	
+	qtoBudgetPanel = new JPanel();
 
 	// add menubar
 	settingMenuBar.add(setting);
@@ -326,6 +328,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
     @Override
     public void loadedEnergyPlusFile(ArrayList<String> variableList,
 	    ArrayList<String[]> variableKeySets) {
+	//if there is no variable found in the file
 	variablePane.changeVariables(variableList, variableKeySets);
 	number_Variable = variableList.size();
 	// outerPanel.add(innerPanel, BorderLayout.CENTER);
@@ -488,19 +491,24 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    }
 	});
 	
+	budgetButton = new JButton("Calculate Budget");
+	budgetButton.addActionListener(new ActionListener(){
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		core.calculateUncertainBudget();
+	    } 
+	});
+	budgetButton.setEnabled(false);
+	
 	lccToQtoButton = new JButton("QTO");
 	lccToQtoButton.addActionListener(new ActionListener(){
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		innerPanel.removeAll();
-		JPanel qtoBudgetPanel = null;
-		try {
-		    qtoBudgetPanel = new UncertaintyPanel(new EnergyPlusModel(core.getEnergyPlusFile()));
-		} catch (Exception e1) {
-		    // TODO Auto-generated catch block
-		    e1.printStackTrace();
-		}
 		innerPanel.add(qtoBudgetPanel,BorderLayout.CENTER);
+		budgetButton.setEnabled(true);
+		innerPanel.add(lccControlPanel, BorderLayout.PAGE_END);
 		innerPanel.revalidate();
 		innerPanel.repaint();
 	    }
@@ -526,6 +534,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	    public void actionPerformed(ActionEvent e) {
 		innerPanel.removeAll();
 		innerPanel.add(lccPanel, BorderLayout.CENTER);
+		budgetButton.setEnabled(false);
 		innerPanel.add(lccControlPanel, BorderLayout.PAGE_END);
 		innerPanel.revalidate();
 		innerPanel.repaint();
@@ -535,6 +544,7 @@ public class AnalyzerInterface extends JPanel implements LoadIdfListeners,
 	temp.add(addButton);
 	temp.add(lccToVariableButton);
 	temp.add(lccToQtoButton);
+	temp.add(budgetButton);
 	temp.add(analysisToLccButton);
 	temp.add(lccToAnalysisButton);
 	return temp;

@@ -360,15 +360,15 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	for (int i = 0; i < objectValues.length; i++) {
 	    newObject.add(new ValueNode(objectValues[i], objectDes[i]));
 	}
-	// create a new map
-	HashMap<String, ArrayList<ValueNode>> temp = new HashMap<String, ArrayList<ValueNode>>();
+
 	String elementCount = null;
 	if (eplusMap.containsKey(objectName)) {
 	    Integer count = eplusMap.get(objectName).size();
 	    elementCount = count.toString();
-	    temp.put(elementCount, newObject);
-	    eplusMap.put(objectName, temp);
+	    eplusMap.get(objectName).put(elementCount, newObject);
 	} else {
+	    // create a new map
+	    HashMap<String, ArrayList<ValueNode>> temp = new HashMap<String, ArrayList<ValueNode>>();
 	    elementCount = "0";
 	    temp.put(elementCount, newObject);
 	    eplusMap.put(objectName, temp);

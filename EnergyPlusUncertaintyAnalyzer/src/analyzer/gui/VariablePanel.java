@@ -76,7 +76,6 @@ public class VariablePanel extends JPanel {
     }
 
     public void changeVariables(ArrayList<String> vl, ArrayList<String[]> vk) {
-
 	variableList = vl;
 	variableDescription = new ArrayList<String>();
 	variableKeySets = vk;
@@ -115,6 +114,7 @@ public class VariablePanel extends JPanel {
 	    fittingPanel.add(vbtnTP, s);
 	    
 	    listModel.addElement(s);
+	    
 	    variablesList.addListSelectionListener(new ListSelectionListener() {
 		@Override
 		public void valueChanged(ListSelectionEvent evt) {
@@ -132,7 +132,7 @@ public class VariablePanel extends JPanel {
 	fittingPanel.repaint();
 	
 	//beining condition
-	if (enabledFlags.length == 0){
+	if (enabledFlags.length == 0 && variableList.size()==0){
 	    enabledFlags = copyEnabledFlag();
 	    // tabbedpanels
 	    add(fittingPanel, BorderLayout.CENTER);
