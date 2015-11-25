@@ -52,7 +52,6 @@ import analyzer.listeners.LoadIdfListeners;
 import analyzer.listeners.MakeDistGraphGeneratorListener;
 import analyzer.listeners.ModelDataListener;
 import analyzer.listeners.SquareMeterCostModelListener;
-import analyzer.optimization.singleobjective.EUI;
 import analyzer.sensitivity.SensitivityAnalysis;
 
 /**
@@ -516,52 +515,7 @@ public class Model {
      */
     public void singleObjectiveOptimization() throws JMException,
 	    ClassNotFoundException {
-	Problem problem = new EUI(randomVariableList, idfData, resultFile);
-	int threads = Integer.parseInt(AnalyzerUtils.getEplusConfig()[2]);
-	IParallelEvaluator parallelEvaluator = new MultithreadedEvaluator(
-		threads);
-
-	Algorithm algorithm = new pgGA(problem, parallelEvaluator); // Generational
-								    // GA
-	/* Algorithm parameters */
-	algorithm.setInputParameter("populationSize", threads);
-	algorithm.setInputParameter("maxEvaluations", 100);
-
-	int bits = 512;
-
-	HashMap<String, Double> parameters; // Operator parameter
-	// Mutation and Crossover for Binary codification
-	parameters = new HashMap<String, Double>();
-	parameters.put("probability", 0.9);
-	Operator crossover = CrossoverFactory.getCrossoverOperator(
-		"SBXCrossover", parameters);
-
-	parameters = new HashMap<String, Double>();
-	parameters.put("probability", 1.0 / bits);
-	Operator mutation = MutationFactory.getMutationOperator(
-		"PolynomialMutation", parameters);
-
-	/* Selection Operator */
-	parameters = null;
-	Operator selection = SelectionFactory.getSelectionOperator(
-		"BinaryTournament", parameters);
-
-	/* Add the operators to the algorithm */
-	algorithm.addOperator("crossover", crossover);
-	algorithm.addOperator("mutation", mutation);
-	algorithm.addOperator("selection", selection);
-
-	/* Execute the Algorithm */
-	long initTime = System.currentTimeMillis();
-	SolutionSet population = algorithm.execute();
-	long estimatedTime = System.currentTimeMillis() - initTime;
-	System.out.println("Total execution time: " + estimatedTime);
-
-	/* Log messages */
-	System.out.println("Objectives values have been writen to file FUN");
-	population.printObjectivesToFile("FUN");
-	System.out.println("Variables values have been writen to file VAR");
-	population.printVariablesToFile("VAR");
+	
     }
 
     /**

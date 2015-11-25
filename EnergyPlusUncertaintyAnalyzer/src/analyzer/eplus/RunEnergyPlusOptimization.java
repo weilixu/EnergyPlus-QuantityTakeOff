@@ -20,21 +20,16 @@ public class RunEnergyPlusOptimization {
     private File eplusFolder;
     private Integer simulationCount;
 
-    private Variable[] decisionData;
-    private String[] VariableName;
 
-    private EnergyPlusHTMLParser parser;
+    //private EnergyPlusHTMLParser parser;
     private final IdfReader idfData;
     private File weaFile;
 
     private String energyplus_dir;
     private String weather_dir;
 
-    public RunEnergyPlusOptimization(IdfReader reader,
-	    Variable[] decisionVariable, String[] variableNames) {
+    public RunEnergyPlusOptimization(IdfReader reader) {
 	idfData = reader;
-	decisionData = decisionVariable;
-	VariableName = variableNames;
 
 	String[] config = AnalyzerUtils.getEplusConfig();
 	energyplus_dir = config[0];
@@ -50,7 +45,7 @@ public class RunEnergyPlusOptimization {
 	folder = f;
     }
 
-    public double runSimulation() throws IOException, JMException {
+    public EnergyPlusHTMLParser runSimulation() throws IOException, JMException {
 	//create the energyplus folder
 	eplusFolder = new File(folder.getAbsolutePath() + "\\"
 		+ simulationCount.toString());
@@ -61,8 +56,6 @@ public class RunEnergyPlusOptimization {
 	weaFile = copyWeatherFile(weatherFile);
 	//create a batch file to run the simulation
 	File eplusBatFile = createBatchFile();
-	//create the idf file under the created energyplus folder
-	createFile(idfData.cloneIdfData());
 	//make it in a folder
 	File energyPlusFile = new File(folder.getAbsolutePath() + "\\"
 		+ simulationCount.toString()+"\\"+simulationCount.toString()+".idf");
@@ -97,29 +90,16 @@ public class RunEnergyPlusOptimization {
 	    e.printStackTrace();
 	}
 	
-	//get the output from HTML
+	EnergyPlusHTMLParser parser = null;
+	// get the output from HTML
 	File[] fileList = eplusFolder.listFiles();
 	for (File f : fileList) {
 	    if (f.getAbsolutePath().contains(".html")) {
 		parser = new EnergyPlusHTMLParser(f);
-		double eui = parser.getEUI();
-		return eui;
 	    }
 	}
 	//return the EUI (fitness value)
-	return Double.MAX_VALUE;
-    }
-    
-    /*
-     * Create a new EnergyPlus file with special character replaced
-     */
-    private void createFile(EnergyPlusFilesGenerator data) throws IOException,
-	    JMException {
-	for (int i = 0; i < VariableName.length; i++) {
-	    Double value = decisionData[i].getValue();
-	    data.modifySpecialCharactor(VariableName[i], value.toString());
-	}
-	data.WriteIdf(eplusFolder.getAbsolutePath(), simulationCount.toString());
+	return parser;
     }
     
     /*
@@ -159,8 +139,8 @@ public class RunEnergyPlusOptimization {
     /*
      * Create a batch file in the directory
      */
-    public File createBatchFile() throws IOException {
-	String keyWord = "SET maindir=";
+    private File createBatchFile() throws IOException {
+	String keyWord = "set program_path=";
 	String weaWord = "set weather_path=";
 	File file = new File(eplusFolder.getAbsolutePath() + "\\" + EPLUSBAT);
 	file.createNewFile();

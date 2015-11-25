@@ -524,6 +524,15 @@ public class IdfReader implements EnergyPlusFilesGenerator {
 	HashMap<String, HashMap<String, ArrayList<ValueNode>>> map = DeepCopyMap();
 	return new IdfReader(path, map, variableList, variableKeySets);
     }
+    
+    /**
+     * clone the object for baseline generation
+     * 
+     * @return
+     */
+    public IdfReader cloneIdf() {
+	return new IdfReader(path, DeepCopyMap(), variableList, variableKeySets);
+    }
 
     private HashMap<String, HashMap<String, ArrayList<ValueNode>>> DeepCopyMap() {
 	HashMap<String, HashMap<String, ArrayList<ValueNode>>> tempMap = new HashMap<String, HashMap<String, ArrayList<ValueNode>>>();
